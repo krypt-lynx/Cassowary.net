@@ -27,41 +27,28 @@ namespace Cassowary
     {
         public ClPoint(double x, double y)
         {
-            _clvX = new ClVariable(x);
-            _clvY = new ClVariable(y);
+            X = new ClVariable(x);
+            Y = new ClVariable(y);
         }
 
         public ClPoint(double x, double y, int a)
         {
-            _clvX = new ClVariable("x" + a, x);
-            _clvY = new ClVariable("y" + a, y);
+            X = new ClVariable("x" + a, x);
+            Y = new ClVariable("y" + a, y);
         }
 
         public ClPoint(ClVariable clvX, ClVariable clvY)
         {
-            _clvX = clvX;
-            _clvY = clvY;
+            X = clvX;
+            Y = clvY;
         }
 
-        private ClVariable _clvX;
-
-        public ClVariable X
-        {
-            get { return _clvX; }
-            set { _clvX = value; }
-        }
-
-        private ClVariable _clvY;
-
-        public ClVariable Y
-        {
-            get { return _clvY; }
-            set { _clvY = value; }
-        }
+        public ClVariable X { get; set; }
+        public ClVariable Y { get; set; }
 
         public override string ToString()
         {
-            return "(" + _clvX + ", " + _clvY + ")";
+            return "(" + X + ", " + Y + ")";
         }
     }
 

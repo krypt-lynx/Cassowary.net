@@ -28,14 +28,14 @@ namespace Cassowary
             double weight = 1.0)
             : base(strength, weight)
         {
-            _variable = var;
-            _expression = new ClLinearExpression(_variable, -1.0, _variable.Value);
+            Variable = var;
+            Expression = new ClLinearExpression(Variable, -1.0, Variable.Value);
         }
 
         protected ClEditOrStayConstraint(ClVariable var)
             : this(var, ClStrength.Required, 1.0)
         {
-            _variable = var;
+            Variable = var;
         }
 
         public override string ToString()
@@ -44,17 +44,8 @@ namespace Cassowary
             return base.ToString() + ")";
         }
 
-        public ClVariable Variable
-        {
-            get { return _variable; }
-        }
+        public ClVariable Variable { get; }
 
-        public override ClLinearExpression Expression
-        {
-            get { return _expression; }
-        }
-
-        private readonly ClVariable _variable;
-        private readonly ClLinearExpression _expression;
+        public override ClLinearExpression Expression { get; }
     }
 }

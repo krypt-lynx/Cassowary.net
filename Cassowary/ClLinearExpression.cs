@@ -31,10 +31,10 @@ namespace Cassowary
         public ClLinearExpression(ClAbstractVariable clv, double value = 1, double constant = 0)
         {
             _constant = new ClDouble(constant);
-            _terms = new Dictionary<ClAbstractVariable, ClDouble>();
+            Terms = new Dictionary<ClAbstractVariable, ClDouble>();
 
             if (clv != null)
-                _terms.Add(clv, new ClDouble(value));
+                Terms.Add(clv, new ClDouble(value));
         }
 
         public ClLinearExpression(double num)
@@ -53,12 +53,12 @@ namespace Cassowary
         protected ClLinearExpression(ClDouble constant, Dictionary<ClAbstractVariable, ClDouble> terms)
         {
             _constant = constant.Clone();
-            _terms = new Dictionary<ClAbstractVariable, ClDouble>();
+            Terms = new Dictionary<ClAbstractVariable, ClDouble>();
 
             // need to unalias the ClDouble-s that we clone (do a deep clone)
             foreach (var clv in terms.Keys)
             {
-                _terms.Add(clv, (terms[clv]).Clone());
+                Terms.Add(clv, (terms[clv]).Clone());
             }
         }
 
@@ -66,7 +66,7 @@ namespace Cassowary
         {
             _constant.Value = _constant.Value * x;
 
-            foreach (var cld in _terms.Keys.Select(a => _terms[a]))
+            foreach (var cld in Terms.Keys.Select(a => Terms[a]))
                 cld.Value = cld.Value * x;
 
             return this;
@@ -74,7 +74,7 @@ namespace Cassowary
 
         public virtual ClLinearExpression Clone()
         {
-            return new ClLinearExpression(_constant, _terms);
+            return new ClLinearExpression(_constant, Terms);
         }
 
         public ClLinearExpression Times(double x)
@@ -197,13 +197,13 @@ namespace Cassowary
         {
             ClDouble coeff;
 
-            if (_terms.TryGetValue(v, out coeff))
+            if (Terms.TryGetValue(v, out coeff))
             {
                 double newCoefficient = coeff.Value + c;
 
                 if (Approx(newCoefficient, 0.0))
                 {
-                    _terms.Remove(v);
+                    Terms.Remove(v);
                 }
                 else
                 {
@@ -214,7 +214,7 @@ namespace Cassowary
             {
                 if (!Approx(c, 0.0))
                 {
-                    _terms.Add(v, new ClDouble(c));
+                    Terms.Add(v, new ClDouble(c));
                 }
             }
 
@@ -226,10 +226,10 @@ namespace Cassowary
             // Assert(c != 0.0);
             ClDouble coeff;
 
-            if (_terms.TryGetValue(v, out coeff))
+            if (Terms.TryGetValue(v, out coeff))
                 coeff.Value = c;
             else
-                _terms.Add(v, new ClDouble(c));
+                Terms.Add(v, new ClDouble(c));
 
             return this;
         }
@@ -244,14 +244,14 @@ namespace Cassowary
         {
             ClDouble coeff;
 
-            if (_terms.TryGetValue(v, out coeff) && coeff != null)
+            if (Terms.TryGetValue(v, out coeff) && coeff != null)
             {
                 double newCoefficient = coeff.Value + c;
 
                 if (Approx(newCoefficient, 0.0))
                 {
                     solver.NoteRemovedVariable(v, subject);
-                    _terms.Remove(v);
+                    Terms.Remove(v);
                 }
                 else
                 {
@@ -262,7 +262,7 @@ namespace Cassowary
             {
                 if (!Approx(c, 0.0))
                 {
-                    _terms.Add(v, new ClDouble(c));
+                    Terms.Add(v, new ClDouble(c));
                     solver.NoteAddedVariable(v, subject);
                 }
             }
@@ -283,7 +283,7 @@ namespace Cassowary
                 throw new CassowaryInternalException("anyPivotableVariable called on a constant");
             }
 
-            return _terms.Keys.FirstOrDefault(a => a.IsPivotable);
+            return Terms.Keys.FirstOrDefault(a => a.IsPivotable);
 
             // No pivotable variables, so just return null, and let the caller
             // error if needed
@@ -299,8 +299,8 @@ namespace Cassowary
         /// </summary>
         public void SubstituteOut(ClAbstractVariable var, ClLinearExpression expr, ClAbstractVariable subject, ClTableau solver)
         {
-            double multiplier = (_terms[var]).Value;
-            _terms.Remove(var);
+            double multiplier = (Terms[var]).Value;
+            Terms.Remove(var);
             IncrementConstant(multiplier * expr.Constant);
 
             foreach (ClAbstractVariable clv in expr.Terms.Keys)
@@ -308,7 +308,7 @@ namespace Cassowary
                 double coeff = (expr.Terms[clv]).Value;
                 ClDouble dOldCoeff;
 
-                if (_terms.TryGetValue(clv, out dOldCoeff))
+                if (Terms.TryGetValue(clv, out dOldCoeff))
                 {
                     double oldCoeff = dOldCoeff.Value;
                     double newCoeff = oldCoeff + multiplier * coeff;
@@ -316,7 +316,7 @@ namespace Cassowary
                     if (Approx(newCoeff, 0.0))
                     {
                         solver.NoteRemovedVariable(clv, subject);
-                        _terms.Remove(clv);
+                        Terms.Remove(clv);
                     }
                     else
                     {
@@ -326,7 +326,7 @@ namespace Cassowary
                 else
                 {
                     // did not have that variable already
-                    _terms.Add(clv, new ClDouble(multiplier * coeff));
+                    Terms.Add(clv, new ClDouble(multiplier * coeff));
                     solver.NoteAddedVariable(clv, subject);
                 }
             }
@@ -353,10 +353,10 @@ namespace Cassowary
         {
             ClDouble cld;
 
-            if (_terms.TryGetValue(oldSubject, out cld))
+            if (Terms.TryGetValue(oldSubject, out cld))
                 cld.Value = NewSubject(newSubject);
             else
-                _terms.Add(oldSubject, new ClDouble(NewSubject(newSubject)));
+                Terms.Add(oldSubject, new ClDouble(NewSubject(newSubject)));
         }
 
         /// <summary>
@@ -379,8 +379,8 @@ namespace Cassowary
         /// </summary>
         public double NewSubject(ClAbstractVariable subject)
         {
-            ClDouble coeff = _terms[subject];
-            _terms.Remove(subject);
+            ClDouble coeff = Terms[subject];
+            Terms.Remove(subject);
 
             double reciprocal = 1.0 / coeff.Value;
             MultiplyMe(-reciprocal);
@@ -398,7 +398,7 @@ namespace Cassowary
             
             ClDouble coeff;
 
-            if (_terms.TryGetValue(var, out coeff) && coeff != null)
+            if (Terms.TryGetValue(var, out coeff) && coeff != null)
                 return coeff.Value;
             else
                 return 0.0;
@@ -410,10 +410,7 @@ namespace Cassowary
             set { _constant.Value = value; }
         }
 
-        public Dictionary<ClAbstractVariable, ClDouble> Terms
-        {
-            get { return _terms; }
-        }
+        public Dictionary<ClAbstractVariable, ClDouble> Terms { get; }
 
         public void IncrementConstant(double c)
         {
@@ -422,34 +419,34 @@ namespace Cassowary
 
         public bool IsConstant
         {
-            get { return _terms.Count == 0; }
+            get { return Terms.Count == 0; }
         }
 
         public override string ToString()
         {
             String s = "";
 
-            IDictionaryEnumerator e = _terms.GetEnumerator();
+            IDictionaryEnumerator e = Terms.GetEnumerator();
 
-            if (!Approx(_constant.Value, 0.0) || _terms.Count == 0)
+            if (!Approx(_constant.Value, 0.0) || Terms.Count == 0)
             {
                 s += _constant.ToString();
             }
             else
             {
-                if (_terms.Count == 0)
+                if (Terms.Count == 0)
                 {
                     return s;
                 }
                 e.MoveNext(); // go to first element
                 ClAbstractVariable clv = (ClAbstractVariable) e.Key;
-                ClDouble coeff = _terms[clv];
+                ClDouble coeff = Terms[clv];
                 s += string.Format("{0}*{1}", coeff, clv);
             }
             while (e.MoveNext())
             {
                 ClAbstractVariable clv = (ClAbstractVariable) e.Key;
-                ClDouble coeff = _terms[clv];
+                ClDouble coeff = Terms[clv];
                 s += string.Format(" + {0}*{1}", coeff, clv);
             }
 
@@ -484,6 +481,5 @@ namespace Cassowary
         }
 
         private readonly ClDouble _constant;
-        private readonly Dictionary<ClAbstractVariable, ClDouble> _terms;
     }
 }

@@ -25,7 +25,7 @@ namespace Cassowary
     /// ClEditInfo is privately-used class
     /// that just wraps a constraint, its positive and negative
     /// error variables, and its prior edit constant.
-    /// It is used as values in _editVarMap, and replaces
+    /// It is used as values in ClvEditPlus, and replaces
     /// the parallel vectors of error variables and previous edit
     /// constants from the Smalltalk version of the code.
     /// </summary>
@@ -33,38 +33,21 @@ namespace Cassowary
     {
         public ClEditInfo(ClConstraint cn, ClSlackVariable eplus, ClSlackVariable eminus, double prevEditConstant, int i)
         {
-            _cn = cn;
-            _clvEditPlus = eplus;
-            _clvEditMinus = eminus;
+            Constraint = cn;
+            ClvEditPlus = eplus;
+            ClvEditMinus = eminus;
             PrevEditConstant = prevEditConstant;
-            _i = i;
+            Index = i;
         }
 
-        public int Index
-        {
-            get { return _i; }
-        }
+        public int Index { get; }
 
-        public ClConstraint Constraint
-        {
-            get { return _cn; }
-        }
+        public ClConstraint Constraint { get; }
 
-        public ClSlackVariable ClvEditPlus
-        {
-            get { return _clvEditPlus; }
-        }
+        public ClSlackVariable ClvEditPlus { get; }
 
-        public ClSlackVariable ClvEditMinus
-        {
-            get { return _clvEditMinus; }
-        }
+        public ClSlackVariable ClvEditMinus { get; }
 
         public double PrevEditConstant { get; set; }
-
-        private readonly ClConstraint _cn;
-        private readonly ClSlackVariable _clvEditPlus;
-        private readonly ClSlackVariable _clvEditMinus;
-        private readonly int _i;
     }
 }

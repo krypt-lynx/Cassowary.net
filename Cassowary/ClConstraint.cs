@@ -27,8 +27,8 @@ namespace Cassowary
     {
         protected ClConstraint(ClStrength strength, double weight = 1.0)
         {
-            _strength = strength;
-            _weight = weight;
+            Strength = strength;
+            Weight = weight;
         }
 
         public abstract ClLinearExpression Expression { get; }
@@ -47,15 +47,9 @@ namespace Cassowary
         {
             get { return false; }
         }
+        public ClStrength Strength { get; } = ClStrength.Required;
 
-        private readonly ClStrength _strength = ClStrength.Required;
-        public ClStrength Strength
-        {
-            get { return _strength; }
-        }
-
-        private readonly double _weight = 1;
-        public double Weight { get { return _weight; } }
+        public double Weight { get; } = 1;
 
         public override string ToString()
         {

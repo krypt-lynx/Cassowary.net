@@ -28,7 +28,7 @@ namespace Cassowary
     {
         public ClDouble(double val)
         {
-            _value = val;
+            Value = val;
         }
 
         public ClDouble()
@@ -38,19 +38,14 @@ namespace Cassowary
 
         public virtual ClDouble Clone()
         {
-            return new ClDouble(_value);
+            return new ClDouble(Value);
         }
 
-        private double _value;
-        public double Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
+        public double Value { get; set; }
 
         public override sealed String ToString()
         {
-            return Convert.ToString(_value, CultureInfo.InvariantCulture);
+            return Convert.ToString(Value, CultureInfo.InvariantCulture);
         }
 
         public override sealed bool Equals(Object o)
@@ -64,7 +59,7 @@ namespace Cassowary
 
         public bool Equals(ClDouble o)
         {
-            return o.Value.Equals(_value);
+            return o.Value.Equals(Value);
         }
 
         public override sealed int GetHashCode()

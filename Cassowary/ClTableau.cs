@@ -32,8 +32,8 @@ namespace Cassowary
         /// </summary>
         protected ClTableau()
         {
-            _columns = new Dictionary<ClAbstractVariable, HashSet<ClAbstractVariable>>();
-            _rows = new Dictionary<ClAbstractVariable, ClLinearExpression>();
+            Columns = new Dictionary<ClAbstractVariable, HashSet<ClAbstractVariable>>();
+            Rows = new Dictionary<ClAbstractVariable, ClLinearExpression>();
             InfeasibleRows = new HashSet<ClAbstractVariable>();
             ExternalRows = new HashSet<ClVariable>();
             ExternalParametricVars = new HashSet<ClVariable>();
@@ -49,7 +49,7 @@ namespace Cassowary
         {
             if (subject != null)
             {
-                _columns[v].Remove(subject);
+                Columns[v].Remove(subject);
             }
         }
 
@@ -69,13 +69,13 @@ namespace Cassowary
         {
             string s = "Tableau:\n";
 
-            foreach (ClAbstractVariable clv in _rows.Keys)
+            foreach (ClAbstractVariable clv in Rows.Keys)
             {
-                ClLinearExpression expr = _rows[clv];
+                ClLinearExpression expr = Rows[clv];
                 s += string.Format("{0} <==> {1}\n", clv, expr);
             }
 
-            s += string.Format("\nColumns:\n{0}", _columns);
+            s += string.Format("\nColumns:\n{0}", Columns);
             s += string.Format("\nInfeasible rows: {0}", InfeasibleRows);
 
             s += string.Format("\nExternal basic variables: {0}", ExternalRows);
@@ -93,8 +93,8 @@ namespace Cassowary
         private void InsertColVar(ClAbstractVariable paramVar, ClAbstractVariable rowvar)
         {
             HashSet<ClAbstractVariable> rowset;
-            if (!_columns.TryGetValue(paramVar, out rowset))
-                _columns.Add(paramVar, rowset = new HashSet<ClAbstractVariable>());
+            if (!Columns.TryGetValue(paramVar, out rowset))
+                Columns.Add(paramVar, rowset = new HashSet<ClAbstractVariable>());
 
             rowset.Add(rowvar);
         }
@@ -108,7 +108,7 @@ namespace Cassowary
         {
             // for each variable in expr, add var to the set of rows which
             // have that variable in their expression
-            _rows.Add(var, expr);
+            Rows.Add(var, expr);
 
             // FIXME: check correctness!
             foreach (var clv in expr.Terms.Keys)
@@ -136,11 +136,11 @@ namespace Cassowary
             // remove the rows with the variables in varset
 
             HashSet<ClAbstractVariable> rows;
-            if (_columns.TryGetValue(var, out rows))
+            if (Columns.TryGetValue(var, out rows))
             {
-                _columns.Remove(var);
+                Columns.Remove(var);
 
-                foreach (var expr in rows.Select(clv => _rows[clv]))
+                foreach (var expr in rows.Select(clv => Rows[clv]))
                     expr.Terms.Remove(var);
             }
 
@@ -158,14 +158,14 @@ namespace Cassowary
         protected ClLinearExpression RemoveRow(ClAbstractVariable var)
             /*throws ExCLInternalError*/
         {
-            var expr = _rows[var];
+            var expr = Rows[var];
             if (expr == null)
                 throw new CassowaryInternalException("linear expression is null");
 
             // For each variable in this expression, update
             // the column mapping and remove the variable from the list
             // of rows it is known to be in.
-            foreach (var varset in expr.Terms.Keys.Select(clv => _columns[clv]).Where(varset => varset != null))
+            foreach (var varset in expr.Terms.Keys.Select(clv => Columns[clv]).Where(varset => varset != null))
                 varset.Remove(var);
 
             InfeasibleRows.Remove(var);
@@ -175,7 +175,7 @@ namespace Cassowary
                 ExternalRows.Remove((ClVariable)var);
             }
 
-            _rows.Remove(var);
+            Rows.Remove(var);
             return expr;
         }
 
@@ -185,11 +185,11 @@ namespace Cassowary
         /// </summary> 
         protected void SubstituteOut(ClAbstractVariable oldVar, ClLinearExpression expr)
         {
-            var varset = _columns[oldVar];
+            var varset = Columns[oldVar];
 
             foreach (var v in varset)
             {
-                var row = _rows[v];
+                var row = Rows[v];
                 row.SubstituteOut(oldVar, expr, v, this);
                 if (v.IsRestricted && row.Constant < 0.0)
                 {
@@ -203,33 +203,7 @@ namespace Cassowary
                 ExternalParametricVars.Remove((ClVariable)oldVar);
             }
 
-            _columns.Remove(oldVar);
-        }
-
-        protected Dictionary<ClAbstractVariable, HashSet<ClAbstractVariable>> Columns
-        {
-            get { return _columns; }
-        }
-
-        protected Dictionary<ClAbstractVariable, ClLinearExpression> Rows
-        {
-            get { return _rows; }
-        }
-
-        /// <summary>
-        /// Return true if and only if the variable subject is in the columns keys 
-        /// </summary>
-        protected bool ColumnsHasKey(ClAbstractVariable subject)
-        {
-            return _columns.ContainsKey(subject);
-        }
-
-        protected ClLinearExpression RowExpression(ClAbstractVariable v)
-        {
-            // if (Trace) FnEnterPrint(string.Format("rowExpression: {0}", v));
-            ClLinearExpression exp;
-            _rows.TryGetValue(v, out exp);
-            return exp;
+            Columns.Remove(oldVar);
         }
 
         /// <summary>
@@ -238,12 +212,28 @@ namespace Cassowary
         /// i.e., it's a mapping from variables in expressions (a column) to the 
         /// set of rows that contain them.
         /// </summary>
-        private readonly Dictionary<ClAbstractVariable, HashSet<ClAbstractVariable>> _columns; // From ClAbstractVariable to Set of variables
+        protected Dictionary<ClAbstractVariable, HashSet<ClAbstractVariable>> Columns { get; }
 
         /// <summary>
         /// _rows maps basic variables to the expressions for that row in the tableau.
         /// </summary>
-        private readonly Dictionary<ClAbstractVariable, ClLinearExpression> _rows; // From ClAbstractVariable to ClLinearExpression
+        protected Dictionary<ClAbstractVariable, ClLinearExpression> Rows { get; }
+
+        /// <summary>
+        /// Return true if and only if the variable subject is in the columns keys 
+        /// </summary>
+        protected bool ColumnsHasKey(ClAbstractVariable subject)
+        {
+            return Columns.ContainsKey(subject);
+        }
+
+        protected ClLinearExpression RowExpression(ClAbstractVariable v)
+        {
+            // if (Trace) FnEnterPrint(string.Format("rowExpression: {0}", v));
+            ClLinearExpression exp;
+            Rows.TryGetValue(v, out exp);
+            return exp;
+        }
 
         /// <summary>
         /// Collection of basic variables that have infeasible rows

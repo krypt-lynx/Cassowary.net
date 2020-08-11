@@ -51,29 +51,12 @@ namespace Cassowary
                 return string.Format("{0}:{1}", Name, SymbolicWeight);
         }
 
-        public static ClStrength Required
-        {
-            get { return _required; }
-        }
+        public static ClStrength Required { get; } = new ClStrength("<Required>", 1000, 1000, 1000);
 
-        public static ClStrength Strong
-        {
-            get { return _strong; }
-        }
+        public static ClStrength Strong { get; } = new ClStrength("strong", 1.0, 0.0, 0.0);
 
-        public static ClStrength Medium
-        {
-            get { return _medium; }
-        }
+        public static ClStrength Medium { get; } = new ClStrength("medium", 0.0, 1.0, 0.0);
 
-        public static ClStrength Weak
-        {
-            get { return _weak; }
-        }
-
-        private static readonly ClStrength _required = new ClStrength("<Required>", 1000, 1000, 1000);
-        private static readonly ClStrength _strong = new ClStrength("strong", 1.0, 0.0, 0.0);
-        private static readonly ClStrength _medium = new ClStrength("medium", 0.0, 1.0, 0.0);
-        private static readonly ClStrength _weak = new ClStrength("weak", 0.0, 0.0, 1.0);
+        public static ClStrength Weak { get; } = new ClStrength("weak", 0.0, 0.0, 1.0);
     }
 }

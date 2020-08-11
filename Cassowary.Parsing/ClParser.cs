@@ -25,66 +25,52 @@ using System.Collections;
 
 namespace Cassowary.Parsing
 {
-  public class ClParser
-  {
-    private string _rule;
-    private ClConstraint _result = null;
-    private Hashtable _context;
+    public class ClParser
+    {
+        public ClParser()
+        {
+            Context = new Hashtable();
+        }
 
-    public ClParser()
-    {
-      _context = new Hashtable();
-    }
+        public void Parse(string rule)
+        {
+            Rule = rule;
+            Parse();
+        }
 
-    public void Parse(string rule)
-    {
-      Rule = rule;
-      Parse();
-    }
-    
-    public void Parse()
-    {
-      UTF8Encoding ue = new UTF8Encoding();
-      byte[] ruleBytes = ue.GetBytes(Rule);
-      MemoryStream ms = new MemoryStream(ruleBytes);
+        public void Parse()
+        {
+            UTF8Encoding ue = new UTF8Encoding();
+            byte[] ruleBytes = ue.GetBytes(Rule);
+            MemoryStream ms = new MemoryStream(ruleBytes);
 
-      Scanner s = new Scanner(ms);
-      Parser p = new Parser(s);
-      p.Context = Context;
+            Scanner s = new Scanner(ms);
+            Parser p = new Parser(s);
+            p.Context = Context;
 
-      p.Parse();
-      
-      _result = p.Value;
-      
-      if (p.errors.count > 0)
-        throw new ExClParseError(Rule);
-    }
+            p.Parse();
 
-    public void AddContext(params ClVariable[] vars)
-    {
-      foreach (ClVariable v in vars)
-        _context.Add(v.Name, v);
-    }
+            Result = p.Value;
 
-    public void AddContext(Hashtable context)
-    {
-      _context = new Hashtable(context);
-    }
-    
-    public string Rule
-    {
-      get { return _rule; }
-      set { _rule = value; }
-    }
-    
-    public ClConstraint Result
-    {
-      get { return _result; }
-    }
+            if (p.errors.count > 0)
+                throw new ExClParseError(Rule);
+        }
 
-    public Hashtable Context
-    {
-      get { return _context; }
+        public void AddContext(params ClVariable[] vars)
+        {
+            foreach (ClVariable v in vars)
+                Context.Add(v.Name, v);
+        }
+
+        public void AddContext(Hashtable context)
+        {
+            Context = new Hashtable(context);
+        }
+
+        public string Rule { get; set; }
+
+        public ClConstraint Result { get; private set; } = null;
+
+        public Hashtable Context { get; private set; }
     }
-  }
 }

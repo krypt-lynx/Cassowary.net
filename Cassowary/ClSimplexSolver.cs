@@ -70,7 +70,7 @@ namespace Cassowary
                         i));
             }
 
-            if (_cOptimizeAutomatically)
+            if (AutoSolve)
             {
                 Optimize(_objective);
                 SetExternalVariables();
@@ -303,10 +303,10 @@ namespace Cassowary
             }
 
             ClAbstractVariable marker;
-            if (!_markerVars.TryGetValue(cn, out marker))
+            if (!ConstraintMap.TryGetValue(cn, out marker))
                 throw new CassowaryConstraintNotFoundException();
 
-            _markerVars.Remove(cn);
+            ConstraintMap.Remove(cn);
             if (RowExpression(marker) == null)
             {
                 // not in the basis, so need to do some more work
@@ -413,7 +413,7 @@ namespace Cassowary
                 _errorVars.Remove(cn);
             }
 
-            if (_cOptimizeAutomatically)
+            if (AutoSolve)
             {
                 Optimize(_objective);
                 SetExternalVariables();
@@ -435,11 +435,7 @@ namespace Cassowary
         /// of constraints [ala the AddDel test in ClTests] saved about 20 % in
         /// runtime, from 60sec to 54sec for 900 constraints, with 126 failed adds).
         /// </remarks>
-        public bool AutoSolve
-        {
-            get { return _cOptimizeAutomatically; }
-            set { _cOptimizeAutomatically = value; }
-        }
+        public bool AutoSolve { get; set; } = true;
 
         public ClSimplexSolver Solve()
         {
@@ -503,10 +499,7 @@ namespace Cassowary
             return result;
         }
 
-        public Dictionary<ClConstraint, ClAbstractVariable> ConstraintMap
-        {
-            get { return _markerVars; }
-        }
+        public Dictionary<ClConstraint, ClAbstractVariable> ConstraintMap { get; } = new Dictionary<ClConstraint, ClAbstractVariable>();
 
         //// END PUBLIC INTERFACE ////
 
@@ -707,7 +700,7 @@ namespace Cassowary
                 ++_slackCounter;
                 ClSlackVariable slackVar = new ClSlackVariable(_slackCounter, "s");
                 expr.SetVariable(slackVar, -1);
-                _markerVars.Add(cn, slackVar);
+                ConstraintMap.Add(cn, slackVar);
                 if (!cn.Strength.IsRequired)
                 {
                     ++_slackCounter;
@@ -728,7 +721,7 @@ namespace Cassowary
                     ++_dummyCounter;
                     ClDummyVariable dummyVar = new ClDummyVariable(_dummyCounter, "d");
                     expr.SetVariable(dummyVar, 1.0);
-                    _markerVars.Add(cn, dummyVar);
+                    ConstraintMap.Add(cn, dummyVar);
                 }
                 else
                 {
@@ -738,7 +731,7 @@ namespace Cassowary
 
                     expr.SetVariable(eplus, -1.0);
                     expr.SetVariable(eminus, 1.0);
-                    _markerVars.Add(cn, eplus);
+                    ConstraintMap.Add(cn, eplus);
                     ClLinearExpression zRow = RowExpression(_objective);
                     ClSymbolicWeight sw = cn.Strength.SymbolicWeight.Times(cn.Weight);
                     double swCoeff = sw.AsDouble();
@@ -1058,16 +1051,6 @@ namespace Cassowary
         /// Map ClConstraint to Set (of ClVariable).
         /// </remarks>
         private readonly Dictionary<ClConstraint, HashSet<ClAbstractVariable>> _errorVars = new Dictionary<ClConstraint, HashSet<ClAbstractVariable>>();
-
-        /// <summary>
-        /// Return a lookup table giving the marker variable for
-        /// each constraints (used when deleting a constraint).
-        /// </summary>
-        /// <remarks>
-        /// Map ClConstraint to ClVariable.
-        /// </remarks>
-        private readonly Dictionary<ClConstraint, ClAbstractVariable> _markerVars = new Dictionary<ClConstraint, ClAbstractVariable>();
-
         private readonly ClObjectiveVariable _objective = new ClObjectiveVariable(Guid.NewGuid().ToString());
 
         /// <summary>
@@ -1086,8 +1069,6 @@ namespace Cassowary
         private long _dummyCounter = 0;
 
         private const double EPSILON = 1e-8;
-
-        private bool _cOptimizeAutomatically = true;
         private bool _cNeedsSolving = false;
 
         private readonly Stack<int> _stkCedcns = new Stack<int>(new[] { 0 });

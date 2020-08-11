@@ -19,47 +19,42 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-using System;
-
 namespace Cassowary
 {
-  public abstract class ClEditOrStayConstraint : ClConstraint
-  {
-    public ClEditOrStayConstraint(ClVariable var, 
-                                  ClStrength strength, 
-                                  double weight) : base(strength, weight)
+    public abstract class ClEditOrStayConstraint : ClConstraint
     {
-      _variable = var;
-      _expression = new ClLinearExpression(_variable, -1.0, _variable.Value);
-    }
+        protected ClEditOrStayConstraint(ClVariable var,
+            ClStrength strength,
+            double weight = 1.0)
+            : base(strength, weight)
+        {
+            _variable = var;
+            _expression = new ClLinearExpression(_variable, -1.0, _variable.Value);
+        }
 
-    public ClEditOrStayConstraint(ClVariable var, 
-                                  ClStrength strength) : this(var, strength, 1.0)
-    {}
+        protected ClEditOrStayConstraint(ClVariable var)
+            : this(var, ClStrength.Required, 1.0)
+        {
+            _variable = var;
+        }
 
-    public ClEditOrStayConstraint(ClVariable var) : this(var, ClStrength.Required, 1.0)
-    {
-      _variable = var;
-    }
+        public override string ToString()
+        {
+            // add missing bracket -> see ClConstraint#ToString(...)
+            return base.ToString() + ")";
+        }
 
-    public override string ToString()
-    {
-      // add missing bracket -> see ClConstraint#ToString(...)
-      return base.ToString() + ")";
-    }
-    
-    public ClVariable Variable
-    {
-      get { return _variable; }
-    }
+        public ClVariable Variable
+        {
+            get { return _variable; }
+        }
 
-    public override ClLinearExpression Expression
-    {
-      get { return _expression; }
+        public override ClLinearExpression Expression
+        {
+            get { return _expression; }
+        }
+
+        private readonly ClVariable _variable;
+        private readonly ClLinearExpression _expression;
     }
-    
-    protected ClVariable _variable;
-    // cache the expression
-    private ClLinearExpression _expression;
-  }
 }

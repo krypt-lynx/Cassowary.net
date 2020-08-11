@@ -19,64 +19,44 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-using System;
+using System.Threading;
 
 namespace Cassowary
 {
-  public abstract class ClAbstractVariable
-  {
-    public ClAbstractVariable(string name)
+    public abstract class ClAbstractVariable
     {
-      _name = name;
-      iVariableNumber++;
-    }
+        protected ClAbstractVariable(string name)
+        {
+            Name = name;
+            Interlocked.Increment(ref _numCreated);
+        }
 
-    public ClAbstractVariable()
-    {
-      _name = "v" + iVariableNumber;
-      iVariableNumber++;
-    }
+        protected ClAbstractVariable()
+        {
+            Name = "v" + Interlocked.Increment(ref _numCreated);
+        }
 
-    public ClAbstractVariable(long varnumber, string prefix)
-    {
-      _name = prefix + varnumber;
-      iVariableNumber++;
-    }
+        protected ClAbstractVariable(long varnumber, string prefix)
+        {
+            Name = prefix + varnumber;
+            Interlocked.Increment(ref _numCreated);
+        }
 
-    public string Name
-    {
-      get { return _name; }
-      set { _name = value; }
-    }
+        public string Name { get; private set; }
 
-    public virtual bool IsDummy
-    {
-      get { return false; }
-    }
+        public virtual bool IsDummy
+        {
+            get { return false; }
+        }
 
-    public abstract bool IsExternal
-    {
-      get;
-    }
+        public abstract bool IsExternal { get; }
 
-    public abstract bool IsPivotable
-    {
-      get;
-    }
+        public abstract bool IsPivotable { get; }
 
-    public abstract bool IsRestricted
-    {
-      get;
-    }
+        public abstract bool IsRestricted { get; }
 
-    public override abstract string ToString();
-    
-    public static int NumCreated
-    {
-      get { return iVariableNumber; }
-    }
+        public abstract override string ToString();
 
-    private string _name;
-    private static int iVariableNumber;
-  }
+        private static int _numCreated = 0;
+    }
 }

@@ -19,75 +19,105 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-using System;
+using System.Collections.Generic;
 
 namespace Cassowary
 {
-  public class ClPoint
-  {
-    public ClPoint(double x, double y)
+    public class ClPoint
     {
-      _clv_x = new ClVariable(x);
-      _clv_y = new ClVariable(y);
+        public ClPoint(double x, double y)
+        {
+            _clvX = new ClVariable(x);
+            _clvY = new ClVariable(y);
+        }
+
+        public ClPoint(double x, double y, int a)
+        {
+            _clvX = new ClVariable("x" + a, x);
+            _clvY = new ClVariable("y" + a, y);
+        }
+
+        public ClPoint(ClVariable clvX, ClVariable clvY)
+        {
+            _clvX = clvX;
+            _clvY = clvY;
+        }
+
+        private ClVariable _clvX;
+
+        public ClVariable X
+        {
+            get { return _clvX; }
+            set { _clvX = value; }
+        }
+
+        private ClVariable _clvY;
+
+        public ClVariable Y
+        {
+            get { return _clvY; }
+            set { _clvY = value; }
+        }
+
+        public override string ToString()
+        {
+            return "(" + _clvX + ", " + _clvY + ")";
+        }
     }
 
-    public ClPoint(double x, double y, int a)
+    public static class CassowarySimplexSolverPointExtensions
     {
-      _clv_x = new ClVariable("x"+a,x);
-      _clv_y = new ClVariable("y"+a,y);
+        /// <summary>
+        /// Add weak stays to the x and y parts of each point. These
+        /// have increasing weights so that the solver will try to satisfy
+        /// the x and y stays on the same point, rather than the x stay on
+        /// one and the y stay on another.
+        /// <param name="points">
+        /// List of points to add weak stay constraints for.
+        /// </param>
+        /// </summary>
+        public static ClSimplexSolver AddPointStays(this ClSimplexSolver solver, IEnumerable<ClPoint> points)
+        {
+            double weight = 1.0;
+            const double MULTIPLIER = 2.0;
+
+            foreach (ClPoint p in points)
+            {
+                solver.AddPointStay(p, weight);
+                weight *= MULTIPLIER;
+            }
+
+            return solver;
+        }
+
+        public static ClSimplexSolver AddPointStay(this ClSimplexSolver solver, ClVariable vx, ClVariable vy, double weight)
+        {
+            solver.AddStay(vx, ClStrength.Weak, weight);
+            solver.AddStay(vy, ClStrength.Weak, weight);
+
+            return solver;
+        }
+
+        public static ClSimplexSolver AddPointStay(this ClSimplexSolver solver, ClVariable vx, ClVariable vy)
+        {
+            solver.AddPointStay(vx, vy, 1.0);
+
+            return solver;
+        }
+
+        public static ClSimplexSolver AddPointStay(this ClSimplexSolver solver, ClPoint clp, double weight)
+        {
+            solver.AddStay(clp.X, ClStrength.Weak, weight);
+            solver.AddStay(clp.Y, ClStrength.Weak, weight);
+
+            return solver;
+        }
+
+        public static ClSimplexSolver AddPointStay(this ClSimplexSolver solver, ClPoint clp)
+        {
+            solver.AddPointStay(clp, 1.0);
+
+            return solver;
+        }
     }
-
-    public ClPoint(ClVariable clv_x, ClVariable clv_y)
-    {
-      _clv_x = clv_x;
-      _clv_y = clv_y;
-    }
-
-    public ClVariable X
-    {
-      get { return _clv_x; }
-      set { _clv_x = value; }
-    }
-
-    public ClVariable Y
-    {
-      get { return _clv_y; }
-      set { _clv_y = value; }
-    }
-
-    /// <remarks>
-    /// Use only before adding into the solver
-    /// </remarks>
-    public void SetXY(double x, double y)
-    {
-      _clv_x.Value = x;
-      _clv_y.Value = y;
-    }
-
-    public void SetXY(ClVariable clv_x, ClVariable clv_y)
-    {
-      _clv_x = clv_x;
-      _clv_y = clv_y;
-    }
-
-    public double XValue
-    {
-      get { return X.Value;  }
-      set { X.Value = value; }
-    }
-
-    public double YValue
-    {
-      get { return Y.Value; }
-      set { Y.Value = value; }
-    } 
-
-    public override string ToString()
-    {
-      return "(" + _clv_x.ToString() + ", " + _clv_y.ToString() + ")";
-    }
-
-    private ClVariable _clv_x;
-    private ClVariable _clv_y;
-  }
 }

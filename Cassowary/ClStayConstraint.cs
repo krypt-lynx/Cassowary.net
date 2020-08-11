@@ -19,32 +19,33 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-using System;
-
 namespace Cassowary
 {
-  public class ClStayConstraint : ClEditOrStayConstraint
-  {
-    public ClStayConstraint(ClVariable var, ClStrength strength, double weight) 
-      : base(var, strength, weight)
-    {}
-
-    public ClStayConstraint(ClVariable var, ClStrength strength)
-      : base(var, strength, 1.0)
-    {}
-
-    public ClStayConstraint(ClVariable var)
-      : base(var, ClStrength.Weak, 1.0)
-    {}
-
-    public override bool IsStayConstraint
+    public class ClStayConstraint : ClEditOrStayConstraint
     {
-      get { return true; }
-    }
+        public ClStayConstraint(ClVariable var, ClStrength strength, double weight)
+            : base(var, strength, weight)
+        {
+        }
 
-    public override string ToString()
-    {
-      return "stay" + base.ToString();
+        public ClStayConstraint(ClVariable var, ClStrength strength)
+            : base(var, strength, 1.0)
+        {
+        }
+
+        public ClStayConstraint(ClVariable var)
+            : base(var, ClStrength.Weak, 1.0)
+        {
+        }
+
+        public override bool IsStayConstraint
+        {
+            get { return true; }
+        }
+
+        public override string ToString()
+        {
+            return "stay" + base.ToString();
+        }
     }
-  }
 }

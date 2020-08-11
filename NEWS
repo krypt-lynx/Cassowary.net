@@ -1,3 +1,12 @@
+3.0.0 -- 2014-11-08:
+  * Added support for < and > operators in constraints
+  * More code cleanup
+  
+1.0.0 -- 2014-03-26:
+  * Migrated to .NET 3.5 (client framework)
+  * Removed compact .NET version
+  * Significant code cleanup of internals
+
 0.2.3 -- 2006-05-09:
   * Migrated to Bazaar for revision control
   * Added instructions to build a Debian or Ubuntu package to the

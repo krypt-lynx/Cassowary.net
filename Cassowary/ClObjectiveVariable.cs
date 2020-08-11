@@ -19,36 +19,38 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-using System;
-
 namespace Cassowary
 {
-  public class ClObjectiveVariable : ClAbstractVariable
-  {
-    public ClObjectiveVariable(string name) : base(name)
-    {}
-
-    public ClObjectiveVariable(long number, string prefix) : base(number, prefix)
-    {}
-
-    public override string ToString()
+    public class ClObjectiveVariable : ClAbstractVariable
     {
-      return string.Format("[{0}:obj]", Name);
-    }
+        public ClObjectiveVariable(string name)
+            : base(name)
+        {
+        }
 
-    public override bool IsExternal
-    {
-      get { return false; }
-    }
+        public ClObjectiveVariable(long number, string prefix)
+            : base(number, prefix)
+        {
+        }
 
-    public override bool IsPivotable
-    {
-      get { return false; }
-    }
+        public override string ToString()
+        {
+            return string.Format("[{0}:obj]", Name);
+        }
 
-    public override bool IsRestricted
-    {
-      get { return false; }
+        public override bool IsExternal
+        {
+            get { return false; }
+        }
+
+        public override bool IsPivotable
+        {
+            get { return false; }
+        }
+
+        public override bool IsRestricted
+        {
+            get { return false; }
+        }
     }
-  }
 }

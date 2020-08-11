@@ -3,3 +3,5 @@ Improvements:
     - check for formatting errors
     - complete the documentation
     - generate MSDN style online documentation using NDoc
+  * Tests
+    - Moving tests into a uni testing project has probably broken the makefile. Unfortunately I have no idea how makefiles work so I can't fix this.

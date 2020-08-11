@@ -19,39 +19,42 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-using System;
-
 namespace Cassowary
 {
-  class ClSlackVariable : ClAbstractVariable
-  {
-    public ClSlackVariable(string name) : base(name)
-    {}
-
-    public ClSlackVariable()
-    {}
-
-    public ClSlackVariable(long number, string prefix) : base(number, prefix)
-    {}
-
-    public override string ToString()
+    internal class ClSlackVariable : ClAbstractVariable
     {
-      return string.Format("[{0}:slack]", Name);
-    }
+        public ClSlackVariable(string name)
+            : base(name)
+        {
+        }
 
-    public override bool IsExternal
-    {
-      get { return false; }
-    }
+        public ClSlackVariable()
+        {
+        }
 
-    public override bool IsPivotable
-    {
-      get { return true; }
-    }
+        public ClSlackVariable(long number, string prefix)
+            : base(number, prefix)
+        {
+        }
 
-    public override bool IsRestricted
-    {
-      get { return true; }
+        public override string ToString()
+        {
+            return string.Format("[{0}:slack]", Name);
+        }
+
+        public override bool IsExternal
+        {
+            get { return false; }
+        }
+
+        public override bool IsPivotable
+        {
+            get { return true; }
+        }
+
+        public override bool IsRestricted
+        {
+            get { return true; }
+        }
     }
-  }
 }

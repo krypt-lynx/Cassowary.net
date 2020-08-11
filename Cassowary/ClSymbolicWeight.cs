@@ -20,214 +20,164 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 
 namespace Cassowary
 {
-  public class ClSymbolicWeight : ICloneable
-  {
-    public ClSymbolicWeight(int cLevels)
+    public class ClSymbolicWeight
     {
-      _values = new double[cLevels];
+        public ClSymbolicWeight(double w1, double w2, double w3)
+        {
+            _values = Array.AsReadOnly(new[] { w1, w2, w3 });
+        }
+
+        public ClSymbolicWeight(params double[] weights)
+        {
+            _values = Array.AsReadOnly((double[])weights.Clone());
+        }
+
+        protected ClSymbolicWeight(ReadOnlyCollection<double> weights)
+        {
+            _values = weights;
+        }
+
+        protected ClSymbolicWeight(IEnumerable<double> weights)
+            : this(weights.ToArray())
+        {
+        }
+
+        protected virtual ClSymbolicWeight Clone()
+        {
+            return new ClSymbolicWeight(_values);
+        }
+
+        public static ClSymbolicWeight operator *(ClSymbolicWeight clsw, double n)
+        {
+            return clsw.Times(n);
+        }
+
+        public static ClSymbolicWeight operator *(double n, ClSymbolicWeight clsw)
+        {
+            return clsw.Times(n);
+        }
+
+        public ClSymbolicWeight Times(double n)
+        {
+            return new ClSymbolicWeight(_values.Select(a => a * n).ToArray());
+        }
+
+        public static ClSymbolicWeight operator /(ClSymbolicWeight clsw, double n)
+        {
+            return clsw.DivideBy(n);
+        }
+
+        private ClSymbolicWeight DivideBy(double n)
+        {
+            // Assert(n != 0);
+
+            return new ClSymbolicWeight(_values.Select(a => a / n).ToArray());
+        }
+
+        public static ClSymbolicWeight operator +(ClSymbolicWeight clsw1, ClSymbolicWeight clsw2)
+        {
+            return clsw1.Add(clsw2);
+        }
+
+        private ClSymbolicWeight Add(ClSymbolicWeight clsw1)
+        {
+            // Assert(clws.CLevels == CLevels);
+
+            return new ClSymbolicWeight(_values.Select((a, i) => a + clsw1._values[i]).ToArray());
+        }
+
+        public static ClSymbolicWeight operator -(ClSymbolicWeight clsw1, ClSymbolicWeight clsw2)
+        {
+            return clsw1.Subtract(clsw2);
+        }
+
+        private ClSymbolicWeight Subtract(ClSymbolicWeight clsw1)
+        {
+            // Assert(clsw1.CLevels == CLevels);
+
+            return new ClSymbolicWeight(_values.Select((a, i) => a - clsw1._values[i]).ToArray());
+        }
+
+        // TODO: comparison operators (<, <=, >, >=, ==)
+        public bool LessThan(ClSymbolicWeight clsw1)
+        {
+            // Assert(clsw1.CLevels == CLevels);
+
+            for (var i = 0; i < _values.Count; i++)
+            {
+                if (_values[i] < clsw1._values[i])
+                    return true;
+                if (_values[i] > clsw1._values[i])
+                    return false;
+            }
+
+            return false; // they are equal
+        }
+
+        public bool LessThanOrEqual(ClSymbolicWeight clsw1)
+        {
+            // Assert(clsw1.CLevels == CLevels);
+
+            for (var i = 0; i < _values.Count; i++)
+            {
+                if (_values[i] < clsw1._values[i])
+                    return true;
+                if (_values[i] > clsw1._values[i])
+                    return false;
+            }
+
+            return true; // they are equal
+        }
+
+        public bool Equal(ClSymbolicWeight clsw1)
+        {
+// ReSharper disable CompareOfFloatsByEqualityOperator
+            return !_values.Where((t, i) => t != clsw1._values[i]).Any();
+// ReSharper restore CompareOfFloatsByEqualityOperator
+        }
+
+        public bool GreaterThan(ClSymbolicWeight clsw1)
+        {
+            return !LessThan(clsw1);
+        }
+
+        public double AsDouble()
+        {
+            double sum = 0;
+            double factor = 1;
+            const double MULTIPLIER = 1000;
+
+            for (var i = _values.Count - 1; i >= 0; i--)
+            {
+                sum += _values[i] * factor;
+                factor *= MULTIPLIER;
+            }
+
+            return sum;
+        }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder('[')
+                .Append(string.Join(",", _values.Select(a => a.ToString(CultureInfo.InvariantCulture)).ToArray()))
+                .Append("]");
+
+            return builder.ToString();
+        }
+
+        public int CLevels
+        {
+            get { return _values.Count; }
+        }
+
+        private readonly ReadOnlyCollection<double> _values;
     }
-
-    public ClSymbolicWeight(double w1, double w2, double w3)
-    {
-      _values = new double[3];
-      _values[0] = w1;
-      _values[1] = w2;
-      _values[2] = w3;
-    }
-
-    public ClSymbolicWeight(double[] weights)
-    {
-      int cLevels = weights.Length;
-      _values = new double[cLevels];
-      
-      for (int i = 0; i < cLevels; i++)
-      {
-        _values[i] = weights[i];
-      }
-    }
-
-    public virtual object Clone()
-    {
-      return new ClSymbolicWeight(_values);
-    }
-
-    public static ClSymbolicWeight operator*(ClSymbolicWeight clsw, double n)
-    {
-      return clsw.Times(n);
-    }
-
-    public static ClSymbolicWeight operator*(double n, ClSymbolicWeight clsw)
-    {
-      return clsw.Times(n);
-    }
-
-    public ClSymbolicWeight Times(double n)
-    {
-      ClSymbolicWeight clsw = (ClSymbolicWeight) Clone();
-      
-      for (int i = 0; i < _values.Length; i++) 
-      {
-        clsw._values[i] *= n;
-      }
-      
-      return clsw;
-    }
-
-    public static ClSymbolicWeight operator/(ClSymbolicWeight clsw, double n)
-    {
-      return clsw.DivideBy(n);
-    }
-
-    public static ClSymbolicWeight operator/(double n, ClSymbolicWeight clsw)
-    {
-      return clsw.DivideBy(n);
-    }
-
-    public ClSymbolicWeight DivideBy(double n)
-    {
-      // Assert(n != 0);
-      ClSymbolicWeight clsw = (ClSymbolicWeight) Clone();
-      
-      for (int i = 0; i < _values.Length; i++)
-      {
-        clsw._values[i] /= n;
-      }
-
-      return clsw;
-    }
-
-    public static ClSymbolicWeight operator+(ClSymbolicWeight clsw1, ClSymbolicWeight clsw2)
-    {
-      return clsw1.Add(clsw2);
-    }
-
-    public ClSymbolicWeight Add(ClSymbolicWeight clsw1)
-    {
-      // Assert(clws.CLevels == CLevels);
-      ClSymbolicWeight clsw = (ClSymbolicWeight) Clone();
-      
-      for (int i = 0; i < _values.Length; i++)
-      {
-        clsw._values[i] += clsw1._values[i];
-      }
-      
-      return clsw;
-    }
-
-    public static ClSymbolicWeight operator-(ClSymbolicWeight clsw1, ClSymbolicWeight clsw2)
-    {
-      return clsw1.Subtract(clsw2);
-    }
-
-    public ClSymbolicWeight Subtract(ClSymbolicWeight clsw1)
-    {
-      // Assert(clsw1.CLevels == CLevels);
-      ClSymbolicWeight clsw = (ClSymbolicWeight) Clone();
-      
-      for (int i = 0; i < _values.Length; i++)
-      {
-        clsw._values[i] -= clsw1._values[i];
-      }
-      
-      return clsw;
-    }
-
-    // TODO: comparison operators (<, <=, >, >=, ==)
-    public bool LessThan(ClSymbolicWeight clsw1)
-    {
-      // Assert(clsw1.CLevels == CLevels);
-
-      for (int i = 0; i < _values.Length; i++)
-      {
-        if (_values[i] < clsw1._values[i])
-          return true;
-        else if (_values[i] > clsw1._values[i])
-          return false;
-      }
-
-      return false; // they are equal
-    }
-
-    public bool LessThanOrEqual(ClSymbolicWeight clsw1)
-    {
-      // Assert(clsw1.CLevels == CLevels);
-
-      for (int i = 0; i < _values.Length; i++)
-      {
-        if (_values[i] < clsw1._values[i])
-          return true;
-        else if (_values[i] > clsw1._values[i])
-          return false;
-      }
-
-      return true; // they are equal
-    }
-
-    public bool Equal(ClSymbolicWeight clsw1)
-    {
-      for (int i = 0; i < _values.Length; i++)
-      {
-        if (_values[i] != clsw1._values[i])
-          return false;
-      }
-      
-      return true; // they are equal
-    }
-
-    public bool GreaterThan(ClSymbolicWeight clsw1)
-    {
-      return !LessThan(clsw1);
-    }
-
-    public bool IsNegative()
-    {
-      return LessThan(ClsZero);
-    }
-
-    public double AsDouble()
-    {
-      double sum = 0;
-      double factor = 1;
-      double multiplier = 1000;
-
-      for (int i = _values.Length - 1; i >= 0; i--)
-      {
-        sum += _values[i] * factor;
-        factor *= multiplier;
-      }
-
-      return sum;
-    }
-
-    public override string ToString()
-    {
-      string result = "[";
-
-      for (int i = 0; i < _values.Length - 1; i++)
-      {
-        result += _values[i] + ",";
-      }
-      
-      result += _values[_values.Length - 1] + "]";
-      
-      return result;
-    }
-    
-    public int CLevels
-    {
-      get { return _values.Length; }
-    }
-    
-    public static ClSymbolicWeight ClsZero
-    {
-      get { return _clsZero; }
-    }
-
-    private double[] _values;
-    
-    private static readonly ClSymbolicWeight _clsZero = new ClSymbolicWeight(0.0, 0.0, 0.0);
-  }
 }

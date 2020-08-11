@@ -19,6 +19,8 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+using System.Globalization;
+
 namespace Cassowary
 {
     public class ClVariable
@@ -69,7 +71,7 @@ namespace Cassowary
 
         public override string ToString()
         {
-            return "[" + Name + ":" + Value + "]";
+            return "[" + Name + ":" + Value.ToString(CultureInfo.InvariantCulture) + "]";
         }
 
         public double Value { get; internal set; }

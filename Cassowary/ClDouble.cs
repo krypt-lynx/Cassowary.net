@@ -20,6 +20,7 @@
 */
 
 using System;
+using System.Globalization;
 
 namespace Cassowary
 {
@@ -49,7 +50,7 @@ namespace Cassowary
 
         public override sealed String ToString()
         {
-            return Convert.ToString(_value);
+            return Convert.ToString(_value, CultureInfo.InvariantCulture);
         }
 
         public override sealed bool Equals(Object o)

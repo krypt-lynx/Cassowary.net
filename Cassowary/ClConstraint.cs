@@ -19,6 +19,8 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+using System.Globalization;
+
 namespace Cassowary
 {
     public abstract class ClConstraint
@@ -61,7 +63,7 @@ namespace Cassowary
             // a format expression in brackets!
             //
             // example output: weak:[0,0,1] {1} (23 + -1*[update.height:23]
-            return string.Format("{0} {{{1}}} ({2}", Strength, Weight, Expression);
+            return string.Format(CultureInfo.InvariantCulture, "{0} {{{1}}} ({2}", Strength, Weight, Expression);
         }
     }
 }

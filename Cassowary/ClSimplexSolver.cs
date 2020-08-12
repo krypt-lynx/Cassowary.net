@@ -467,6 +467,24 @@ namespace Cassowary
             return null;
         }
 
+        /// <summary>
+        /// All known external variables
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<ClAbstractVariable> AllVariables()
+        {
+            foreach (var v in Columns.Keys)
+            {
+                if (v.IsExternal)
+                   yield return v;
+            }
+            foreach (var v in Rows.Keys) // todo: exclude duplicates?
+            {
+                if (v.IsExternal)
+                    yield return v;
+            }
+        }
+
         public ClSimplexSolver AddVar(ClVariable v)
             /* throws ExClInternalError */
         {

@@ -74,6 +74,6 @@ namespace Cassowary
             return "[" + Name + ":" + Value.ToString(CultureInfo.InvariantCulture) + "]";
         }
 
-        public double Value { get; internal set; }
+        public double Value { get; set; }
     }
 }

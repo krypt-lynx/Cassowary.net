@@ -6,87 +6,379 @@ using System.Reflection;
 
 namespace Cassowary
 {
-    public delegate bool ConstraintExpression1(double arg1);
-    public delegate bool ConstraintExpression2(double arg1, double arg2);
-    public delegate bool ConstraintExpression3(double arg1, double arg2, double arg3);
-    public delegate bool ConstraintExpression4(double arg1, double arg2, double arg3, double arg4);
-    public delegate bool ConstraintExpression5(double arg1, double arg2, double arg3, double arg4, double arg5);
-    public delegate bool ConstraintExpression6(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6);
-    public delegate bool ConstraintExpression7(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7);
-    public delegate bool ConstraintExpression8(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8);
-    public delegate bool ConstraintExpression9(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9);
-    public delegate bool ConstraintExpressionA(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double argA);
-    public delegate bool ConstraintExpressionB(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double argA, double argB);
-    public delegate bool ConstraintExpressionC(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double argA, double argB, double argC);
-    public delegate bool ConstraintExpressionD(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double argA, double argB, double argC, double argD);
-    public delegate bool ConstraintExpressionE(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double argA, double argB, double argC, double argD, double argE);
-    public delegate bool ConstraintExpressionF(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double argA, double argB, double argC, double argD, double argE, double argF);
 
+    #region Constraint expression delegates
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpression1(double arg1);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpression2(double arg1, double arg2);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpression3(double arg1, double arg2, double arg3);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <param name="arg4">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpression4(double arg1, double arg2, double arg3, double arg4);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <param name="arg4">a variable</param>
+    /// <param name="arg5">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpression5(double arg1, double arg2, double arg3, double arg4, double arg5);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <param name="arg4">a variable</param>
+    /// <param name="arg5">a variable</param>
+    /// <param name="arg6">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpression6(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <param name="arg4">a variable</param>
+    /// <param name="arg5">a variable</param>
+    /// <param name="arg6">a variable</param>
+    /// <param name="arg7">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpression7(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <param name="arg4">a variable</param>
+    /// <param name="arg5">a variable</param>
+    /// <param name="arg6">a variable</param>
+    /// <param name="arg7">a variable</param>
+    /// <param name="arg8">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpression8(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <param name="arg4">a variable</param>
+    /// <param name="arg5">a variable</param>
+    /// <param name="arg6">a variable</param>
+    /// <param name="arg7">a variable</param>
+    /// <param name="arg8">a variable</param>
+    /// <param name="arg9">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpression9(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <param name="arg4">a variable</param>
+    /// <param name="arg5">a variable</param>
+    /// <param name="arg6">a variable</param>
+    /// <param name="arg7">a variable</param>
+    /// <param name="arg8">a variable</param>
+    /// <param name="arg9">a variable</param>
+    /// <param name="argA">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpressionA(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double argA);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <param name="arg4">a variable</param>
+    /// <param name="arg5">a variable</param>
+    /// <param name="arg6">a variable</param>
+    /// <param name="arg7">a variable</param>
+    /// <param name="arg8">a variable</param>
+    /// <param name="arg9">a variable</param>
+    /// <param name="argA">a variable</param>
+    /// <param name="argB">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpressionB(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double argA, double argB);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <param name="arg4">a variable</param>
+    /// <param name="arg5">a variable</param>
+    /// <param name="arg6">a variable</param>
+    /// <param name="arg7">a variable</param>
+    /// <param name="arg8">a variable</param>
+    /// <param name="arg9">a variable</param>
+    /// <param name="argA">a variable</param>
+    /// <param name="argB">a variable</param>
+    /// <param name="argC">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpressionC(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double argA, double argB, double argC);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <param name="arg4">a variable</param>
+    /// <param name="arg5">a variable</param>
+    /// <param name="arg6">a variable</param>
+    /// <param name="arg7">a variable</param>
+    /// <param name="arg8">a variable</param>
+    /// <param name="arg9">a variable</param>
+    /// <param name="argA">a variable</param>
+    /// <param name="argB">a variable</param>
+    /// <param name="argC">a variable</param>
+    /// <param name="argD">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpressionD(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double argA, double argB, double argC, double argD);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <param name="arg4">a variable</param>
+    /// <param name="arg5">a variable</param>
+    /// <param name="arg6">a variable</param>
+    /// <param name="arg7">a variable</param>
+    /// <param name="arg8">a variable</param>
+    /// <param name="arg9">a variable</param>
+    /// <param name="argA">a variable</param>
+    /// <param name="argB">a variable</param>
+    /// <param name="argC">a variable</param>
+    /// <param name="argD">a variable</param>
+    /// <param name="argE">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpressionE(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double argA, double argB, double argC, double argD, double argE);
+    /// <summary>
+    /// Delegate for Constraint Expression definition
+    /// </summary>
+    /// <param name="arg1">a variable</param>
+    /// <param name="arg2">a variable</param>
+    /// <param name="arg3">a variable</param>
+    /// <param name="arg4">a variable</param>
+    /// <param name="arg5">a variable</param>
+    /// <param name="arg6">a variable</param>
+    /// <param name="arg7">a variable</param>
+    /// <param name="arg8">a variable</param>
+    /// <param name="arg9">a variable</param>
+    /// <param name="argA">a variable</param>
+    /// <param name="argB">a variable</param>
+    /// <param name="argC">a variable</param>
+    /// <param name="argD">a variable</param>
+    /// <param name="argE">a variable</param>
+    /// <param name="argF">a variable</param>
+    /// <returns></returns>
+    public delegate bool ConstraintExpressionF(double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double argA, double argB, double argC, double argD, double argE, double argF);
+    #endregion
+
+    /// <summary>
+    /// Linq Expressions extansions for constraint creation
+    /// </summary>
     public static class ClSimplexSolverExtensions
     {
         private static readonly ClStrength _defaultStrength = ClStrength.Required;
 
         #region add expression constraint
+
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpression1> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, Expression<ConstraintExpression1> constraint, ClStrength strength = null)
         {
             Dictionary<string, ClAbstractVariable> variables = ConstructVariables(constraint.Parameters, a);
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpression2> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, Expression<ConstraintExpression2> constraint, ClStrength strength = null)
         {
             Dictionary<string, ClAbstractVariable> variables = ConstructVariables(constraint.Parameters, a, b);
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpression3> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, Expression<ConstraintExpression3> constraint, ClStrength strength = null)
         {
             Dictionary<string, ClAbstractVariable> variables = ConstructVariables(constraint.Parameters, a, b, c);
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpression4> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <param name="d">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, ClAbstractVariable d, Expression<ConstraintExpression4> constraint, ClStrength strength = null)
         {
             Dictionary<string, ClAbstractVariable> variables = ConstructVariables(constraint.Parameters, a, b, c, d);
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpression5> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <param name="d">existing variable</param>
+        /// <param name="e">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, ClAbstractVariable d, ClAbstractVariable e, Expression<ConstraintExpression5> constraint, ClStrength strength = null)
         {
             Dictionary<string, ClAbstractVariable> variables = ConstructVariables(constraint.Parameters, a, b, c, d, e);
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpression6> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <param name="d">existing variable</param>
+        /// <param name="e">existing variable</param>
+        /// <param name="f">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, ClAbstractVariable d, ClAbstractVariable e,
              ClAbstractVariable f, Expression<ConstraintExpression6> constraint, ClStrength strength = null)
         {
@@ -94,11 +386,32 @@ namespace Cassowary
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpression7> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <param name="d">existing variable</param>
+        /// <param name="e">existing variable</param>
+        /// <param name="f">existing variable</param>
+        /// <param name="g">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, ClAbstractVariable d, ClAbstractVariable e,
             ClAbstractVariable f, ClAbstractVariable g, Expression<ConstraintExpression7> constraint, ClStrength strength = null)
         {
@@ -106,11 +419,33 @@ namespace Cassowary
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpression8> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <param name="d">existing variable</param>
+        /// <param name="e">existing variable</param>
+        /// <param name="f">existing variable</param>
+        /// <param name="g">existing variable</param>
+        /// <param name="h">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, ClAbstractVariable d, ClAbstractVariable e,
             ClAbstractVariable f, ClAbstractVariable g, ClAbstractVariable h, Expression<ConstraintExpression8> constraint, ClStrength strength = null)
         {
@@ -118,11 +453,34 @@ namespace Cassowary
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpression9> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <param name="d">existing variable</param>
+        /// <param name="e">existing variable</param>
+        /// <param name="f">existing variable</param>
+        /// <param name="g">existing variable</param>
+        /// <param name="h">existing variable</param>
+        /// <param name="i">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, ClAbstractVariable d, ClAbstractVariable e,
             ClAbstractVariable f, ClAbstractVariable g, ClAbstractVariable h, ClAbstractVariable i, Expression<ConstraintExpression9> constraint, ClStrength strength = null)
         {
@@ -130,11 +488,35 @@ namespace Cassowary
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpressionA> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <param name="d">existing variable</param>
+        /// <param name="e">existing variable</param>
+        /// <param name="f">existing variable</param>
+        /// <param name="g">existing variable</param>
+        /// <param name="h">existing variable</param>
+        /// <param name="i">existing variable</param>
+        /// <param name="j">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, ClAbstractVariable d, ClAbstractVariable e,
             ClAbstractVariable f, ClAbstractVariable g, ClAbstractVariable h, ClAbstractVariable i, ClAbstractVariable j, Expression<ConstraintExpressionA> constraint, ClStrength strength = null)
         {
@@ -142,11 +524,36 @@ namespace Cassowary
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpressionB> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <param name="d">existing variable</param>
+        /// <param name="e">existing variable</param>
+        /// <param name="f">existing variable</param>
+        /// <param name="g">existing variable</param>
+        /// <param name="h">existing variable</param>
+        /// <param name="i">existing variable</param>
+        /// <param name="j">existing variable</param>
+        /// <param name="k">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, ClAbstractVariable d, ClAbstractVariable e,
             ClAbstractVariable f, ClAbstractVariable g, ClAbstractVariable h, ClAbstractVariable i, ClAbstractVariable j, ClAbstractVariable k, Expression<ConstraintExpressionB> constraint, ClStrength strength = null)
         {
@@ -154,11 +561,37 @@ namespace Cassowary
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpressionC> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <param name="d">existing variable</param>
+        /// <param name="e">existing variable</param>
+        /// <param name="f">existing variable</param>
+        /// <param name="g">existing variable</param>
+        /// <param name="h">existing variable</param>
+        /// <param name="i">existing variable</param>
+        /// <param name="j">existing variable</param>
+        /// <param name="k">existing variable</param>
+        /// <param name="l">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, ClAbstractVariable d, ClAbstractVariable e,
             ClAbstractVariable f, ClAbstractVariable g, ClAbstractVariable h, ClAbstractVariable i, ClAbstractVariable j, ClAbstractVariable k, ClAbstractVariable l, Expression<ConstraintExpressionC> constraint, ClStrength strength = null)
         {
@@ -166,11 +599,38 @@ namespace Cassowary
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpressionD> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <param name="d">existing variable</param>
+        /// <param name="e">existing variable</param>
+        /// <param name="f">existing variable</param>
+        /// <param name="g">existing variable</param>
+        /// <param name="h">existing variable</param>
+        /// <param name="i">existing variable</param>
+        /// <param name="j">existing variable</param>
+        /// <param name="k">existing variable</param>
+        /// <param name="l">existing variable</param>
+        /// <param name="m">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, ClAbstractVariable d, ClAbstractVariable e,
             ClAbstractVariable f, ClAbstractVariable g, ClAbstractVariable h, ClAbstractVariable i, ClAbstractVariable j, ClAbstractVariable k, ClAbstractVariable l, ClAbstractVariable m, Expression<ConstraintExpressionD> constraint, ClStrength strength = null)
         {
@@ -178,11 +638,39 @@ namespace Cassowary
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpressionE> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <param name="d">existing variable</param>
+        /// <param name="e">existing variable</param>
+        /// <param name="f">existing variable</param>
+        /// <param name="g">existing variable</param>
+        /// <param name="h">existing variable</param>
+        /// <param name="i">existing variable</param>
+        /// <param name="j">existing variable</param>
+        /// <param name="k">existing variable</param>
+        /// <param name="l">existing variable</param>
+        /// <param name="m">existing variable</param>
+        /// <param name="n">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, ClAbstractVariable d, ClAbstractVariable e,
             ClAbstractVariable f, ClAbstractVariable g, ClAbstractVariable h, ClAbstractVariable i, ClAbstractVariable j, ClAbstractVariable k, ClAbstractVariable l, ClAbstractVariable m, ClAbstractVariable n, Expression<ConstraintExpressionE> constraint, ClStrength strength = null)
         {
@@ -190,11 +678,40 @@ namespace Cassowary
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, Expression<ConstraintExpressionF> constraint, ClStrength strength = null)
         {
             return AddConstraint(solver, constraint.Parameters, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="constraint">constraint expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <param name="a">existing variable</param>
+        /// <param name="b">existing variable</param>
+        /// <param name="c">existing variable</param>
+        /// <param name="d">existing variable</param>
+        /// <param name="e">existing variable</param>
+        /// <param name="f">existing variable</param>
+        /// <param name="g">existing variable</param>
+        /// <param name="h">existing variable</param>
+        /// <param name="i">existing variable</param>
+        /// <param name="j">existing variable</param>
+        /// <param name="k">existing variable</param>
+        /// <param name="l">existing variable</param>
+        /// <param name="m">existing variable</param>
+        /// <param name="n">existing variable</param>
+        /// <param name="o">existing variable</param>
+        /// <returns>the constraint solver</returns>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClAbstractVariable a, ClAbstractVariable b, ClAbstractVariable c, ClAbstractVariable d, ClAbstractVariable e,
             ClAbstractVariable f, ClAbstractVariable g, ClAbstractVariable h, ClAbstractVariable i, ClAbstractVariable j, ClAbstractVariable k, ClAbstractVariable l, ClAbstractVariable m, ClAbstractVariable n, ClAbstractVariable o, Expression<ConstraintExpressionF> constraint, ClStrength strength = null)
         {
@@ -202,6 +719,14 @@ namespace Cassowary
             return AddConstraint(solver, variables, constraint.Body, strength);
         }
 
+        /// <summary>
+        /// Builder method for adding constraint using a Linq Expression
+        /// </summary>
+        /// <param name="solver">constraint solver</param>
+        /// <param name="parameters">expression parameters</param>
+        /// <param name="body">expression</param>
+        /// <param name="strength">straingth of constraint</param>
+        /// <returns>the constraint solver</returns>
         private static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, IEnumerable<ParameterExpression> parameters, Expression body, ClStrength strength)
         {
             Dictionary<string, ClAbstractVariable> variables = parameters.Select(a => solver.GetVariable(a.Name) ?? new ClVariable(a.Name)).ToDictionary(a => a.Name);

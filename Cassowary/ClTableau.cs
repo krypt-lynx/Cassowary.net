@@ -21,6 +21,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Cassowary
 {
@@ -67,21 +68,23 @@ namespace Cassowary
 
         public override string ToString()
         {
-            string s = "Tableau:\n";
+            var sb = new StringBuilder();
+            sb.AppendLine(base.ToString());
+
+            sb.AppendLine("Tableau:");
 
             foreach (ClAbstractVariable clv in Rows.Keys)
             {
                 ClLinearExpression expr = Rows[clv];
-                s += string.Format("{0} <==> {1}\n", clv, expr);
+                sb.AppendFormat("{0} <==> {1}\n", clv, expr);
             }
 
-            s += string.Format("\nColumns:\n{0}", Columns);
-            s += string.Format("\nInfeasible rows: {0}", InfeasibleRows);
+            sb.AppendFormat("\nColumns:\n{0}", string.Join("\n", Columns.Select(kvp => $"[{kvp.Key}, {{{string.Join(", ", kvp.Value)}}}]")));
+            sb.AppendFormat("\n\nInfeasible rows:\n{{{0}}}", string.Join(", ", InfeasibleRows));
+            sb.AppendFormat("\n\nExternal basic variables:\n{{{0}}}", string.Join(", ", ExternalRows));
+            sb.AppendFormat("\n\nExternal parametric variables:\n{{{0}}}", string.Join(", ", ExternalParametricVars));
 
-            s += string.Format("\nExternal basic variables: {0}", ExternalRows);
-            s += string.Format("\nExternal parametric variables: {0}", ExternalParametricVars);
-
-            return s;
+            return sb.ToString();
         }
 
 

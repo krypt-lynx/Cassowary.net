@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Cassowary
 {
@@ -506,15 +507,14 @@ namespace Cassowary
 
         public override string ToString()
         {
-            string result = base.ToString();
+            var sb = new StringBuilder(); 
+            sb.AppendLine(base.ToString());
+            sb.AppendLine("\n_stayPlusErrorVars: ");
+            sb.AppendLine($"{{{string.Join(", ", _stayPlusErrorVars)}}}");
+            sb.AppendLine("\n_stayMinusErrorVars: ");
+            sb.AppendLine($"{{{string.Join(", ", _stayMinusErrorVars)}}}");
 
-            result += "\n_stayPlusErrorVars: ";
-            result += _stayPlusErrorVars;
-            result += "\n_stayMinusErrorVars: ";
-            result += _stayMinusErrorVars;
-            result += "\n";
-
-            return result;
+            return sb.ToString();
         }
 
         public Dictionary<ClConstraint, ClAbstractVariable> ConstraintMap { get; } = new Dictionary<ClConstraint, ClAbstractVariable>();

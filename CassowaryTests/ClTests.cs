@@ -250,9 +250,9 @@ namespace CassowaryTests
         [TestMethod]
         public void AddDel()
         {
-            const int nCns = 450;
-            const int nVars = 450;
-            const int nResolves = 5000;
+            const int nCns = 10*500;
+            const int nVars = 12*500;
+            const int nResolves = 1;
 
             var timer = new Stopwatch();
             const double ineqProb = 0.12;

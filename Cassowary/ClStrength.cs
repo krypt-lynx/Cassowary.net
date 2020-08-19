@@ -23,14 +23,14 @@ namespace Cassowary
 {
     public class ClStrength
     {
-        public ClStrength(string name, ClSymbolicWeight symbolicWeight)
+        private ClStrength(string name, ClSymbolicWeight symbolicWeight)
         {
             Name = name;
             SymbolicWeight = symbolicWeight;
         }
 
-        public ClStrength(string name, double w1, double w2, double w3)
-            : this(name, new ClSymbolicWeight(w1, w2, w3))
+        private ClStrength(string name, double weight, double priority)
+            : this(name, new ClSymbolicWeight(weight, priority))
         {
         }
 
@@ -51,12 +51,27 @@ namespace Cassowary
                 return string.Format("{0}:{1}", Name, SymbolicWeight);
         }
 
-        public static ClStrength Required { get; } = new ClStrength("<Required>", 1000, 1000, 1000);
+        /// <summary>
+        /// Highest possible constraint priority
+        /// </summary>
+        /// <remarks>
+        /// Solver will throw exception if cannot be satisfied
+        /// </remarks>
+        public static ClStrength Required { get; } = new ClStrength("<Required>", 1.0, 100);
 
-        public static ClStrength Strong { get; } = new ClStrength("strong", 1.0, 0.0, 0.0);
+        /// <summary>
+        /// Strong constraint priority
+        /// </summary>
+        public static ClStrength Strong { get; } = new ClStrength("strong", 1.0, 3);
 
-        public static ClStrength Medium { get; } = new ClStrength("medium", 0.0, 1.0, 0.0);
+        /// <summary>
+        /// Medium constraint priority
+        /// </summary>
+        public static ClStrength Medium { get; } = new ClStrength("medium", 1.0, 1);
 
-        public static ClStrength Weak { get; } = new ClStrength("weak", 0.0, 0.0, 1.0);
+        /// <summary>
+        /// Weak
+        /// </summary>
+        public static ClStrength Weak { get; } = new ClStrength("weak", 1.0, 0);
     }
 }

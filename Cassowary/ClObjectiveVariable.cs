@@ -23,6 +23,12 @@ namespace Cassowary
 {
     public class ClObjectiveVariable : ClAbstractVariable
     {
+        static int nextId = 0;
+        static public string GetId()
+        {
+            return $"az{nextId++}";
+        }
+
         public ClObjectiveVariable(string name)
             : base(name)
         {

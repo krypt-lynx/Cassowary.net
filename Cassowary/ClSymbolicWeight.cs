@@ -30,29 +30,24 @@ namespace Cassowary
 {
     public class ClSymbolicWeight
     {
-        public ClSymbolicWeight(double w1, double w2, double w3)
+    
+
+        public ClSymbolicWeight(double weight, double priority)
         {
-            _values = Array.AsReadOnly(new[] { w1, w2, w3 });
+            _priority = priority;
+            _weight = weight;
         }
 
-        public ClSymbolicWeight(params double[] weights)
-        {
-            _values = Array.AsReadOnly((double[])weights.Clone());
-        }
-
-        protected ClSymbolicWeight(ReadOnlyCollection<double> weights)
-        {
-            _values = weights;
-        }
-
+        /*
         protected ClSymbolicWeight(IEnumerable<double> weights)
             : this(weights.ToArray())
         {
-        }
+
+        }*/
 
         protected virtual ClSymbolicWeight Clone()
         {
-            return new ClSymbolicWeight(_values);
+            return new ClSymbolicWeight(_weight, _priority);
         }
 
         public static ClSymbolicWeight operator *(ClSymbolicWeight clsw, double n)
@@ -65,9 +60,10 @@ namespace Cassowary
             return clsw.Times(n);
         }
 
-        public ClSymbolicWeight Times(double n)
+        private ClSymbolicWeight Times(double n)
         {
-            return new ClSymbolicWeight(_values.Select(a => a * n).ToArray());
+            return new ClSymbolicWeight(_weight * n, _priority);
+            //return new ClSymbolicWeight(_values.Select(a => a * n).ToArray());
         }
 
         public static ClSymbolicWeight operator /(ClSymbolicWeight clsw, double n)
@@ -79,34 +75,13 @@ namespace Cassowary
         {
             // Assert(n != 0);
 
-            return new ClSymbolicWeight(_values.Select(a => a / n).ToArray());
+            return new ClSymbolicWeight(_weight / n, _priority);
+            //return new ClSymbolicWeight(_values.Select(a => a / n).ToArray());
         }
 
-        public static ClSymbolicWeight operator +(ClSymbolicWeight clsw1, ClSymbolicWeight clsw2)
-        {
-            return clsw1.Add(clsw2);
-        }
-
-        private ClSymbolicWeight Add(ClSymbolicWeight clsw1)
-        {
-            // Assert(clws.CLevels == CLevels);
-
-            return new ClSymbolicWeight(_values.Select((a, i) => a + clsw1._values[i]).ToArray());
-        }
-
-        public static ClSymbolicWeight operator -(ClSymbolicWeight clsw1, ClSymbolicWeight clsw2)
-        {
-            return clsw1.Subtract(clsw2);
-        }
-
-        private ClSymbolicWeight Subtract(ClSymbolicWeight clsw1)
-        {
-            // Assert(clsw1.CLevels == CLevels);
-
-            return new ClSymbolicWeight(_values.Select((a, i) => a - clsw1._values[i]).ToArray());
-        }
-
+     /*
         // TODO: comparison operators (<, <=, >, >=, ==)
+        // not used
         public bool LessThan(ClSymbolicWeight clsw1)
         {
             // Assert(clsw1.CLevels == CLevels);
@@ -122,6 +97,7 @@ namespace Cassowary
             return false; // they are equal
         }
 
+        // not used
         public bool LessThanOrEqual(ClSymbolicWeight clsw1)
         {
             // Assert(clsw1.CLevels == CLevels);
@@ -137,6 +113,7 @@ namespace Cassowary
             return true; // they are equal
         }
 
+        // not used
         public bool Equal(ClSymbolicWeight clsw1)
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -144,13 +121,36 @@ namespace Cassowary
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
+        // not used
         public bool GreaterThan(ClSymbolicWeight clsw1)
         {
             return !LessThan(clsw1);
         }
+        */
 
-        public double AsDouble()
+        public double AsDouble() // someone cheated in his thesis. Where is my symbolic order?
         {
+            return Math.Pow(1000, _priority) * _weight;
+
+            /*
+            double sum = 0;
+            double factor = 1;
+            const double MULTIPLIER = 1000;
+            int count = 3;
+            for (var i = count - 1; i >= 0; i--)
+            {
+                double v = 0;
+                if (i == 2 - _priority)
+                {
+                    v = _weight;
+                }
+                sum += v * factor;
+                factor *= MULTIPLIER;
+            }
+
+            return sum;*/
+
+            /*
             double sum = 0;
             double factor = 1;
             const double MULTIPLIER = 1000;
@@ -162,22 +162,21 @@ namespace Cassowary
             }
 
             return sum;
+            */
         }
 
         public override string ToString()
         {
-            var builder = new StringBuilder('[')
-                .Append(string.Join(",", _values.Select(a => a.ToString(CultureInfo.InvariantCulture)).ToArray()))
-                .Append("]");
-
-            return builder.ToString();
+            return $"[{_priority}; {_weight}]";
         }
 
-        public int CLevels
+        /*public int CLevels
         {
             get { return _values.Count; }
-        }
+        }*/
 
-        private readonly ReadOnlyCollection<double> _values;
+        //private readonly ReadOnlyCollection<double> _values;
+        private double _weight;
+        private double _priority;
     }
 }

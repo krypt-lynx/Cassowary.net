@@ -80,6 +80,16 @@ namespace Cassowary
             return e1.Minus(e2);
         }
 
+        public static ClLinearExpression Minus(ClVariable e1, ClLinearExpression e2)
+        {
+            return (new ClLinearExpression(e1)).Minus(e2);
+        }
+
+        public static ClLinearExpression Minus(ClLinearExpression e1, ClVariable e2)
+        {
+            return e1.Minus(new ClLinearExpression(e2));
+        }
+
         public static ClLinearExpression Minus(double e1, ClLinearExpression e2)
         {
             return (new ClLinearExpression(e1)).Minus(e2);
@@ -88,6 +98,16 @@ namespace Cassowary
         public static ClLinearExpression Minus(ClLinearExpression e1, double e2)
         {
             return e1.Minus(new ClLinearExpression(e2));
+        }
+
+        public static ClLinearExpression Minus(ClVariable e1, double e2)
+        {
+            return (new ClLinearExpression(e1)).Minus(new ClLinearExpression(e2));
+        }
+
+        public static ClLinearExpression Minus(double e1, ClVariable e2)
+        {
+            return (new ClLinearExpression(e1)).Minus(new ClLinearExpression(e2));
         }
 
         public static ClLinearExpression Times(ClLinearExpression e1, ClLinearExpression e2)

@@ -28,6 +28,8 @@ namespace Cassowary
 {
     public class ClSimplexSolver : ClTableau, IEditContext
     {
+        public string DebugName = "";
+
         /// <remarks>
         /// Constructor initializes the fields, and creaties the objective row.
         /// </remarks>
@@ -217,8 +219,8 @@ namespace Cassowary
         /// </remarks>
         IEditContext IEditContext.SuggestValue(ClVariable v, double x)
         {
-            ClEditInfo cei = _editVarMap[v];
-            if (cei == null)
+            ClEditInfo cei = null;
+            if (!_editVarMap.TryGetValue(v, out cei))
             {
                 throw new CassowaryException("SuggestValue for variable " + v + ", but var is not an edit variable\n");
             }

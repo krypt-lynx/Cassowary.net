@@ -20,7 +20,10 @@ namespace CassowaryTests
             Console.WriteLine("cons {0}ms", w.ElapsedMilliseconds);
 
             w.Restart();
-            solver.AddConstraint(new ClVariable("x"), new ClVariable("y"), new ClVariable("z"), (x, y, z) => 
+            var x = new ClVariable("x");
+            var y = new ClVariable("y");
+            var z = new ClVariable("z");
+            solver.AddConstraints(() => 
                 x > 1
                 && y == x + 1
                 && y < 3

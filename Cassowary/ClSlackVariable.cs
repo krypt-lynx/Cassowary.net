@@ -23,6 +23,12 @@ namespace Cassowary
 {
     internal class ClSlackVariable : ClAbstractVariable
     {
+        static int nextId = 0;
+        static public string GetId()
+        {
+            return $"em{nextId++}";
+        }
+
         public ClSlackVariable(string name)
             : base(name)
         {

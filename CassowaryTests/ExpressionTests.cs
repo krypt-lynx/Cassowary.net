@@ -4,6 +4,52 @@ using System;
 
 namespace CassowaryTests
 {
+    public class MemberAccessTestClass
+    {
+        public int Field;
+        public int Property
+        {
+            get
+            {
+                return Field;
+            }
+        }
+        
+        public int[] IndexedProperty
+        {
+            get
+            {
+                return new int[] { Field };
+            }
+        }
+
+        public ClVariable VarField;
+        public ClVariable VarProperty
+        {
+            get
+            {
+                return VarField;
+            }
+        }
+        public ClVariable[] VarIndexedProperty
+        {
+            get
+            {
+                return new ClVariable[] { VarField };
+            }
+        }
+
+        public MemberAccessTestClass(int a)
+        {
+            Field = a;
+        }
+
+        public MemberAccessTestClass(ClVariable v)
+        {
+            VarField = v;
+        }
+    }
+
     [TestClass]
     public class ExpressionTests
     {
@@ -12,7 +58,7 @@ namespace CassowaryTests
         [TestMethod]
         public void SingleParameterGreaterThanOrEqualToExpression()
         {
-            _solver.AddConstraint(new ClVariable("a"), a => a >= 10);
+            _solver.AddConstraints(() => new ClVariable("a") >= 10, ClStrength.Required);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value >= 10);
         }
 
@@ -21,28 +67,28 @@ namespace CassowaryTests
         {
             ClVariable variable = new ClVariable(Guid.NewGuid().ToString());
 
-            _solver.AddConstraint(variable, a => a >= 10);
+            _solver.AddConstraints(() => variable >= 10);
             Assert.IsTrue(variable.Value >= 10);
         }
 
         [TestMethod]
         public void SingleParameterGreaterThanOrEqualToExpressionSwitched()
         {
-            _solver.AddConstraint(new ClVariable("a"), a => 10 >= a);
+            _solver.AddConstraints(() => 10 >= new ClVariable("a"));
             Assert.IsTrue(10 >= ((ClVariable)_solver.GetVariable("a")).Value);
         }
 
         [TestMethod]
         public void SingleParameterLessThanOrEqualToExpression()
         {
-            _solver.AddConstraint(new ClVariable("a"), a => a <= 10);
+            _solver.AddConstraints(() => new ClVariable("a") <= 10);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value <= 10);
         }
 
         [TestMethod]
         public void SingleParameterLessThanOrEqualToExpressionSwitched()
         {
-            _solver.AddConstraint(new ClVariable("a"), a => 10 <= a);
+            _solver.AddConstraints(() => 10 <= new ClVariable("a"));
             Assert.IsTrue(10 <= ((ClVariable)_solver.GetVariable("a")).Value);
         }
 
@@ -50,7 +96,7 @@ namespace CassowaryTests
         public void SingleParameterEqualToExpression()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), a => a == 10);
+            _solver.AddConstraints(() => new ClVariable("a") == 10);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value == 10);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -59,7 +105,7 @@ namespace CassowaryTests
         public void SingleParameterEqualToExpressionSwitched()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), a => 10 == a);
+            _solver.AddConstraints(() => 10 == new ClVariable("a"));
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value == 10);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -68,7 +114,7 @@ namespace CassowaryTests
         public void SingleParameterLinearAdditionConstraint()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), a => a + 3 == 10);
+            _solver.AddConstraints(() => new ClVariable("a") + 3 == 10);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value + 3 == 10);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -77,7 +123,7 @@ namespace CassowaryTests
         public void SingleParameterLinearAdditionConstraintSwitched()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), a => 10 == a + 3);
+            _solver.AddConstraints(() => 10 == new ClVariable("a") + 3);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value + 3 == 10);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -86,7 +132,7 @@ namespace CassowaryTests
         public void SingleParameterLinearSubtractionConstraint()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), a => a - 3 == 10);
+            _solver.AddConstraints(() => new ClVariable("a") - 3 == 10);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value - 3 == 10);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -95,7 +141,7 @@ namespace CassowaryTests
         public void SingleParameterLinearSubtractionConstraintSwitched()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), a => 10 == a - 3);
+            _solver.AddConstraints(() => 10 == new ClVariable("a") - 3);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value - 3 == 10);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -104,7 +150,7 @@ namespace CassowaryTests
         public void SingleParameterLinearMultiplicationConstraint()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), a => a * 3 == 10);
+            _solver.AddConstraints(() => new ClVariable("a") * 3 == 10);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value * 3 == 10);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -113,7 +159,7 @@ namespace CassowaryTests
         public void SingleParameterLinearMultiplicationConstraintSwitched()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), a => 10 == a * 3);
+            _solver.AddConstraints(() => 10 == new ClVariable("a") * 3);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value * 3 == 10);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -122,7 +168,7 @@ namespace CassowaryTests
         public void SingleParameterLinearDivisionConstraint()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), a => a / 3 == 10);
+            _solver.AddConstraints(() => new ClVariable("a") / 3 == 10);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value / 3 == 10);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -131,7 +177,7 @@ namespace CassowaryTests
         public void SingleParameterLinearDivisionConstraintSwitched()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), a => 10 == a / 3);
+            _solver.AddConstraints(() => 10 == new ClVariable("a") / 3);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value / 3 == 10);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -140,7 +186,7 @@ namespace CassowaryTests
         public void SingleParameterLinearConstraint()
         {
             // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), a => a / 3 * 2 + 1 - 3 == 10);
+            _solver.AddConstraints(() => new ClVariable("a") / 3 * 2 + 1 - 3 == 10);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value / 3 * 2 + 1 - 3 == 10);
             // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -149,7 +195,7 @@ namespace CassowaryTests
         public void SingleParameterLinearDivisionSwitched()
         {
             // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), a => 10 == a / 3 * 2 + 1 - 3);
+            _solver.AddConstraints(() => 10 == new ClVariable("a") / 3 * 2 + 1 - 3);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value / 3 * 2 + 1 - 3 == 10);
             // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -157,7 +203,7 @@ namespace CassowaryTests
         [TestMethod]
         public void TwoParameterGreaterThanOrEqualToExpression()
         {
-            _solver.AddConstraint(new ClVariable("a"), new ClVariable("b"), (a, b) => a >= b);
+            _solver.AddConstraints(() => new ClVariable("a") >= new ClVariable("b"));
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value >= ((ClVariable)_solver.GetVariable("b")).Value);
         }
 
@@ -167,21 +213,24 @@ namespace CassowaryTests
             ClVariable varA = new ClVariable("a");
             ClVariable varB = new ClVariable("b");
 
-            _solver.AddConstraint(varA, varB, (a, b) => a >= b);
+            _solver.AddConstraints(() => varA >= varB);
             Assert.IsTrue(varA.Value >= varB.Value);
         }
 
         [TestMethod]
         public void LessThanOrEqualToConstraint_ResolvesToAllowableValue()
         {
-            _solver.AddConstraint(new ClVariable("a"), new ClVariable("b"), (a, b) => a <= b);
+            _solver.AddConstraints(() => new ClVariable("a") <= new ClVariable("b"));
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value <= ((ClVariable)_solver.GetVariable("b")).Value);
         }
 
         [TestMethod]
         public void RangedConstraint_ResolvesToAllowableValue()
         {
-            _solver.AddConstraint(new ClVariable("a"), new ClVariable("b"), new ClVariable("c"), (a, b, c) => a <= b && b <= c);
+            var a = new ClVariable("a");
+            var b = new ClVariable("b");
+            var c = new ClVariable("c");
+            _solver.AddConstraints(() => a <= b && b <= c);
 
             var aa = (ClVariable)_solver.GetVariable("a");
             var bb = (ClVariable)_solver.GetVariable("b");
@@ -194,7 +243,7 @@ namespace CassowaryTests
         public void TwoParameterEqualityToExpression()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), new ClVariable("b"), (a, b) => a == b);
+            _solver.AddConstraints(() => new ClVariable("a") == new ClVariable("b"));
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value == ((ClVariable)_solver.GetVariable("b")).Value);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -203,7 +252,7 @@ namespace CassowaryTests
         public void TwoParameterLinearAdditionConstraint()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), new ClVariable("b"), (a, b) => a + b == 10);
+            _solver.AddConstraints(() => new ClVariable("a") + new ClVariable("b") == 10);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value + ((ClVariable)_solver.GetVariable("b")).Value == 10);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -212,7 +261,7 @@ namespace CassowaryTests
         public void TwoParameterLinearAdditionConstraint2()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), new ClVariable("b"), (a, b) => a + 10 == b);
+            _solver.AddConstraints(() => new ClVariable("a") + 10 == new ClVariable("b"));
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value + ((ClVariable)_solver.GetVariable("b")).Value == 10);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -221,7 +270,7 @@ namespace CassowaryTests
         public void TwoParameterLinearConstraint()
         {
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), new ClVariable("b"), (a, b) => a * 10 + b >= 15);
+            _solver.AddConstraints(() => new ClVariable("a") * 10 + new ClVariable("b") >= 15);
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value * 10 + ((ClVariable)_solver.GetVariable("b")).Value >= 15);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -230,7 +279,7 @@ namespace CassowaryTests
         public void TwoParameterLinearConstraint2()
         {
             // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(new ClVariable("a"), new ClVariable("b"), (a, b) => a * 10 + 15 >= b);
+            _solver.AddConstraints(() => new ClVariable("a") * 10 + 15 >= new ClVariable("b"));
             Assert.IsTrue(((ClVariable)_solver.GetVariable("a")).Value * 10 + 15 >= ((ClVariable)_solver.GetVariable("b")).Value);
             // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -238,7 +287,12 @@ namespace CassowaryTests
         [TestMethod]
         public void MultiParameterAndConstraints()
         {
-            _solver.AddConstraint(new ClVariable("a"), new ClVariable("b"), new ClVariable("c"), new ClVariable("d"), (a, b, c, d) => a >= b && b >= c && c >= d && d * 2 + 3 - a <= 20);
+            var a = new ClVariable("a");
+            var b = new ClVariable("b");
+            var c = new ClVariable("c");
+            var d = new ClVariable("d");
+
+            _solver.AddConstraints(() => a >= b && b >= c && c >= d && d * 2 + 3 - a <= 20);
 
             var aa = ((ClVariable)_solver.GetVariable("a")).Value;
             var bb = ((ClVariable)_solver.GetVariable("b")).Value;
@@ -252,6 +306,89 @@ namespace CassowaryTests
         }
 
         [TestMethod]
+        public void LambdaCallTest1()
+        {
+            ClVariable a_ = null;
+            Func<string, ClVariable> a = (name) => a_ = new ClVariable(name);
+
+            _solver.AddConstraints(() => 4 == a("b"));
+
+            Assert.IsTrue(Cl.Approx(a_, 4));
+        }
+
+        [TestMethod]
+        public void LambdaCallTest2()
+        {
+            ClVariable a_ = null;
+            Func<ClVariable> a = () => a_ = new ClVariable("a");
+
+            _solver.AddConstraints(() => 4 == a());
+
+            Assert.IsTrue(Cl.Approx(a_, 4));
+        }
+
+        [TestMethod]
+        public void MemberAccessTest1()
+        {
+            var a = new ClVariable("a");
+            var b = new MemberAccessTestClass(10);
+            
+            _solver.AddConstraints(() => a == b.Field);
+
+            Assert.IsTrue(Cl.Approx(a, 10));
+        }
+
+
+        [TestMethod]
+        public void MemberAccessTest2()
+        {
+            var a = new ClVariable("a");
+            var b = new MemberAccessTestClass(10);
+
+
+            _solver.AddConstraints(() => a == b.Property);
+
+            Assert.IsTrue(Cl.Approx(a, 10));
+        }
+
+        [TestMethod]
+        public void ArrayAccess1()
+        {
+            var a = new ClVariable[] { new ClVariable("a"), new ClVariable("b") };
+            
+            _solver.AddConstraints(() => a[0] == 10);
+
+
+            Assert.IsTrue(Cl.Approx(a[0], 10));
+        }
+
+        [TestMethod]
+        public void ArrayAccess2()
+        {
+
+            var a = new ClVariable("a");
+            var b = new MemberAccessTestClass(a);
+
+
+            _solver.AddConstraints(() => b.VarIndexedProperty[0] == 10);
+
+
+            Assert.IsTrue(Cl.Approx(a, 10));
+        }
+
+        [TestMethod]
+        public void MemberAccessTest3()
+        {
+            var a = new ClVariable("a");
+            var b = new MemberAccessTestClass(10);
+            
+            _solver.AddConstraints(() => a == b.IndexedProperty[0]);
+
+
+            Assert.IsTrue(Cl.Approx(a, 10));
+        }
+        
+        [TestMethod]
         public void FieldMemberAccessExpression()
         {
 // ReSharper disable ConvertToConstant.Local
@@ -261,7 +398,7 @@ namespace CassowaryTests
             var variable = new ClVariable("a");
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(variable, a => a == field);
+            _solver.AddConstraints(() => variable == field);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
@@ -275,7 +412,7 @@ namespace CassowaryTests
             var variable = new ClVariable("a");
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(variable, a => a == field);
+            _solver.AddConstraints(() => variable == field);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
@@ -289,7 +426,7 @@ namespace CassowaryTests
             var variable = new ClVariable("a");
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(variable, a => a == -field / 2 * 3 + 4 - 2);
+            _solver.AddConstraints(() => variable == -field / 2 * 3 + 4 - 2);
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
@@ -297,10 +434,10 @@ namespace CassowaryTests
         [ExpectedException(typeof(CassowaryNonlinearExpressionException))]
         public void NonLinearExpressionThrowsException()
         {
-            var a = new ClVariable("a");
-            var b = new ClVariable("b");
+            var x = new ClVariable("a");
+            var y = new ClVariable("b");
 
-            _solver.AddConstraint(a, b, (x, y) => (x / y) >= (y / x));
+            _solver.AddConstraints(() => (x / y) >= (y / x));
         }
 
         [TestMethod]
@@ -313,7 +450,7 @@ namespace CassowaryTests
 
             var margin = new ClVariable("margin");
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(windowHeight, doorHeightVariable, margin, (wh, dh, wm) => ((5 - dh) - wh) == wm * 2);
+            _solver.AddConstraints(() => ((5 - doorHeightVariable) - windowHeight) == margin * 2);
 // ReSharper restore CompareOfFloatsByEqualityOperator
 
             Assert.AreEqual(5 - 2 - 1, margin.Value * 2);

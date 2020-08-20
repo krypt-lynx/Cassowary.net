@@ -5,6 +5,7 @@ using System.Text;
 using Cassowary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+/*
 namespace CassowaryTests
 {
     [TestClass]
@@ -87,4 +88,4 @@ namespace CassowaryTests
 
         }
     }
-}
+}*/

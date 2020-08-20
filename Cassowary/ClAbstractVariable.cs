@@ -58,5 +58,80 @@ namespace Cassowary
         public abstract override string ToString();
 
         private static int _numCreated = 0;
+
+        public static implicit operator double(ClAbstractVariable r)
+        {
+            throw new System.InvalidOperationException("implicit double counvertion should be never called for ClAbstractVariable");
+        }
+
+        public static implicit operator int(ClAbstractVariable r)
+        {
+            throw new System.InvalidOperationException("implicit int counvertion should be never called for ClAbstractVariable");
+        }
+
+        public static implicit operator float(ClAbstractVariable r)
+        {
+            throw new System.InvalidOperationException("implicit float counvertion should be never called for ClAbstractVariable");
+        }
+        
+        public static bool operator <(ClAbstractVariable r1, ClAbstractVariable r2)
+        {
+            throw new System.InvalidOperationException("comparison < should be never called for ClAbstractVariable");
+        }
+
+        public static bool operator >(ClAbstractVariable r1, ClAbstractVariable r2)
+        {
+            throw new System.InvalidOperationException("comparison > should be never called for ClAbstractVariable");
+        }
+
+        public static bool operator <(ClAbstractVariable r1, double r2)
+        {
+            throw new System.InvalidOperationException("comparison < should be never called for ClAbstractVariable");
+        }
+
+        public static bool operator >(ClAbstractVariable r1, double r2)
+        {
+            throw new System.InvalidOperationException("comparison > should be never called for ClAbstractVariable");
+        }
+
+        public static bool operator <(ClAbstractVariable r1, int r2)
+        {
+            throw new System.InvalidOperationException("comparison < should be never called for ClAbstractVariable");
+        }
+
+        public static bool operator >(ClAbstractVariable r1, int r2)
+        {
+            throw new System.InvalidOperationException("comparison > should be never called for ClAbstractVariable");
+        }
+
+        public static bool operator <=(ClAbstractVariable r1, ClAbstractVariable r2)
+        {
+            throw new System.InvalidOperationException("comparison <= should be never called for ClAbstractVariable");
+        }
+
+        public static bool operator >=(ClAbstractVariable r1, ClAbstractVariable r2)
+        {
+            throw new System.InvalidOperationException("comparison => should be never called for ClAbstractVariable");
+        }
+
+        public static bool operator <=(ClAbstractVariable r1, double r2)
+        {
+            throw new System.InvalidOperationException("comparison <= should be never called for ClAbstractVariable");
+        }
+
+        public static bool operator >=(ClAbstractVariable r1, double r2)
+        {
+            throw new System.InvalidOperationException("comparison => should be never called for ClAbstractVariable");
+        }
+
+        public static bool operator <=(ClAbstractVariable r1, int r2)
+        {
+            throw new System.InvalidOperationException("comparison <= should be never called for ClAbstractVariable");
+        }
+
+        public static bool operator >=(ClAbstractVariable r1, int r2)
+        {
+            throw new System.InvalidOperationException("comparison >= should be never called for ClAbstractVariable");
+        }
     }
 }

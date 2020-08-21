@@ -23,7 +23,7 @@ using System.Globalization;
 
 namespace Cassowary
 {
-    public abstract class ClConstraint
+    public abstract partial class ClConstraint
     {
         protected ClConstraint(ClStrength strength, double weight = 1.0)
         {
@@ -47,7 +47,11 @@ namespace Cassowary
         {
             get { return false; }
         }
-        public ClStrength Strength { get; } = ClStrength.Required;
+        public ClStrength Strength { get; private set; } = ClStrength.Required;
+        public void SetStrength(ClStrength strength)
+        {
+            Strength = strength; // TODO: validate constraint is not added or ensure it is safe to modify added constraint 
+        }
 
         public double Weight { get; } = 1;
 

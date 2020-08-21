@@ -39,7 +39,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -57,6 +57,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Cassowary.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -72,6 +73,7 @@
     <Compile Include="Cl.cs" />
     <Compile Include="ClAbstractVariable.cs" />
     <Compile Include="ClConstraint.cs" />
+    <Compile Include="ClConstraintOperators.cs" />
     <Compile Include="ClDouble.cs" />
     <Compile Include="ClDummyVariable.cs" />
     <Compile Include="ClEditConstraint.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="ClLinearConstraint.cs" />
     <Compile Include="ClLinearEquation.cs" />
     <Compile Include="ClLinearExpression.cs" />
+    <Compile Include="ClLinearExpressionOperators.cs" />
     <Compile Include="ClLinearInequality.cs" />
     <Compile Include="ClObjectiveVariable.cs" />
     <Compile Include="ClPoint.cs" />
@@ -91,6 +94,7 @@
     <Compile Include="ClSymbolicWeight.cs" />
     <Compile Include="ClTableau.cs" />
     <Compile Include="ClVariable.cs" />
+    <Compile Include="ClAbstractVariableOperators.cs" />
     <Compile Include="IEditContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

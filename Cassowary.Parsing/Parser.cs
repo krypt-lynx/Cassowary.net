@@ -160,13 +160,13 @@ public class Parser
             {
                 Get();
                 Term(out e1);
-                e = Cl.Plus(e, e1);
+                e = e + e1;
             }
             else
             {
                 Get();
                 Term(out e1);
-                e = Cl.Minus(e, e1);
+                e = e - e1;
             }
         }
     }
@@ -181,13 +181,13 @@ public class Parser
             {
                 Get();
                 Factor(out e1);
-                e = Cl.Times(e, e1);
+                e = e * e1;
             }
             else
             {
                 Get();
                 Factor(out e1);
-                e = Cl.Divide(e, e1);
+                e = e / e1;
             }
         }
     }
@@ -218,7 +218,7 @@ public class Parser
         }
         else SynErr(16);
         if (negate)
-            e = Cl.Minus(0, e);
+            e = -e;
 
     }
 

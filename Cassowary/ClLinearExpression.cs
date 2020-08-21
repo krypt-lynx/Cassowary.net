@@ -26,7 +26,7 @@ using System.Linq;
 
 namespace Cassowary
 {
-    public class ClLinearExpression : Cl
+    public partial class ClLinearExpression : Cl
     {
         public ClLinearExpression(ClAbstractVariable clv, double value = 1, double constant = 0)
         {
@@ -68,6 +68,21 @@ namespace Cassowary
 
             foreach (var cld in Terms.Keys.Select(a => Terms[a]))
                 cld.Value = cld.Value * x;
+
+            return this;
+        }
+
+        public ClLinearExpression DivideMe(double x)
+        {
+            if (Approx(x, 0.0))
+            {
+                throw new CassowaryNonlinearExpressionException();
+            }
+
+            _constant.Value = _constant.Value / x;
+
+            foreach (var cld in Terms.Keys.Select(a => Terms[a]))
+                cld.Value = cld.Value / x;
 
             return this;
         }
@@ -119,12 +134,7 @@ namespace Cassowary
         public ClLinearExpression Divide(double x)
             /*throws ExCLNonlinearExpression*/
         {
-            if (Approx(x, 0.0))
-            {
-                throw new CassowaryNonlinearExpressionException();
-            }
-
-            return Times(1.0 / x);
+            return (Clone()).DivideMe(x);
         }
 
         public ClLinearExpression Divide(ClLinearExpression expr)

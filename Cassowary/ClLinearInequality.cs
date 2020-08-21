@@ -38,60 +38,13 @@ namespace Cassowary
         {
         }
 
-        public ClLinearInequality(ClAbstractVariable clv1, Cl.Operator op, ClAbstractVariable clv2, ClStrength strength, double weight = 1.0)
-            : this(new ClLinearExpression(clv1), op, new ClLinearExpression(clv2), strength, weight)
-            /* throws ExClInternalError */
-        {
-        }
-
-        public ClLinearInequality(ClAbstractVariable clv1, Cl.Operator op, ClAbstractVariable clv2)
-            : this(clv1, op, clv2, ClStrength.Required)
-            /* throws ExClInternalError */
-        {
-        }
-
-        public ClLinearInequality(ClAbstractVariable clv, Cl.Operator op, double val, ClStrength strength, double weight = 1.0)
-            :this(new ClLinearExpression(clv), op, new ClLinearExpression(val), strength, weight)
-            /* throws ExClInternalError */
-        {
-        }
-
-        public ClLinearInequality(ClAbstractVariable clv, Cl.Operator op, double val)
-            : this(clv, op, val, ClStrength.Required)
-            /* throws ExClInternalError */
-        {
-        }
 
         public ClLinearInequality(ClLinearExpression cle1, Cl.Operator op, ClLinearExpression cle2)
             : this(cle1, op, cle2, ClStrength.Required)
             /* throws ExClInternalError */
         {
         }
-
-        public ClLinearInequality(ClAbstractVariable clv, Cl.Operator op, ClLinearExpression cle, ClStrength strength, double weight = 1.0)
-            : this(new ClLinearExpression(clv), op, cle, strength, weight)
-            /* throws ExClInternalError */
-        {
-        }
-
-        public ClLinearInequality(ClAbstractVariable clv, Cl.Operator op, ClLinearExpression cle)
-            : this(clv, op, cle, ClStrength.Required)
-            /* throws ExClInternalError */
-        {
-        }
-
-        public ClLinearInequality(ClLinearExpression cle, Cl.Operator op, ClAbstractVariable clv, ClStrength strength, double weight = 1.0)
-            : this(cle, op, new ClLinearExpression(clv), strength, weight)
-            /* throws ExClInternalError */
-        {
-        }
-
-        public ClLinearInequality(ClLinearExpression cle, Cl.Operator op, ClAbstractVariable clv)
-            : this(cle, op, clv, ClStrength.Required)
-            /* throws ExClInternalError */
-        {
-        }
-
+        
         public ClLinearInequality(ClLinearExpression cle1, Cl.Operator op, ClLinearExpression cle2, ClStrength strength, double weight = 1.0)
             : base(cle2.Clone(), strength, weight)
         /* throws ExClInternalError */

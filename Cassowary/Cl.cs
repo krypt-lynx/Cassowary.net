@@ -45,6 +45,7 @@ namespace Cassowary
             LessThan = 4
         }
 
+        /*
         public static ClLinearExpression Plus(ClLinearExpression e1, ClLinearExpression e2)
         {
             return e1.Plus(e2);
@@ -111,52 +112,53 @@ namespace Cassowary
         }
 
         public static ClLinearExpression Times(ClLinearExpression e1, ClLinearExpression e2)
-            /*throws ExCLNonlinearExpression*/
+            // throws ExCLNonlinearExpression
         {
             return e1.Times(e2);
         }
 
         public static ClLinearExpression Times(ClLinearExpression e1, ClVariable e2)
-            /*throws ExCLNonlinearExpression*/
+            // throws ExCLNonlinearExpression
         {
             return e1.Times(new ClLinearExpression(e2));
         }
 
         public static ClLinearExpression Times(ClVariable e1, ClLinearExpression e2)
-            /*throws ExCLNonlinearExpression*/
+            // throws ExCLNonlinearExpression
         {
             return (new ClLinearExpression(e1)).Times(e2);
         }
 
         public static ClLinearExpression Times(ClLinearExpression e1, double e2)
-            /*throws ExCLNonlinearExpression*/
+            // throws ExCLNonlinearExpression
         {
             return e1.Times(new ClLinearExpression(e2));
         }
 
         public static ClLinearExpression Times(double e1, ClLinearExpression e2)
-            /*throws ExCLNonlinearExpression*/
+            // throws ExCLNonlinearExpression
         {
             return (new ClLinearExpression(e1)).Times(e2);
         }
 
         public static ClLinearExpression Times(double n, ClVariable clv)
-            /*throws ExCLNonlinearExpression*/
+            // throws ExCLNonlinearExpression
         {
             return new ClLinearExpression(clv, n);
         }
 
         public static ClLinearExpression Times(ClVariable clv, double n)
-            /*throws ExCLNonlinearExpression*/
+            // throws ExCLNonlinearExpression
         {
             return new ClLinearExpression(clv, n);
         }
 
         public static ClLinearExpression Divide(ClLinearExpression e1, ClLinearExpression e2)
-            /*throws ExCLNonlinearExpression*/
+            // throws ExCLNonlinearExpression
         {
             return e1.Divide(e2);
         }
+         */
 
         public static bool Approx(double a, double b)
         {
@@ -168,5 +170,6 @@ namespace Cassowary
         {
             return Approx(clv.Value, b);
         }
+       
     }
 }

@@ -60,7 +60,7 @@ namespace Cassowary
             return clsw.Times(n);
         }
 
-        private ClSymbolicWeight Times(double n)
+        public ClSymbolicWeight Times(double n)
         {
             return new ClSymbolicWeight(_weight * n, _priority);
             //return new ClSymbolicWeight(_values.Select(a => a * n).ToArray());

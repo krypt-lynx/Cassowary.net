@@ -62,17 +62,17 @@ namespace Cassowary
         /// <summary>
         /// Strong constraint priority
         /// </summary>
-        public static ClStrength Strong { get; } = new ClStrength("strong", 1.0, 50);
+        public static ClStrength Strong { get; } = new ClStrength("strong", 1.0, 10);
 
         /// <summary>
         /// Medium constraint priority
         /// </summary>
-        public static ClStrength Medium { get; } = new ClStrength("medium", 1.0, 25);
+        public static ClStrength Medium { get; } = new ClStrength("medium", 1.0, 5);
 
         /// <summary>
         /// Weak
         /// </summary>
-        public static ClStrength Weak { get; } = new ClStrength("weak", 1.0, 10);
+        public static ClStrength Weak { get; } = new ClStrength("weak", 1.0, 2);
 
         public static ClStrength Default { get; } = Strong;
     }

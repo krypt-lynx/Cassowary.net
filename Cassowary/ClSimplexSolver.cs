@@ -28,8 +28,6 @@ namespace Cassowary
 {
     public class ClSimplexSolver : ClTableau, IEditContext
     {
-        public string DebugName = "";
-
         /// <remarks>
         /// Constructor initializes the fields, and creaties the objective row.
         /// </remarks>
@@ -46,8 +44,6 @@ namespace Cassowary
         /// </summary>
         public ClSimplexSolver AddConstraint(ClConstraint cn)
         {
-            //Console.Write($"AddConstraint: {cn}");
-
             List<ClAbstractVariable> eplusEminus = new List<ClAbstractVariable>(2);
             ClDouble prevEConstant = new ClDouble();
             ClLinearExpression expr = NewExpression(cn, /* output to: */
@@ -66,9 +62,9 @@ namespace Cassowary
             if (cn.IsEditConstraint)
             {
                 int i = _editVarMap.Count;
-                ClEditConstraint cnEdit = (ClEditConstraint) cn;
-                ClSlackVariable clvEplus = (ClSlackVariable) eplusEminus[0];
-                ClSlackVariable clvEminus = (ClSlackVariable) eplusEminus[1];
+                ClEditConstraint cnEdit = (ClEditConstraint)cn;
+                ClSlackVariable clvEplus = (ClSlackVariable)eplusEminus[0];
+                ClSlackVariable clvEminus = (ClSlackVariable)eplusEminus[1];
                 _editVarMap.Add(cnEdit.Variable,
                     new ClEditInfo(cnEdit, clvEplus, clvEminus,
                         prevEConstant.Value,
@@ -221,8 +217,8 @@ namespace Cassowary
         /// </remarks>
         IEditContext IEditContext.SuggestValue(ClVariable v, double x)
         {
-            ClEditInfo cei = null;
-            if (!_editVarMap.TryGetValue(v, out cei))
+            ClEditInfo cei = _editVarMap[v];
+            if (cei == null)
             {
                 throw new CassowaryException("SuggestValue for variable " + v + ", but var is not an edit variable\n");
             }
@@ -244,7 +240,7 @@ namespace Cassowary
         /// </param>
         /// </summary>
         public ClSimplexSolver AddStay(ClVariable v, ClStrength strength, double weight)
-            /* throws ExClRequiredFailure, ExClInternalError */
+        /* throws ExClRequiredFailure, ExClInternalError */
         {
             ClStayConstraint cn = new ClStayConstraint(v, strength, weight);
 
@@ -255,7 +251,7 @@ namespace Cassowary
         /// Default to weight 1.0.
         /// </remarks>
         public ClSimplexSolver AddStay(ClVariable v, ClStrength strength)
-            /* throws ExClRequiredFailure, ExClInternalError */
+        /* throws ExClRequiredFailure, ExClInternalError */
         {
             AddStay(v, strength, 1.0);
 
@@ -266,7 +262,7 @@ namespace Cassowary
         /// Default to strength ClStrength#Weak.
         /// </remarks>
         public ClSimplexSolver AddStay(ClVariable v)
-            /* throws ExClRequiredFailure, ExClInternalError */
+        /* throws ExClRequiredFailure, ExClInternalError */
         {
             AddStay(v, ClStrength.Weak, 1.0);
 
@@ -278,7 +274,7 @@ namespace Cassowary
         /// Also remove any error variable associated with it.
         /// </summary>
         public ClSimplexSolver RemoveConstraint(ClConstraint cn)
-            /* throws ExClRequiredFailure, ExClInternalError */
+        /* throws ExClRequiredFailure, ExClInternalError */
         {
             _cNeedsSolving = true;
 
@@ -294,14 +290,12 @@ namespace Cassowary
                     ClLinearExpression expr = RowExpression(clv);
                     if (expr == null)
                     {
-                        //Console.WriteLine($"{cn.Strength.SymbolicWeight.AsDouble()}");
                         zRow.AddVariable(clv, -cn.Weight *
                                               cn.Strength.SymbolicWeight.AsDouble(),
                             _objective, this);
                     }
                     else // the error variable was in the basis
                     {
-                        //Console.WriteLine($"{cn.Strength.SymbolicWeight.AsDouble()}");
                         zRow.AddExpression(expr, -cn.Weight *
                                                  cn.Strength.SymbolicWeight.AsDouble(),
                             _objective, this);
@@ -405,7 +399,7 @@ namespace Cassowary
             else if (cn.IsEditConstraint)
             {
                 Assert(eVars != null, "eVars != null");
-                ClEditConstraint cnEdit = (ClEditConstraint) cn;
+                ClEditConstraint cnEdit = (ClEditConstraint)cn;
                 ClVariable clv = cnEdit.Variable;
                 ClEditInfo cei = _editVarMap[clv];
                 ClSlackVariable clvEditMinus = cei.ClvEditMinus;
@@ -456,7 +450,7 @@ namespace Cassowary
         }
 
         public bool ContainsVariable(ClVariable v)
-            /* throws ExClInternalError */
+        /* throws ExClInternalError */
         {
             return ColumnsHasKey(v) || (RowExpression(v) != null);
         }
@@ -474,8 +468,26 @@ namespace Cassowary
             return null;
         }
 
+        /// <summary>
+        /// All known external variables
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<ClAbstractVariable> AllVariables()
+        {
+            foreach (var v in Columns.Keys)
+            {
+                if (v.IsExternal)
+                    yield return v;
+            }
+            foreach (var v in Rows.Keys) // todo: exclude duplicates?
+            {
+                if (v.IsExternal)
+                    yield return v;
+            }
+        }
+
         public ClSimplexSolver AddVar(ClVariable v)
-            /* throws ExClInternalError */
+        /* throws ExClInternalError */
         {
             if (!ContainsVariable(v))
             {
@@ -495,7 +507,7 @@ namespace Cassowary
 
         public override string ToString()
         {
-            var sb = new StringBuilder(); 
+            var sb = new StringBuilder();
             sb.AppendLine(base.ToString());
             sb.AppendLine("\n_stayPlusErrorVars: ");
             sb.AppendLine($"{{{string.Join(", ", _stayPlusErrorVars)}}}");
@@ -519,10 +531,10 @@ namespace Cassowary
         /// if we can't attain av=0).
         /// </remarks>
         private void AddWithArtificialVariable(ClLinearExpression expr)
-            /* throws ExClRequiredFailure, ExClInternalError */
+        /* throws ExClRequiredFailure, ExClInternalError */
         {
             ClSlackVariable av = new ClSlackVariable(++_artificialCounter, "a");
-            ClObjectiveVariable az = new ClObjectiveVariable(ClObjectiveVariable.GetId());
+            ClObjectiveVariable az = new ClObjectiveVariable("az");
             ClLinearExpression azRow = expr.Clone();
 
             AddRow(az, azRow);
@@ -575,7 +587,7 @@ namespace Cassowary
         /// True if successful and false if not.
         /// </returns>
         private bool TryAddingDirectly(ClLinearExpression expr)
-            /* throws ExClRequiredFailure */
+        /* throws ExClRequiredFailure */
         {
             ClAbstractVariable subject = ChooseSubject(expr);
             if (subject == null)
@@ -608,7 +620,7 @@ namespace Cassowary
         /// variable as the subject -- this is done outside this method though.)
         /// </remarks>
         private ClAbstractVariable ChooseSubject(ClLinearExpression expr)
-            /* ExClRequiredFailure */
+        /* ExClRequiredFailure */
         {
             ClAbstractVariable subject = null; // the current best subject, if any
 
@@ -713,8 +725,7 @@ namespace Cassowary
                     eminus = new ClSlackVariable(_slackCounter, "em");
                     expr.SetVariable(eminus, 1.0);
                     ClLinearExpression zRow = RowExpression(_objective);
-                    ClSymbolicWeight sw = cn.Strength.SymbolicWeight * cn.Weight;
-                    //Console.WriteLine($"{sw.AsDouble()}");
+                    ClSymbolicWeight sw = cn.Strength.SymbolicWeight.Times(cn.Weight);
                     zRow.SetVariable(eminus, sw.AsDouble());
                     InsertErrorVar(cn, eminus);
                     NoteAddedVariable(eminus, _objective);
@@ -740,8 +751,7 @@ namespace Cassowary
                     expr.SetVariable(eminus, 1.0);
                     ConstraintMap.Add(cn, eplus);
                     ClLinearExpression zRow = RowExpression(_objective);
-                    ClSymbolicWeight sw = cn.Strength.SymbolicWeight * cn.Weight;
-                    //Console.WriteLine($"{sw.AsDouble()}");
+                    ClSymbolicWeight sw = cn.Strength.SymbolicWeight.Times(cn.Weight);
                     double swCoeff = sw.AsDouble();
                     zRow.SetVariable(eplus, swCoeff);
                     NoteAddedVariable(eplus, _objective);
@@ -769,9 +779,6 @@ namespace Cassowary
             return expr;
         }
 
-        //int optimizeCallN = 0;
-        //int optimizeCallWhileN = 0;
-
         /// <summary>
         /// Minimize the value of the objective.
         /// </summary>
@@ -779,10 +786,8 @@ namespace Cassowary
         /// The tableau should already be feasible.
         /// </remarks>
         private void Optimize(ClObjectiveVariable zVar)
-            /* throws ExClInternalError */
+        /* throws ExClInternalError */
         {
-            //Console.WriteLine($"call {++optimizeCallN}");
-            //Console.WriteLine(zVar.ToString());
             ClLinearExpression zRow = RowExpression(zVar);
             if (zRow == null)
                 throw new CassowaryInternalException("Assertion failed: zRow != null");
@@ -792,11 +797,6 @@ namespace Cassowary
             while (true)
             {
                 double objectiveCoeff = 0;
-                //if (optimizeCallN == 26)
-                //{
-                //    Console.WriteLine($"while {++optimizeCallWhileN}");
-                //    Console.WriteLine($"objectiveCoeff {objectiveCoeff}");
-                //}
                 foreach (var kvp in zRow.Terms)
                 {
                     if (kvp.Key.IsPivotable && kvp.Value.Value < objectiveCoeff)
@@ -812,25 +812,13 @@ namespace Cassowary
                 double minRatio = Double.MaxValue;
                 foreach (ClAbstractVariable v in Columns[entryVar])
                 {
-                    //if (optimizeCallN == 29)
-                    //{
-                    //    Console.WriteLine($"v {v}");
-                    //}
                     if (v.IsPivotable)
                     {
                         ClLinearExpression expr = RowExpression(v);
                         double coeff = expr.CoefficientFor(entryVar);
-                        //if (optimizeCallN == 26)
-                        //{
-                        //    Console.WriteLine($"coeff {coeff}");
-                        //}
                         if (coeff < 0.0)
                         {
                             double r = -expr.Constant / coeff;
-                            //if (optimizeCallN == 26)
-                            //{
-                            //    Console.WriteLine($"r {r}");
-                            //}
                             if (r < minRatio)
                             {
                                 minRatio = r;
@@ -839,18 +827,12 @@ namespace Cassowary
                         }
                     }
                 }
-
-
-                //Console.WriteLine($"exitVar {exitVar}");
-                //Console.WriteLine($"minRatio {minRatio}");
-                
                 // ReSharper disable CompareOfFloatsByEqualityOperator
                 if (minRatio == Double.MaxValue)
-// ReSharper restore CompareOfFloatsByEqualityOperator
+                // ReSharper restore CompareOfFloatsByEqualityOperator
                 {
                     throw new CassowaryInternalException("Objective function is unbounded in Optimize");
                 }
-                Console.WriteLine(minRatio);
                 Pivot(entryVar, exitVar);
             }
         }
@@ -925,7 +907,7 @@ namespace Cassowary
         /// We have set new values for the constants in the edit constraints.
         /// </remarks>
         protected void DualOptimize()
-            /* throws ExClInternalError */
+        /* throws ExClInternalError */
         {
             ClLinearExpression zRow = RowExpression(_objective);
             while (InfeasibleRows.Count > 0)
@@ -955,9 +937,9 @@ namespace Cassowary
                                 }
                             }
                         }
-// ReSharper disable CompareOfFloatsByEqualityOperator
+                        // ReSharper disable CompareOfFloatsByEqualityOperator
                         if (ratio == Double.MaxValue)
-// ReSharper restore CompareOfFloatsByEqualityOperator
+                        // ReSharper restore CompareOfFloatsByEqualityOperator
                         {
                             throw new CassowaryInternalException("ratio == nil (Double.MaxValue) in DualOptimize");
                         }
@@ -976,7 +958,7 @@ namespace Cassowary
         /// make exitVar a parametric variable.
         /// </remarks>
         protected void Pivot(ClAbstractVariable entryVar, ClAbstractVariable exitVar)
-            /* throws ExClInternalError */
+        /* throws ExClInternalError */
         {
             // the entryVar might be non-pivotable if we're doing a 
             // RemoveConstraint -- otherwise it should be a pivotable
@@ -1087,7 +1069,7 @@ namespace Cassowary
         /// Map ClConstraint to Set (of ClVariable).
         /// </remarks>
         private readonly Dictionary<ClConstraint, HashSet<ClAbstractVariable>> _errorVars = new Dictionary<ClConstraint, HashSet<ClAbstractVariable>>();
-        private readonly ClObjectiveVariable _objective = new ClObjectiveVariable("TEST" /*Guid.NewGuid().ToString()*/);
+        private readonly ClObjectiveVariable _objective = new ClObjectiveVariable(Guid.NewGuid().ToString());
 
         /// <summary>
         /// Map edit variables to ClEditInfo-s.

@@ -15,58 +15,70 @@ namespace Cassowary
         {
             return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2));
         }
+        public static ClLinearExpression operator +(ClAbstractVariable e1, double e2)
+        {
+            return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2));
+        }
+        public static ClLinearExpression operator +(double e1, ClAbstractVariable e2)
+        {
+            return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2));
+        }
+        public static ClLinearExpression operator +(ClAbstractVariable e1, int e2)
+        {
+            return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2));
+        }
+        public static ClLinearExpression operator +(int e1, ClAbstractVariable e2)
+        {
+            return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2));
+        }
+
 
         public static ClLinearExpression operator -(ClAbstractVariable e1, ClAbstractVariable e2)
         {
             return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2), -1.0);
         }
-
-        public static ClLinearExpression operator +(ClAbstractVariable e1, int e2)
+        public static ClLinearExpression operator -(ClAbstractVariable e1, double e2)
         {
-            return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2));
+            return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2), -1.0);
         }
-
+        public static ClLinearExpression operator -(double e1, ClAbstractVariable e2)
+        {
+            return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2), -1.0);
+        }
         public static ClLinearExpression operator -(ClAbstractVariable e1, int e2)
         {
             return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2), -1.0);
         }
-
         public static ClLinearExpression operator -(int e1, ClAbstractVariable e2)
         {
             return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2), -1.0);
         }
 
 
-        public static ClLinearExpression operator *(ClAbstractVariable e1, int e2)
-        {
-            return new ClLinearExpression(e1).MultiplyMe(e2);
-        }
-
-        public static ClLinearExpression operator /(ClAbstractVariable e1, int e2)
-        {
-            return new ClLinearExpression(e1).DivideMe(e2);
-        }
-
-        public static ClLinearExpression operator +(ClAbstractVariable e1, double e2)
-        {
-            return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2));
-        }
-
-        public static ClLinearExpression operator -(ClAbstractVariable e1, double e2)
-        {
-            return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2), -1.0);
-        }
-
-        public static ClLinearExpression operator -(double e1, ClAbstractVariable e2)
-        {
-            return new ClLinearExpression(e1).AddExpression(new ClLinearExpression(e2), -1.0);
-        }
-
+        // no variable*variable: exlressions are linear and can have only x^1 components
         public static ClLinearExpression operator *(ClAbstractVariable e1, double e2)
         {
             return new ClLinearExpression(e1).MultiplyMe(e2);
         }
+        public static ClLinearExpression operator *(double e1, ClAbstractVariable e2)
+        {
+            return new ClLinearExpression(e2).MultiplyMe(e1);
+        }
+        public static ClLinearExpression operator *(ClAbstractVariable e1, int e2)
+        {
+            return new ClLinearExpression(e1).MultiplyMe(e2);
+        }
+        public static ClLinearExpression operator *(int e1, ClAbstractVariable e2)
+        {
+            return new ClLinearExpression(e2).MultiplyMe(e1);
+        }
 
+
+        // no x/variable and variable/variable: exlressions are linear and can have only x^1 components
+        public static ClLinearExpression operator /(ClAbstractVariable e1, int e2)
+        {
+            return new ClLinearExpression(e1).DivideMe(e2);
+        }
         public static ClLinearExpression operator /(ClAbstractVariable e1, double e2)
         {
             return new ClLinearExpression(e1).DivideMe(e2);

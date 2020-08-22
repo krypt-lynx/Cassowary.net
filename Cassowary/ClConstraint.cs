@@ -47,7 +47,7 @@ namespace Cassowary
         {
             get { return false; }
         }
-        public ClStrength Strength { get; private set; } = ClStrength.Required;
+        public ClStrength Strength { get; private set; } = ClStrength.Default;
         public void SetStrength(ClStrength strength)
         {
             Strength = strength; // TODO: validate constraint is not added or ensure it is safe to modify added constraint 

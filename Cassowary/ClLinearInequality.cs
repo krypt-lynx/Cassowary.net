@@ -40,7 +40,7 @@ namespace Cassowary
 
 
         public ClLinearInequality(ClLinearExpression cle1, Cl.Operator op, ClLinearExpression cle2)
-            : this(cle1, op, cle2, ClStrength.Required)
+            : this(cle1, op, cle2, ClStrength.Default)
             /* throws ExClInternalError */
         {
         }

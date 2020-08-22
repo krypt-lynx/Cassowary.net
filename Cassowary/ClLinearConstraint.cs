@@ -36,7 +36,7 @@ namespace Cassowary
         }
 
         public ClLinearConstraint(ClLinearExpression cle)
-            : base(ClStrength.Required, 1.0)
+            : base(ClStrength.Default, 1.0)
         {
             ExpressionField = cle;
         }

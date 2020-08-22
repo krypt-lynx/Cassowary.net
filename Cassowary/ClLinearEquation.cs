@@ -45,7 +45,7 @@ namespace Cassowary
         }
 
         public ClLinearEquation(ClLinearExpression cle1, ClLinearExpression cle2)
-            : this(cle1, cle2, ClStrength.Required)
+            : this(cle1, cle2, ClStrength.Default)
         {
         }
 

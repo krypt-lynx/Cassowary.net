@@ -26,11 +26,12 @@ using System.Text;
 
 namespace Cassowary
 {
+    /// <summary>Simplex solver. Resolves set of constraints using system of linear equations</summary>
     public class ClSimplexSolver : ClTableau, IEditContext
     {
-        /// <remarks>
+        /// <summary>
         /// Constructor initializes the fields, and creaties the objective row.
-        /// </remarks>
+        /// </summary>
         public ClSimplexSolver()
         {
             Rows.Add(_objective, new ClLinearExpression());
@@ -503,6 +504,34 @@ namespace Cassowary
             }
 
             return this;
+        }
+         
+        /// <summary>
+        /// Removes all constraints using variable 
+        /// </summary>
+        /// <param name="v">variable</param>
+        public void RemoveVariable(ClVariable v)
+        {
+            List<ClConstraint> listToRemove = new List<ClConstraint>();
+            foreach (var cn in ConstraintMap.Keys)
+            {
+                if (cn.Expression.Terms.ContainsKey(v))
+                {
+                    listToRemove.Add(cn);
+                }
+            }
+
+            foreach (var cn in listToRemove)
+            {
+                RemoveConstraint(cn);
+            }
+
+            RemoveColumn(v);
+        }
+
+        public IEnumerable<ClConstraint> TestGetConstraints(ClVariable v)
+        {
+            throw new NotImplementedException();
         }
 
         public override string ToString()

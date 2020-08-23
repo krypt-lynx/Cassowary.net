@@ -21,6 +21,9 @@
 
 namespace Cassowary
 {
+    /// <summary>
+    /// Represents linear inequality constraint
+    /// </summary>
     public class ClLinearInequality : ClLinearConstraint
     {
         public ClLinearInequality(ClLinearExpression cle, ClStrength strength, double weight)

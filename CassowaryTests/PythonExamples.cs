@@ -66,7 +66,7 @@ namespace CassowaryTests
             _solver.AddConstraint(ClStrength.Required, _3.Y + 20 <= _1.Y);
             _solver.AddConstraint(ClStrength.Required, _3.Y + 20 <= _2.Y);
 
-            //Make sure all points stay in 500x500 convas
+            //Make sure all points stay in 500x500 canvas
             _solver.AddConstraint(ClStrength.Required, _0.X >= 0);
             _solver.AddConstraint(ClStrength.Required, _0.Y >= 0);
             _solver.AddConstraint(ClStrength.Required, _0.X <= 500);

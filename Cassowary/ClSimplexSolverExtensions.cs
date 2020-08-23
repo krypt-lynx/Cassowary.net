@@ -15,6 +15,18 @@ namespace Cassowary
     /// </summary>
     public static class ConstraintsBuilder
     {
+        /// <summary>
+        /// Add multiple constraints to the solver.
+        /// <param name="solver">
+        /// the solver
+        /// </param>
+        /// <param name="constraints">
+        /// The constraint to be added.
+        /// </param>
+        /// <param name="strength">
+        /// strength for the constraints
+        /// </param>
+        /// </summary>
         public static ClSimplexSolver AddConstraints(this ClSimplexSolver solver, ClStrength strength, IEnumerable<ClConstraint> constraints)
         {
             foreach (var constraint in constraints)
@@ -25,12 +37,32 @@ namespace Cassowary
             return solver;
         }
 
+        /// <summary>
+        /// Add multiple constraints to the solver.
+        /// <param name="solver">
+        /// the solver
+        /// </param>
+        /// <param name="constraints">
+        /// The constraint to be added.
+        /// </param>
+        /// <param name="strength">
+        /// strength for the constraints
+        /// </param>
+        /// </summary>
         public static ClSimplexSolver AddConstraints(this ClSimplexSolver solver, ClStrength strength, params ClConstraint[] constraints)
         {
             return AddConstraints(solver, strength, (IEnumerable<ClConstraint>)constraints);
         }
 
-
+        /// <summary>
+        /// Add multiple constraints to the solver.
+        /// <param name="solver">
+        /// the solver
+        /// </param>
+        /// <param name="constraints">
+        /// The constraint to be added.
+        /// </param>
+        /// </summary>
         public static ClSimplexSolver AddConstraints(this ClSimplexSolver solver, IEnumerable<ClConstraint> constraints)
         {
             foreach (var constraint in constraints)
@@ -40,12 +72,33 @@ namespace Cassowary
             }
             return solver;
         }
-        
+
+        /// <summary>
+        /// Add multiple constraints to the solver.
+        /// <param name="solver">
+        /// the solver
+        /// </param>
+        /// <param name="constraints">
+        /// The constraint to be added.
+        /// </param>
+        /// </summary>
         public static ClSimplexSolver AddConstraints(this ClSimplexSolver solver, params ClConstraint[] constraints)
         {
             return AddConstraints(solver, (IEnumerable<ClConstraint>)constraints);
         }
 
+        /// <summary>
+        /// Add a constraint to the solver.
+        /// <param name="solver">
+        /// the solver
+        /// </param>
+        /// <param name="constraint">
+        /// The constraint to be added.
+        /// </param>
+        /// <param name="strength">
+        /// strength for the constraint
+        /// </param>
+        /// </summary>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClStrength strength, ClConstraint constraint)
         {
             constraint.SetStrength(strength);

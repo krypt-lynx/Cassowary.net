@@ -21,6 +21,9 @@
 
 namespace Cassowary
 {
+    /// <summary>
+    /// represents linear equation constraint
+    /// </summary>
     public class ClLinearEquation : ClLinearConstraint
     {
         public ClLinearEquation(ClLinearExpression cle, ClStrength strength, double weight = 1.0)

@@ -23,38 +23,73 @@ using System.Globalization;
 
 namespace Cassowary
 {
+
+    /// <summary>
+    /// linear constraint base class
+    /// </summary>
     public abstract partial class ClConstraint
     {
+        /// <summary>
+        /// Creates constraint with strength
+        /// </summary>
+        /// <param name="strength">constraint strength</param>
+        /// <param name="weight">constraint weight</param>
         protected ClConstraint(ClStrength strength, double weight = 1.0)
         {
             Strength = strength;
             Weight = weight;
         }
 
+        /// <summary>
+        /// expression of the constraint
+        /// </summary>
         public abstract ClLinearExpression Expression { get; }
 
+        /// <summary>
+        /// constraint used for variable edit 
+        /// </summary>
         public virtual bool IsEditConstraint
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// constraint is inequality
+        /// </summary>
         public virtual bool IsInequality
         {
             get { return false; }
         }
 
+        /// <summary>
+        ///  constraint represents value stay
+        /// </summary>
         public virtual bool IsStayConstraint
         {
             get { return false; }
         }
+        /// <summary>
+        /// Strength of the constraint
+        /// </summary>
         public ClStrength Strength { get; private set; } = ClStrength.Default;
+
+        /// <summary>
+        /// temporary method to set streight after constraint creation (ised in AddConstraint extansions). TODO: remove
+        /// </summary>
+        /// <param name="strength"></param>
         public void SetStrength(ClStrength strength)
         {
             Strength = strength; // TODO: validate constraint is not added or ensure it is safe to modify added constraint 
         }
 
+        /// <summary>
+        /// Constraint weight
+        /// </summary>
         public double Weight { get; } = 1;
 
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
         public override string ToString()
         {
             // two curly brackets escape the format, so use three to surround

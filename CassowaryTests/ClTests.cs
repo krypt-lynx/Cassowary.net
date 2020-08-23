@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
-/*
+
 namespace CassowaryTests
 {
     [TestClass]
@@ -17,10 +17,41 @@ namespace CassowaryTests
         }
 
         [TestMethod]
+        public void RemoveVariable()
+        {
+            var a = new ClVariable("a");
+            var b = new ClVariable("b");
+            var c = new ClVariable("c");
+
+            var a10 = a ^ 10;
+            var ab = a ^ b;
+            var bc = b ^ c;
+            var c20 = c ^ 20;
+
+            _solver.AddConstraint(ClStrength.Required, a10);
+            _solver.AddConstraint(ClStrength.Required, ab);
+            _solver.AddConstraint(ClStrength.Required, bc);
+
+            //_solver.RemoveConstraint(a10);
+            //_solver.RemoveConstraint(ab);
+            _solver.RemoveVariable(a);
+
+            _solver.AddConstraint(c20);
+
+
+            Assert.IsTrue(Cl.Approx(b, 20));
+
+
+            //var cns = _solver.TestGetConstraints(a);
+            //_solver.TestRemoveVariable(a);
+
+        }
+
+        [TestMethod]
         public void Playground()
         {
             var x = new ClVariable("x");
-            _solver.AddConstraint(x, a => a < -1);
+            _solver.AddConstraint(x < -1);
 
             Assert.IsTrue(x.Value < -1);
         }
@@ -88,8 +119,8 @@ namespace CassowaryTests
               .AddConstraint(new ClLinearEquation(x, 100.0, ClStrength.Weak))
               .AddConstraint(new ClLinearEquation(y, 120.0, ClStrength.Strong));
 
-            var c10 = new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, 10.0);
-            var c20 = new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, 20.0);
+            var c10 = new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, 10.0, ClStrength.Required);
+            var c20 = new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, 20.0, ClStrength.Required);
 
             _solver
               .AddConstraint(c10)
@@ -100,8 +131,8 @@ namespace CassowaryTests
             _solver.RemoveConstraint(c10);
             Assert.IsTrue(Cl.Approx(x, 20.0));
             Assert.IsTrue(Cl.Approx(y, 120.0));
-            
-            var cxy = new ClLinearEquation(Cl.Times(2.0, x), y);
+
+            var cxy = new ClLinearEquation(2 * x, y);
             _solver.AddConstraint(cxy);
             Assert.IsTrue(Cl.Approx(x, 20.0));
             Assert.IsTrue(Cl.Approx(y, 40.0));
@@ -124,7 +155,7 @@ namespace CassowaryTests
 
             _solver
               .AddConstraint(new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, y))
-              .AddConstraint(new ClLinearEquation(y, Cl.Plus(x, 3.0)))
+              .AddConstraint(new ClLinearEquation(y, x + 3.0))
               .AddConstraint(new ClLinearEquation(x, 10.0, ClStrength.Weak))
               .AddConstraint(new ClLinearEquation(y, 10.0, ClStrength.Weak));
 
@@ -142,8 +173,8 @@ namespace CassowaryTests
 
 
             _solver
-                .AddConstraint(new ClLinearEquation(x, 10.0))
-                .AddConstraint(new ClLinearEquation(x, 5.0));
+                .AddConstraint(new ClLinearEquation(x, 10.0, ClStrength.Required))
+                .AddConstraint(new ClLinearEquation(x, 5.0, ClStrength.Required));
         }
 
         [TestMethod]
@@ -154,8 +185,8 @@ namespace CassowaryTests
 
 
             _solver
-                .AddConstraint(new ClLinearInequality(x, Cl.Operator.GreaterThanOrEqualTo, 10.0))
-                .AddConstraint(new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, 5.0));
+                .AddConstraint(new ClLinearInequality(x, Cl.Operator.GreaterThanOrEqualTo, 10.0, ClStrength.Required))
+                .AddConstraint(new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, 5.0, ClStrength.Required));
         }
 
         [TestMethod]
@@ -165,8 +196,8 @@ namespace CassowaryTests
 
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(x, a => a == 10, ClStrength.Strong);
-            _solver.AddConstraint(x, a => a == 5, ClStrength.Medium);
+            _solver.AddConstraint(ClStrength.Strong, x ^ 10);
+            _solver.AddConstraint(ClStrength.Medium, x ^ 5);
 // ReSharper restore CompareOfFloatsByEqualityOperator
 
             Assert.IsTrue(Math.Abs(x.Value - 10.0) < float.Epsilon);
@@ -231,12 +262,12 @@ namespace CassowaryTests
 
 
             _solver
-                .AddConstraint(new ClLinearInequality(w, Cl.Operator.GreaterThanOrEqualTo, 10.0))
-                .AddConstraint(new ClLinearInequality(x, Cl.Operator.GreaterThanOrEqualTo, w))
-                .AddConstraint(new ClLinearInequality(y, Cl.Operator.GreaterThanOrEqualTo, x))
-                .AddConstraint(new ClLinearInequality(z, Cl.Operator.GreaterThanOrEqualTo, y))
-                .AddConstraint(new ClLinearInequality(z, Cl.Operator.GreaterThanOrEqualTo, 8.0))
-                .AddConstraint(new ClLinearInequality(z, Cl.Operator.LessThanOrEqualTo, 4.0));
+                .AddConstraint(ClStrength.Required, new ClLinearInequality(w, Cl.Operator.GreaterThanOrEqualTo, 10.0))
+                .AddConstraint(ClStrength.Required, new ClLinearInequality(x, Cl.Operator.GreaterThanOrEqualTo, w))
+                .AddConstraint(ClStrength.Required, new ClLinearInequality(y, Cl.Operator.GreaterThanOrEqualTo, x))
+                .AddConstraint(ClStrength.Required, new ClLinearInequality(z, Cl.Operator.GreaterThanOrEqualTo, y))
+                .AddConstraint(ClStrength.Required, new ClLinearInequality(z, Cl.Operator.GreaterThanOrEqualTo, 8.0))
+                .AddConstraint(ClStrength.Required, new ClLinearInequality(z, Cl.Operator.LessThanOrEqualTo, 4.0));
         }
 
         [TestMethod]
@@ -283,7 +314,7 @@ namespace CassowaryTests
                 {
                     var coeff = UniformRandomDiscretized() * 10 - 5;
                     var iclv = (int)(UniformRandomDiscretized() * nVars);
-                    expr.AddExpression(Cl.Times(rgpclv[iclv], coeff));
+                    expr.AddExpression(rgpclv[iclv] * coeff);
                 }
                 if (UniformRandomDiscretized() < ineqProb)
                 {
@@ -372,4 +403,3 @@ namespace CassowaryTests
         }
     }
 }
-*/

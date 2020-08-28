@@ -29,6 +29,8 @@ namespace Cassowary
     /// <summary>Simplex solver. Resolves set of constraints using system of linear equations</summary>
     public class ClSimplexSolver : ClTableau, IEditContext
     {
+        public string Name;
+
         /// <summary>
         /// Constructor initializes the fields, and creaties the objective row.
         /// </summary>
@@ -527,6 +529,11 @@ namespace Cassowary
             }
 
             RemoveColumn(v);
+        }
+
+        public ClConstraint[] AllConstraints()
+        {
+            return ConstraintMap.Keys.ToArray();
         }
 
         public IEnumerable<ClConstraint> TestGetConstraints(ClVariable v)
@@ -1111,13 +1118,69 @@ namespace Cassowary
         /// </remarks>
         private readonly Dictionary<ClVariable, ClEditInfo> _editVarMap = new Dictionary<ClVariable, ClEditInfo>();
 
-        private long _slackCounter = 0;
-        private long _artificialCounter = 0;
-        private long _dummyCounter = 0;
+        private static long _slackCounter = 0;
+        private static long _artificialCounter = 0;
+        private static long _dummyCounter = 0;
 
         private const double EPSILON = 1e-8;
         private bool _cNeedsSolving = false;
 
         private readonly Stack<int> _stkCedcns = new Stack<int>(new[] { 0 });
+
+        /// <summary>
+        /// Is solvers does not contains same variables we can marge them
+        /// </summary>
+        /// <param name="other"></param>
+        public void MergeWith(ClSimplexSolver other)
+        {
+            if (this == other)
+            {
+                throw new InvalidOperationException("trying to merge solver with itself");
+            }
+
+            if (_stkCedcns.Count > 1)
+            {
+                throw new InvalidOperationException("left solver is in editing state");
+            }
+
+            if (other._stkCedcns.Count > 1)
+            {
+                throw new InvalidOperationException("right solver is in editing state");
+            }
+
+            var inf = ExternalRows.Intersect(other.ExternalRows).ToArray();
+            if (inf.Length > 0)
+            {
+                throw new InvalidOperationException($"both solvers ([{this.Name ?? "<null>"}], [{other.Name ?? "<null>"}]) contains variables: {string.Join("; ", inf.Select(x => x.ToString()))}");
+            }
+
+            InfeasibleRows.UnionWith(other.InfeasibleRows);
+            ExternalRows.UnionWith(other.ExternalRows);
+            ExternalParametricVars.UnionWith(other.ExternalParametricVars);
+
+
+            foreach (var kvp in other.ConstraintMap)
+            {
+                ConstraintMap[kvp.Key] = kvp.Value;
+            }
+
+            foreach (var kvp in other.Columns)
+            {
+                Columns[kvp.Key] = kvp.Value;
+            }
+
+            foreach (var kvp in other.Rows)
+            {
+                Rows[kvp.Key] = kvp.Value;
+            }
+
+            _cNeedsSolving = _cNeedsSolving || other._cNeedsSolving;
+            if (AutoSolve)
+            {
+                Solve();
+            }
+        }
+
+        public Action<string> Log = s => Console.WriteLine(s);
     }
 }

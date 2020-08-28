@@ -57,7 +57,7 @@ namespace Cassowary
         /// <remarks>
         /// Solver will throw exception if cannot be satisfied
         /// </remarks>
-        public static ClStrength Required { get; } = new ClStrength("<Required>", 1.0, 100);
+        public static ClStrength Required { get; } = new ClStrength("required", 1.0, 100);
 
         /// <summary>
         /// Strong constraint priority

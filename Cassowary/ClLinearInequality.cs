@@ -1,4 +1,4 @@
-/*
+﻿/*
   Cassowary.net: an incremental constraint solver for .NET
   (http://lumumba.uhasselt.be/jo/projects/cassowary.net/)
   
@@ -92,9 +92,10 @@ namespace Cassowary
             get { return true; }
         }
 
-        public override sealed string ToString()
+
+        public override string ToString()
         {
-            return base.ToString() + " >= 0)";
+            return CreateDescription("≥", "≤");
         }
     }
 }

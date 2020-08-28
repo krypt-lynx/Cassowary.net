@@ -17,6 +17,43 @@ namespace CassowaryTests
         }
 
         [TestMethod]
+        public void Description()
+        {
+            var a = new ClVariable("a");
+            var b = new ClVariable("b");
+
+
+
+            bool testConstraint(ClConstraint cn, string test)
+            {
+                Console.WriteLine(cn.ToString());
+                return cn.ToString().Contains(test);
+            }
+
+
+            Assert.IsTrue(testConstraint(a ^ 10, "[a:0] = 10"));
+            Assert.IsTrue(testConstraint(a ^ 2 * b, "[a:0] = 2×[b:0]"));
+            Assert.IsTrue(testConstraint(10 ^ b, "[b:0] = 10"));
+            Assert.IsTrue(testConstraint(a + b ^ 10, "[a:0] + [b:0] = 10"));
+            Assert.IsTrue(testConstraint(a + b ^ -10, "[a:0] + [b:0] + 10 = 0"));
+
+            Assert.IsTrue(testConstraint(new ClStayConstraint(a), "[a:0] = 0"));
+            Assert.IsTrue(testConstraint(new ClEditConstraint(a), "[a:0] = 0"));
+
+            Assert.IsTrue(testConstraint(a >= 10, "[a:0] ≥ 10"));
+            Assert.IsTrue(testConstraint(a <= 10, "[a:0] ≤ 10"));
+
+            /*
+strong:[2; 1]:1 {[a:0] = -10}) = 0)
+strong:[2; 1]:1 {[a:0] + 0 = [b:0]}) = 0)
+strong:[2; 1]:1 {[b:0] = -10}) = 0)
+strong:[2; 1]:1 {[a:0] + [b:0] = -10}) = 0)
+strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)             
+             */
+        }
+
+
+        [TestMethod]
         public void RemoveVariable()
         {
             var a = new ClVariable("a");
@@ -45,6 +82,33 @@ namespace CassowaryTests
             //var cns = _solver.TestGetConstraints(a);
             //_solver.TestRemoveVariable(a);
 
+        }
+
+        [TestMethod]
+        public void SolversMerge()
+        {
+            GC.Collect();
+            long before = GC.GetTotalMemory(true);
+
+            var s1 = new ClSimplexSolver();
+            var s2 = new ClSimplexSolver();
+
+            var a = new ClVariable("a");
+            var b = new ClVariable("b");
+            var c = new ClVariable("c");
+
+            s1.AddConstraint(a ^ 40);
+            s2.AddConstraint(b ^ c);
+
+            s1.MergeWith(s2);
+
+            s1.AddConstraint(a ^ b);
+
+            GC.Collect();
+            var used = GC.GetTotalMemory(true) - before;
+            Console.WriteLine($"Memory used: {used}");
+
+            Assert.IsTrue(Cl.Approx(c, 40));
         }
 
         [TestMethod]
@@ -195,10 +259,10 @@ namespace CassowaryTests
             var x = new ClVariable("x");
 
 
-// ReSharper disable CompareOfFloatsByEqualityOperator
+            // ReSharper disable CompareOfFloatsByEqualityOperator
             _solver.AddConstraint(ClStrength.Strong, x ^ 10);
             _solver.AddConstraint(ClStrength.Medium, x ^ 5);
-// ReSharper restore CompareOfFloatsByEqualityOperator
+            // ReSharper restore CompareOfFloatsByEqualityOperator
 
             Assert.IsTrue(Math.Abs(x.Value - 10.0) < float.Epsilon);
         }
@@ -281,8 +345,8 @@ namespace CassowaryTests
         [TestMethod]
         public void AddDel()
         {
-            const int nCns = 10*500;
-            const int nVars = 12*500;
+            const int nCns = 10 * 500;
+            const int nVars = 12 * 500;
             const int nResolves = 1;
 
             var timer = new Stopwatch();
@@ -293,7 +357,7 @@ namespace CassowaryTests
                 ", nVars = " + nVars + ", nResolves = " + nResolves);
 
             timer.Start();
-            
+
 
             var rgpclv = new ClVariable[nVars];
             for (var i = 0; i < nVars; i++)

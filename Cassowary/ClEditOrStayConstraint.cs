@@ -40,12 +40,13 @@ namespace Cassowary
 
         public override string ToString()
         {
-            // add missing bracket -> see ClConstraint#ToString(...)
-            return base.ToString() + ")";
+            return CreateDescription("=", "=");
         }
 
         public ClVariable Variable { get; }
 
         public override ClLinearExpression Expression { get; }
+
+
     }
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
   Cassowary.net: an incremental constraint solver for .NET
   (http://lumumba.uhasselt.be/jo/projects/cassowary.net/)
   
@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Cassowary
 {
@@ -432,7 +433,7 @@ namespace Cassowary
             get { return Terms.Count == 0; }
         }
 
-        public override string ToString()
+       /* public override string ToString()
         {
             String s = "";
 
@@ -461,13 +462,54 @@ namespace Cassowary
             }
 
             return s;
-        }
+        }*/
 
-        public static bool FEquals(ClLinearExpression e1, ClLinearExpression e2)
-        {
-            return e1 == e2;
-        }
 
         private readonly ClDouble _constant;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            if (_constant.Value != 0)
+            {
+                sb.Append(_constant);
+            }
+
+            foreach (var kvp in Terms)
+            {
+                var value = kvp.Value.Value;
+                if (value != 0)
+                {
+                    if (value > 0)
+                    {
+                        if (sb.Length != 0)
+                        {
+                            sb.Append(" + ");
+                        }
+                    }
+                    else
+                    {
+                        if (sb.Length != 0)
+                        {
+                            sb.Append(" - ");
+                        }
+                        else
+                        {
+                            sb.Append("-");
+                        }
+
+                    }
+
+                    if (Math.Abs(value) != 1)
+                    {
+                        sb.Append($"{Math.Abs(value)}×");
+                    }
+                    sb.Append(kvp.Key);
+                }
+            }
+
+
+            return sb.ToString();
+        }
     }
 }

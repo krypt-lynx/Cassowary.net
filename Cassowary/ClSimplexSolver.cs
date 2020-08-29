@@ -1154,6 +1154,14 @@ namespace Cassowary
                 throw new InvalidOperationException($"both solvers ([{this.Name ?? "<null>"}], [{other.Name ?? "<null>"}]) contains variables: {string.Join("; ", inf.Select(x => x.ToString()))}");
             }
 
+            _stayMinusErrorVars.AddRange(other._stayMinusErrorVars);
+            _stayPlusErrorVars.AddRange(other._stayPlusErrorVars);
+
+            foreach (var kvp in other._errorVars)
+            {
+                _errorVars[kvp.Key] = kvp.Value;
+            }
+
             InfeasibleRows.UnionWith(other.InfeasibleRows);
             ExternalRows.UnionWith(other.ExternalRows);
             ExternalParametricVars.UnionWith(other.ExternalParametricVars);

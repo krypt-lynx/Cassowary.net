@@ -1182,6 +1182,9 @@ namespace Cassowary
                 Rows[kvp.Key] = kvp.Value;
             }
 
+            RemoveColumn(other._objective);
+            RemoveRow(other._objective);
+
             _cNeedsSolving = _cNeedsSolving || other._cNeedsSolving;
             if (AutoSolve)
             {

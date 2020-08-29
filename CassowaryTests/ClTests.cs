@@ -101,6 +101,7 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
             s2.AddConstraint(b ^ c);
 
             s1.MergeWith(s2);
+            // FixMe: Simplex contains 2 objectives now! (and somehow everything works)
 
             s1.AddConstraint(a ^ b);
 

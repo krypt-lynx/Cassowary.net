@@ -371,7 +371,7 @@ namespace Cassowary
                     }
                 }
 
-                if (exitVar != null)
+                if (exitVar != null && exitVar != _objective)
                 {
                     Pivot(marker, exitVar);
                 }

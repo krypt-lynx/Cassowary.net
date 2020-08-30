@@ -1097,6 +1097,11 @@ namespace Cassowary
         /// </summary>
         private readonly List<ClSlackVariable> _stayPlusErrorVars = new List<ClSlackVariable>();
 
+        private static int nextObjective = 0;
+        private static int getObjectiveId()
+        {
+            return nextObjective++;
+        }
         /// <summary>
         /// Give error variables for a non-required constraints,
         /// maps to ClSlackVariable-s.
@@ -1105,7 +1110,7 @@ namespace Cassowary
         /// Map ClConstraint to Set (of ClVariable).
         /// </remarks>
         private readonly Dictionary<ClConstraint, HashSet<ClAbstractVariable>> _errorVars = new Dictionary<ClConstraint, HashSet<ClAbstractVariable>>();
-        private readonly ClObjectiveVariable _objective = new ClObjectiveVariable(Guid.NewGuid().ToString());
+        private readonly ClObjectiveVariable _objective = new ClObjectiveVariable($"Objective_{getObjectiveId()}");
 
         /// <summary>
         /// Map edit variables to ClEditInfo-s.

@@ -273,6 +273,21 @@ namespace Cassowary
         }
 
         /// <summary>
+        /// Remove a constraint from the tableau if present
+        /// </summary>
+        /// <param name="cn">constraint to remove</param>
+        /// <returns>true is constraint was removedm false otherwise</returns>
+        public bool TryRemoveConstraint(ClConstraint cn)
+        {
+            if (ConstraintMap.ContainsKey(cn))
+            {
+                RemoveConstraint(cn);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Remove a constraint from the tableau.
         /// Also remove any error variable associated with it.
         /// </summary>

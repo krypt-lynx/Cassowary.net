@@ -29,6 +29,7 @@ namespace Cassowary
         /// </summary>
         public static ClSimplexSolver AddConstraints(this ClSimplexSolver solver, ClStrength strength, IEnumerable<ClConstraint> constraints)
         {
+            System.Diagnostics.Debug.Assert(strength != null, "strength in null");
             foreach (var constraint in constraints)
             {
                 constraint.SetStrength(strength);
@@ -67,7 +68,6 @@ namespace Cassowary
         {
             foreach (var constraint in constraints)
             {
-                constraint.SetStrength(ClStrength.Default);
                 solver.AddConstraint(constraint);
             }
             return solver;
@@ -101,6 +101,7 @@ namespace Cassowary
         /// </summary>
         public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClStrength strength, ClConstraint constraint)
         {
+            System.Diagnostics.Debug.Assert(strength != null, "strength in null");
             constraint.SetStrength(strength);
             return solver.AddConstraint(constraint);
         }

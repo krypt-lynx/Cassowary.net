@@ -53,6 +53,7 @@
     <Compile Include="ExpressionTests.cs" />
     <Compile Include="LayoutTests.cs" />
     <Compile Include="LayoutTestsSubset.cs" />
+    <Compile Include="MergeTests.cs" />
     <Compile Include="Playground.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClTests.cs" />

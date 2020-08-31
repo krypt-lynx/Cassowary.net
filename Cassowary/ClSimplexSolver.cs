@@ -1202,6 +1202,14 @@ namespace Cassowary
                 Rows[kvp.Key] = kvp.Value;
             }
 
+            var objectiveRow = RowExpression(_objective);
+            var othersObjectiveRow = RowExpression(other._objective);
+
+            foreach (var kvp in othersObjectiveRow.Terms)
+            {
+                objectiveRow.Terms[kvp.Key] = kvp.Value;
+            }
+
             RemoveColumn(other._objective);
             RemoveRow(other._objective);
 

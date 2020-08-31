@@ -24,6 +24,18 @@ namespace Cassowary
     public abstract class ClEditOrStayConstraint : ClConstraint
     {
         protected ClEditOrStayConstraint(ClVariable var,
+            double value,
+            ClStrength strength,
+            double weight = 1.0)
+            : base(strength, weight)
+        {
+            Variable = var;
+            var.Value = value;
+            Expression = new ClLinearExpression(Variable, -1.0, Variable.Value);
+        }
+
+
+        protected ClEditOrStayConstraint(ClVariable var,
             ClStrength strength,
             double weight = 1.0)
             : base(strength, weight)

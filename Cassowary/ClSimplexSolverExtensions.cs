@@ -99,7 +99,7 @@ namespace Cassowary
         /// strength for the constraint
         /// </param>
         /// </summary>
-        public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClStrength strength, ClConstraint constraint)
+        public static ClSimplexSolver AddConstraint(this ClSimplexSolver solver, ClConstraint constraint, ClStrength strength)
         {
             System.Diagnostics.Debug.Assert(strength != null, "strength in null");
             constraint.SetStrength(strength);

@@ -10,10 +10,28 @@ namespace CassowaryTests
     {
         private readonly Random _rnd;
         private readonly ClSimplexSolver _solver = new ClSimplexSolver();
-
+               
         public ClTests()
         {
             _rnd = new Random(123456789);
+        }
+
+
+        [TestMethod]
+        public void Hugging()
+        {
+
+            var a = new ClVariable("a");
+            var b = new ClVariable("b");
+            var c = new ClVariable("c");
+
+            _solver.AddConstraint(a ^ 10);
+            _solver.AddConstraint(b ^ 20);
+
+            _solver.AddConstraint(c >= a);
+            _solver.AddConstraint(c >= b);
+            
+            Assert.IsTrue(c.Value == 20);
         }
 
         [TestMethod]
@@ -65,9 +83,9 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
             var bc = b ^ c;
             var c20 = c ^ 20;
 
-            _solver.AddConstraint(ClStrength.Required, a10);
-            _solver.AddConstraint(ClStrength.Required, ab);
-            _solver.AddConstraint(ClStrength.Required, bc);
+            _solver.AddConstraint(a10, ClStrength.Required);
+            _solver.AddConstraint(ab, ClStrength.Required);
+            _solver.AddConstraint(bc, ClStrength.Required);
 
             //_solver.RemoveConstraint(a10);
             //_solver.RemoveConstraint(ab);
@@ -82,34 +100,6 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
             //var cns = _solver.TestGetConstraints(a);
             //_solver.TestRemoveVariable(a);
 
-        }
-
-        [TestMethod]
-        public void SolversMerge()
-        {
-            GC.Collect();
-            long before = GC.GetTotalMemory(true);
-
-            var s1 = new ClSimplexSolver();
-            var s2 = new ClSimplexSolver();
-
-            var a = new ClVariable("a");
-            var b = new ClVariable("b");
-            var c = new ClVariable("c");
-
-            s1.AddConstraint(a ^ 40);
-            s2.AddConstraint(b ^ c);
-
-            s1.MergeWith(s2);
-            // FixMe: Simplex contains 2 objectives now! (and somehow everything works)
-
-            s1.AddConstraint(a ^ b);
-
-            GC.Collect();
-            var used = GC.GetTotalMemory(true) - before;
-            Console.WriteLine($"Memory used: {used}");
-
-            Assert.IsTrue(Cl.Approx(c, 40));
         }
 
         [TestMethod]
@@ -261,8 +251,8 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
 
 
             // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(ClStrength.Strong, x ^ 10);
-            _solver.AddConstraint(ClStrength.Medium, x ^ 5);
+            _solver.AddConstraint(x ^ 10, ClStrength.Strong);
+            _solver.AddConstraint(x ^ 5, ClStrength.Medium);
             // ReSharper restore CompareOfFloatsByEqualityOperator
 
             Assert.IsTrue(Math.Abs(x.Value - 10.0) < float.Epsilon);
@@ -327,12 +317,12 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
 
 
             _solver
-                .AddConstraint(ClStrength.Required, new ClLinearInequality(w, Cl.Operator.GreaterThanOrEqualTo, 10.0))
-                .AddConstraint(ClStrength.Required, new ClLinearInequality(x, Cl.Operator.GreaterThanOrEqualTo, w))
-                .AddConstraint(ClStrength.Required, new ClLinearInequality(y, Cl.Operator.GreaterThanOrEqualTo, x))
-                .AddConstraint(ClStrength.Required, new ClLinearInequality(z, Cl.Operator.GreaterThanOrEqualTo, y))
-                .AddConstraint(ClStrength.Required, new ClLinearInequality(z, Cl.Operator.GreaterThanOrEqualTo, 8.0))
-                .AddConstraint(ClStrength.Required, new ClLinearInequality(z, Cl.Operator.LessThanOrEqualTo, 4.0));
+                .AddConstraint(new ClLinearInequality(w, Cl.Operator.GreaterThanOrEqualTo, 10.0), ClStrength.Required)
+                .AddConstraint(new ClLinearInequality(x, Cl.Operator.GreaterThanOrEqualTo, w), ClStrength.Required)
+                .AddConstraint(new ClLinearInequality(y, Cl.Operator.GreaterThanOrEqualTo, x), ClStrength.Required)
+                .AddConstraint(new ClLinearInequality(z, Cl.Operator.GreaterThanOrEqualTo, y), ClStrength.Required)
+                .AddConstraint(new ClLinearInequality(z, Cl.Operator.GreaterThanOrEqualTo, 8.0), ClStrength.Required)
+                .AddConstraint(new ClLinearInequality(z, Cl.Operator.LessThanOrEqualTo, 4.0), ClStrength.Required);
         }
 
         [TestMethod]

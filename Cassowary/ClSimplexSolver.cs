@@ -492,6 +492,9 @@ namespace Cassowary
         /// <returns></returns>
         public IEnumerable<ClAbstractVariable> AllVariables()
         {
+            //foreach (var v in ExternalRows)
+            //foreach (var v in ExternalParametricVars)
+
             foreach (var v in Columns.Keys)
             {
                 if (v.IsExternal)
@@ -1147,6 +1150,7 @@ namespace Cassowary
 
         private readonly Stack<int> _stkCedcns = new Stack<int>(new[] { 0 });
 
+        /* // bugs - breaks inequality constraitns
         /// <summary>
         /// Is solvers does not contains same variables we can marge them
         /// </summary>
@@ -1204,13 +1208,35 @@ namespace Cassowary
 
             var objectiveRow = RowExpression(_objective);
             var othersObjectiveRow = RowExpression(other._objective);
-
+            
             foreach (var kvp in othersObjectiveRow.Terms)
             {
                 objectiveRow.Terms[kvp.Key] = kvp.Value;
             }
 
-            RemoveColumn(other._objective);
+            //SubstituteOut(other._objective, othersObjectiveRow);
+
+
+            foreach (var row in Rows.Values)
+            {
+                if (row.Terms.ContainsKey(other._objective))
+                {
+                    row.SubstituteOut(other._objective, othersObjectiveRow, other._objective, this);
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+            //RemoveColumn(other._objective);
             RemoveRow(other._objective);
 
             _cNeedsSolving = _cNeedsSolving || other._cNeedsSolving;
@@ -1218,8 +1244,6 @@ namespace Cassowary
             {
                 Solve();
             }
-        }
-
-        public Action<string> Log = s => Console.WriteLine(s);
+        }*/
     }
 }

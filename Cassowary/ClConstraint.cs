@@ -89,8 +89,16 @@ namespace Cassowary
         /// <summary>
         /// Constraint weight
         /// </summary>
-        public double Weight { get; } = 1;
+        public double Weight { get; private set; } = 1;
 
+        /// <summary>
+        /// temporary method to set weight after constraint creation (ised in AddConstraint extansions). TODO: remove
+        /// </summary>
+        /// <param name="weight"></param>
+        public void SetWeight(double weight)
+        {
+            Weight = weight; // TODO: validate constraint is not added or ensure it is safe to modify added constraint 
+        }
         /*
         /// <summary>
         /// Returns a string that represents the current object.

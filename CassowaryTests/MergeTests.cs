@@ -8,11 +8,41 @@ using System.Threading.Tasks;
 
 namespace CassowaryTests
 {
+    /*
     [TestClass]
     public class MergeTests
     {
         [TestMethod]
-        public void MergeTest()
+        public void MergeTest1()
+        {
+            GC.Collect();
+            long before = GC.GetTotalMemory(true);
+
+            var s1 = new ClSimplexSolver();
+            var s2 = new ClSimplexSolver();
+
+            var a = new ClVariable("a");
+            var b = new ClVariable("b");
+            var c = new ClVariable("c");
+
+            s1.AddConstraint(a ^ 40);
+            s2.AddConstraint(b ^ c);
+
+            s1.MergeWith(s2);
+            // FixMe: Simplex contains 2 objectives now! (and somehow everything works)
+
+            s1.AddConstraint(a ^ b);
+
+            GC.Collect();
+            var used = GC.GetTotalMemory(true) - before;
+            Console.WriteLine($"Memory used: {used}");
+
+            Assert.IsTrue(Cl.Approx(c, 40));
+        }
+
+
+        [TestMethod]
+        public void MergeTest2()
         {
 
             var s1 = new ClSimplexSolver();
@@ -31,8 +61,6 @@ namespace CassowaryTests
             s1.AddConstraint(new ClStayConstraint(Row_R, 230, ClStrength.Required));
             s1.AddConstraint(new ClStayConstraint(Row_T, 50, ClStrength.Required));
             s1.AddConstraint(ClStrength.Required, Row_T + Row_H ^ Row_B);
-
-
 
             var Item_L = new ClVariable("Item_L");
             var Item_R = new ClVariable("Item_R");
@@ -140,5 +168,80 @@ namespace CassowaryTests
             return movedConstraints;
         }
 
+        [TestMethod]
+        public void Hugging()
+        {
+            var s1 = new ClSimplexSolver();
+            var s2 = new ClSimplexSolver();
+
+            s1.AutoSolve = false;
+            s2.AutoSolve = false;
+            //var s2 = s1;
+
+            var CElement_2_T = new ClVariable("CElement_2_T");
+            var CElement_buttonsPanel_1_T = new ClVariable("CElement_buttonsPanel_1_T");
+            var CElement_3_T = new ClVariable("CElement_3_T");
+            var CButton_4_T = new ClVariable("CButton_4_T");
+            var CButton_4_H = new ClVariable("CButton_4_H");
+            var CButton_4_B = new ClVariable("CButton_4_B");
+            var CElement_2_B = new ClVariable("CElement_2_B");
+            var CCheckBox_5_T = new ClVariable("CCheckBox_5_T");
+            var CCheckBox_5_H = new ClVariable("CCheckBox_5_H");
+            var CCheckBox_5_B = new ClVariable("CCheckBox_5_B");
+            var CElement_3_B = new ClVariable("CElement_3_B");
+            var CElement_buttonsPanel_1_B = new ClVariable("CElement_buttonsPanel_1_B");
+            var CWindowRoot_0_T = new ClVariable("CWindowRoot_0_T");
+            var CWindowRoot_0_B = new ClVariable("CWindowRoot_0_B");
+
+
+            s2.AddConstraint(CElement_2_T ^ CElement_buttonsPanel_1_T);
+            s2.AddConstraint(CElement_3_T ^ CElement_buttonsPanel_1_T);
+            s2.AddConstraint(CElement_2_T ^ CButton_4_T);
+            s2.AddConstraint(CButton_4_H ^ 60);
+            s2.AddConstraint(CButton_4_B ^ CElement_2_B);
+            s2.AddConstraint(CElement_3_T ^ CCheckBox_5_T);
+            s2.AddConstraint(CCheckBox_5_H ^ 30);
+            s2.AddConstraint(CCheckBox_5_B ^ CElement_3_B);
+            s2.AddConstraint(CElement_buttonsPanel_1_B >= CElement_2_B);
+            s2.AddConstraint(CElement_buttonsPanel_1_B >= CElement_3_B);
+            s2.AddConstraint(CWindowRoot_0_T ^ CElement_buttonsPanel_1_T);
+            s2.AddConstraint(CWindowRoot_0_B ^ CElement_buttonsPanel_1_B);
+
+
+
+
+            s1.MergeWith(s2);
+
+            s1.AddConstraint(new ClStayConstraint(CWindowRoot_0_T, 0));
+
+            s1.Solve();
+            s2.AddConstraint(CButton_4_T + CButton_4_H ^ CButton_4_B);
+            s2.AddConstraint(CCheckBox_5_T + CCheckBox_5_H ^ CCheckBox_5_B);
+
+            Assert.IsTrue(CButton_4_H.Value == 60);
+
+            
+//s2 add    
+//strong:[2; 1]:1 {[CElement_2_T:0] = [CElement_buttonsPanel_1_T:0]}
+//strong:[2; 1]:1 {[CElement_3_T:0] = [CElement_buttonsPanel_1_T:0]}
+//strong:[2; 1]:1 {[CElement_2_T:0] = [CButton_4_T:0]}
+//strong:[2; 1]:1 {[CButton_4_H:60] = 60}
+//strong:[2; 1]:1 {[CButton_4_B:60] = [CElement_2_B:60]}
+//strong:[2; 1]:1 {[CElement_3_T:0] = [CCheckBox_5_T:0]}
+//strong:[2; 1]:1 {[CCheckBox_5_H:30] = 30}
+//strong:[2; 1]:1 {[CCheckBox_5_B:30] = [CElement_3_B:30]}
+//medium:[1; 1]:1 {[CElement_buttonsPanel_1_B:60] ≥ [CElement_2_B:60]}
+//medium:[1; 1]:1 {[CElement_buttonsPanel_1_B:60] ≥ [CElement_3_B:30]}
+//strong:[2; 1]:1 {[CWindowRoot_0_T:0] = [CElement_buttonsPanel_1_T:0]}
+//strong:[2; 1]:1 {[CWindowRoot_0_B:60] = [CElement_buttonsPanel_1_B:60]}
+//s1.merge(s2)
+//s1 add
+//stayrequired:1 {[CWindowRoot_0_T:0] = 0}
+//required:1 {[CButton_4_T:0] + [CButton_4_H:60] = [CButton_4_B:60]}
+//required:1 {[CCheckBox_5_T:0] + [CCheckBox_5_H:30] = [CCheckBox_5_B:30]}
+            
+        }
     }
+
+*/
 }

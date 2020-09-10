@@ -39,38 +39,38 @@ namespace CassowaryTests
 
             //Define the midpoints
 // ReSharper disable CompareOfFloatsByEqualityOperator
-            _solver.AddConstraint(ClStrength.Required, m0.X ^ _0.X * 0.5 + _1.X * 0.5);
-            _solver.AddConstraint(ClStrength.Required, m0.Y ^ _0.Y * 0.5 + _1.Y * 0.5);
+            _solver.AddConstraint(m0.X ^ _0.X * 0.5 + _1.X * 0.5, ClStrength.Required);
+            _solver.AddConstraint(m0.Y ^ _0.Y * 0.5 + _1.Y * 0.5, ClStrength.Required);
 
-            _solver.AddConstraint(ClStrength.Required, m1.X ^ _1.X * 0.5 + _2.X * 0.5);
-            _solver.AddConstraint(ClStrength.Required, m1.Y ^ _1.Y * 0.5 + _2.Y * 0.5);
+            _solver.AddConstraint(m1.X ^ _1.X * 0.5 + _2.X * 0.5, ClStrength.Required);
+            _solver.AddConstraint(m1.Y ^ _1.Y * 0.5 + _2.Y * 0.5, ClStrength.Required);
 
-            _solver.AddConstraint(ClStrength.Required, m2.X ^ _2.X * 0.5 + _3.X * 0.5);
-            _solver.AddConstraint(ClStrength.Required, m2.Y ^ _2.Y * 0.5 + _3.Y * 0.5);
+            _solver.AddConstraint(m2.X ^ _2.X * 0.5 + _3.X * 0.5, ClStrength.Required);
+            _solver.AddConstraint(m2.Y ^ _2.Y * 0.5 + _3.Y * 0.5, ClStrength.Required);
 
-            _solver.AddConstraint(ClStrength.Required, m3.X ^ _3.X * 0.5 + _0.X * 0.5);
-            _solver.AddConstraint(ClStrength.Required, m3.Y ^ _3.Y * 0.5 + _0.Y * 0.5);
+            _solver.AddConstraint(m3.X ^ _3.X * 0.5 + _0.X * 0.5, ClStrength.Required);
+            _solver.AddConstraint(m3.Y ^ _3.Y * 0.5 + _0.Y * 0.5, ClStrength.Required);
 
 // ReSharper restore CompareOfFloatsByEqualityOperator
 
             //Make sure left stays left and top stays top
-            _solver.AddConstraint(ClStrength.Required, _0.X + 20 <= _2.X);
-            _solver.AddConstraint(ClStrength.Required, _0.X + 20 <= _3.X);
+            _solver.AddConstraint(_0.X + 20 <= _2.X, ClStrength.Required);
+            _solver.AddConstraint(_0.X + 20 <= _3.X, ClStrength.Required);
 
-            _solver.AddConstraint(ClStrength.Required, _1.X + 20 <= _2.X);
-            _solver.AddConstraint(ClStrength.Required, _1.X + 20 <= _3.X);
+            _solver.AddConstraint(_1.X + 20 <= _2.X, ClStrength.Required);
+            _solver.AddConstraint(_1.X + 20 <= _3.X, ClStrength.Required);
 
-            _solver.AddConstraint(ClStrength.Required, _0.Y + 20 <= _1.Y);
-            _solver.AddConstraint(ClStrength.Required, _0.Y + 20 <= _2.Y);
+            _solver.AddConstraint(_0.Y + 20 <= _1.Y, ClStrength.Required);
+            _solver.AddConstraint(_0.Y + 20 <= _2.Y, ClStrength.Required);
 
-            _solver.AddConstraint(ClStrength.Required, _3.Y + 20 <= _1.Y);
-            _solver.AddConstraint(ClStrength.Required, _3.Y + 20 <= _2.Y);
+            _solver.AddConstraint(_3.Y + 20 <= _1.Y, ClStrength.Required);
+            _solver.AddConstraint(_3.Y + 20 <= _2.Y, ClStrength.Required);
 
             //Make sure all points stay in 500x500 canvas
-            _solver.AddConstraint(ClStrength.Required, _0.X >= 0);
-            _solver.AddConstraint(ClStrength.Required, _0.Y >= 0);
-            _solver.AddConstraint(ClStrength.Required, _0.X <= 500);
-            _solver.AddConstraint(ClStrength.Required, _0.Y <= 500);
+            _solver.AddConstraint(_0.X >= 0, ClStrength.Required);
+            _solver.AddConstraint(_0.Y >= 0, ClStrength.Required);
+            _solver.AddConstraint(_0.X <= 500, ClStrength.Required);
+            _solver.AddConstraint(_0.Y <= 500, ClStrength.Required);
 
             Console.WriteLine(m0.X.Value + " " + m0.Y.Value);
             Console.WriteLine(m1.X.Value + " " + m1.Y.Value);

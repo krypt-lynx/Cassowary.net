@@ -75,7 +75,6 @@
     <Compile Include="ClAbstractVariable.cs" />
     <Compile Include="ClConstraint.cs" />
     <Compile Include="ClConstraintOperators.cs" />
-    <Compile Include="ClDouble.cs" />
     <Compile Include="ClDummyVariable.cs" />
     <Compile Include="ClEditConstraint.cs" />
     <Compile Include="ClEditInfo.cs" />

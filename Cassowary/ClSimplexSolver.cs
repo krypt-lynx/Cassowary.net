@@ -48,10 +48,10 @@ namespace Cassowary
         public ClSimplexSolver AddConstraint(ClConstraint cn)
         {
             List<ClAbstractVariable> eplusEminus = new List<ClAbstractVariable>(2);
-            ClDouble prevEConstant = new ClDouble();
+            Double prevEConstant = 0;
             ClLinearExpression expr = NewExpression(cn, /* output to: */
                 eplusEminus,
-                prevEConstant);
+                ref prevEConstant);
 
             bool cAddedOkDirectly = TryAddingDirectly(expr);
             if (!cAddedOkDirectly)
@@ -70,7 +70,7 @@ namespace Cassowary
                 ClSlackVariable clvEminus = (ClSlackVariable)eplusEminus[1];
                 _editVarMap.Add(cnEdit.Variable,
                     new ClEditInfo(cnEdit, clvEplus, clvEminus,
-                        prevEConstant.Value,
+                        prevEConstant,
                         i));
             }
 
@@ -685,7 +685,7 @@ namespace Cassowary
 
             foreach (ClAbstractVariable v in terms.Keys)
             {
-                double c = (terms[v]).Value;
+                double c = terms[v];
 
                 if (foundUnrestricted)
                 {
@@ -726,7 +726,7 @@ namespace Cassowary
 
             foreach (ClAbstractVariable v in terms.Keys)
             {
-                double c = (terms[v]).Value;
+                double c = terms[v];
 
                 if (!v.IsDummy)
                     return null; // nope, no luck
@@ -751,7 +751,7 @@ namespace Cassowary
 
         private ClLinearExpression NewExpression(ClConstraint cn,
             ICollection<ClAbstractVariable> eplusEminus,
-            ClDouble prevEConstant)
+            ref double prevEConstant)
         {
             ClLinearExpression cnExpr = cn.Expression;
             ClLinearExpression expr = new ClLinearExpression(cnExpr.Constant);
@@ -759,7 +759,7 @@ namespace Cassowary
             var cnTerms = cnExpr.Terms;
             foreach (ClAbstractVariable v in cnTerms.Keys)
             {
-                double c = (cnTerms[v]).Value;
+                double c = cnTerms[v];
                 ClLinearExpression e = RowExpression(v);
                 if (e == null)
                     expr.AddVariable(v, c);
@@ -822,7 +822,7 @@ namespace Cassowary
                     {
                         eplusEminus.Add(eplus);
                         eplusEminus.Add(eminus);
-                        prevEConstant.Value = cnExpr.Constant;
+                        prevEConstant = cnExpr.Constant;
                     }
                 }
             }
@@ -853,9 +853,9 @@ namespace Cassowary
                 double objectiveCoeff = 0;
                 foreach (var kvp in zRow.Terms)
                 {
-                    if (kvp.Key.IsPivotable && kvp.Value.Value < objectiveCoeff)
+                    if (kvp.Key.IsPivotable && kvp.Value < objectiveCoeff)
                     {
-                        objectiveCoeff = kvp.Value.Value;
+                        objectiveCoeff = kvp.Value;
                         entryVar = kvp.Key;
                     }
                 }
@@ -979,7 +979,7 @@ namespace Cassowary
                         var terms = expr.Terms;
                         foreach (ClAbstractVariable v in terms.Keys)
                         {
-                            double c = (terms[v]).Value;
+                            double c = terms[v];
                             if (c > 0.0 && v.IsPivotable)
                             {
                                 double zc = zRow.CoefficientFor(v);

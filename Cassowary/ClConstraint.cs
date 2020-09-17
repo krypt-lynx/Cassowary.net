@@ -148,7 +148,7 @@ namespace Cassowary
         protected string CreateDescription(string OperatorString, string OperatorStringInversed)
         {
             // copy expression data in usable form
-            var terms = Expression.Terms.Select(x => new Term(x.Key, x.Value.Value)).ToArray();
+            var terms = Expression.Terms.Select(x => new Term(x.Key, x.Value)).ToArray();
             var constant = Expression.Constant;
 
             bool operatorNageted = false;

@@ -194,7 +194,7 @@ public class Parser
 
     void Factor(out ClLinearExpression e)
     {
-        e = null; ClDouble d; ClVariable v; bool negate = false;
+        e = null; double d; ClVariable v; bool negate = false;
         if (la.kind == 7)
         {
             Get();
@@ -203,7 +203,7 @@ public class Parser
         if (la.kind == 13)
         {
             Number(out d);
-            e = new ClLinearExpression(d.Value);
+            e = new ClLinearExpression(d);
         }
         else if (la.kind == 12)
         {
@@ -222,11 +222,11 @@ public class Parser
 
     }
 
-    void Number(out ClDouble d)
+    void Number(out double d)
     {
         Expect(13);
         double tmpVal = double.Parse(t.val, new CultureInfo("en-US").NumberFormat);
-        d = new ClDouble(tmpVal);
+        d = tmpVal;
 
     }
 

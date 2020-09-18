@@ -1150,9 +1150,9 @@ namespace Cassowary
 
         private readonly Stack<int> _stkCedcns = new Stack<int>(new[] { 0 });
 
-        /* // bugs - breaks inequality constraitns
         /// <summary>
         /// Is solvers does not contains same variables we can marge them
+        /// Second solver must not be used after this operation.
         /// </summary>
         /// <param name="other"></param>
         public void MergeWith(ClSimplexSolver other)
@@ -1186,6 +1186,11 @@ namespace Cassowary
                 _errorVars[kvp.Key] = kvp.Value;
             }
 
+            foreach (var kvp in other._editVarMap)
+            {
+                _editVarMap[kvp.Key] = kvp.Value;
+            }
+
             InfeasibleRows.UnionWith(other.InfeasibleRows);
             ExternalRows.UnionWith(other.ExternalRows);
             ExternalParametricVars.UnionWith(other.ExternalParametricVars);
@@ -1198,52 +1203,50 @@ namespace Cassowary
 
             foreach (var kvp in other.Columns)
             {
-                Columns[kvp.Key] = kvp.Value;
+                var column = kvp.Value;
+                if (column.Contains(other._objective))
+                {
+                    column.Remove(other._objective);
+                    column.Add(_objective);
+            }
+                Columns[kvp.Key] = column;
             }
 
             foreach (var kvp in other.Rows)
             {
+                var row = kvp.Value;
+                foreach (var term in row.Terms.Keys.ToArray())
+                {
+                    if (term == other._objective)
+                    {
+                        var value = row.Terms[term];
+                        row.Terms.Remove(term);
+                        row.Terms[_objective] = value;
+
+                    }
+                }
                 Rows[kvp.Key] = kvp.Value;
             }
+
 
             var objectiveRow = RowExpression(_objective);
             var othersObjectiveRow = RowExpression(other._objective);
             
+
+
             foreach (var kvp in othersObjectiveRow.Terms)
             {
                 objectiveRow.Terms[kvp.Key] = kvp.Value;
             }
 
-            //SubstituteOut(other._objective, othersObjectiveRow);
+            Rows.Remove(other._objective);
 
-
-            foreach (var row in Rows.Values)
-            {
-                if (row.Terms.ContainsKey(other._objective))
-                {
-                    row.SubstituteOut(other._objective, othersObjectiveRow, other._objective, this);
-                }
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-            //RemoveColumn(other._objective);
-            RemoveRow(other._objective);
 
             _cNeedsSolving = _cNeedsSolving || other._cNeedsSolving;
             if (AutoSolve)
             {
                 Solve();
             }
-        }*/
+        }
     }
 }

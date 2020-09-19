@@ -87,7 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cassowary\Cassowary.csproj">
-      <Project>{F01578A3-BA19-47E6-B333-40E41158658B}</Project>
+      <Project>{f01578a3-ba19-47e6-b333-40e41158658b}</Project>
       <Name>Cassowary</Name>
     </ProjectReference>
   </ItemGroup>

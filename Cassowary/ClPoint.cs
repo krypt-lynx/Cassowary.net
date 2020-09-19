@@ -21,7 +21,7 @@
 
 using System.Collections.Generic;
 
-namespace Cassowary
+namespace Cassowary_moddiff
 {
     public class ClPoint
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cassowary
+namespace Cassowary_moddiff
 {
     public partial class ClLinearExpression : Cl
     {

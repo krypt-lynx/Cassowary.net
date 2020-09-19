@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using Cassowary;
+using Cassowary_moddiff;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CassowaryTests
+namespace Cassowary_moddiffTests
 {
     [TestClass]
     public class Playground

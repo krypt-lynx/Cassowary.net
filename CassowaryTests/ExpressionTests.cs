@@ -1,8 +1,8 @@
-﻿using Cassowary;
+﻿using Cassowary_moddiff;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace CassowaryTests
+namespace Cassowary_moddiffTests
 {
     public class MemberAccessTestClass
     {

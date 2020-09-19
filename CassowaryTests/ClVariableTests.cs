@@ -1,7 +1,7 @@
-﻿using Cassowary;
+﻿using Cassowary_moddiff;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CassowaryTests
+namespace Cassowary_moddiffTests
 {
     [TestClass]
     public class ClVariableTests

@@ -23,7 +23,7 @@ using System.IO;
 using System.Text;
 using System.Collections;
 
-namespace Cassowary.Parsing
+namespace Cassowary_moddiff.Parsing
 {
     public class ClParser
     {

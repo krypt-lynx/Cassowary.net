@@ -21,7 +21,7 @@
 
 using System.Globalization;
 
-namespace Cassowary
+namespace Cassowary_moddiff
 {
     /// <summary>
     /// Linear Variable representation

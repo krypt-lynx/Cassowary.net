@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Cassowary.Cl;
+using static Cassowary_moddiff.Cl;
 
-namespace Cassowary
+namespace Cassowary_moddiff
 {
     public abstract partial class ClAbstractVariable
     {

@@ -1,4 +1,4 @@
-﻿using Cassowary;
+﻿using Cassowary_moddiff;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CassowaryTests
+namespace Cassowary_moddiffTests
 {
     
     [TestClass]

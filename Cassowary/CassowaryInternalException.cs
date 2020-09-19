@@ -21,7 +21,7 @@
 
 using System;
 
-namespace Cassowary
+namespace Cassowary_moddiff
 {
     [Serializable]
     internal class CassowaryInternalException : CassowaryException

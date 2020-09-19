@@ -61,11 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cassowary.Parsing\Cassowary.Parsing.csproj">
-      <Project>{DAE0FC0E-44C5-4B1F-8D81-80BA4CFFFB47}</Project>
+      <Project>{dae0fc0e-44c5-4b1f-8d81-80ba4cfffb47}</Project>
       <Name>Cassowary.Parsing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cassowary\Cassowary.csproj">
-      <Project>{F01578A3-BA19-47E6-B333-40E41158658B}</Project>
+      <Project>{f01578a3-ba19-47e6-b333-40e41158658b}</Project>
       <Name>Cassowary</Name>
     </ProjectReference>
   </ItemGroup>

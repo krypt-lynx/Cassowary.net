@@ -20,7 +20,8 @@
 */
 
 using System.Threading;
-namespace Cassowary
+
+namespace Cassowary_moddiff
 {
     internal class ClSlackVariable : ClAbstractVariable
     {

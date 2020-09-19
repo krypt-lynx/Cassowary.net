@@ -25,7 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace Cassowary
+namespace Cassowary_moddiff
 {
     /// <summary>Simplex solver. Resolves set of constraints using system of linear equations</summary>
     public class ClSimplexSolver : ClTableau, IEditContext

@@ -26,7 +26,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Cassowary
+namespace Cassowary_moddiff
 {
     public partial class ClLinearExpression : Cl
     {

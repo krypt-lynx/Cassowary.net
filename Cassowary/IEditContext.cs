@@ -1,5 +1,5 @@
 ﻿
-namespace Cassowary
+namespace Cassowary_moddiff
 {
     /// <summary>
     /// Edit transaction interface

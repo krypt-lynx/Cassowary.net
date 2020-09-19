@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cassowary;
+using Cassowary_moddiff;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
-namespace CassowaryTests
+namespace Cassowary_moddiffTests
 {
     [TestClass]
     public class PythonExamples

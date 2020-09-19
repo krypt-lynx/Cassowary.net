@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 // this file is a fine example of stackoverflow programming
 
-namespace Cassowary
+namespace Cassowary_moddiff
 {
     /// <summary>
     /// Constraints builder extension

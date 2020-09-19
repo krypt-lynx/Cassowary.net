@@ -25,7 +25,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace Cassowary
+namespace Cassowary_moddiff
 {
 
     /// <summary>

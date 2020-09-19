@@ -30,19 +30,18 @@ namespace Cassowary
     public abstract partial class ClAbstractVariable
     {
 
-        static uint varCounter = 0;
+        static int varCounter = 0;
 
-        uint id;
+        int id;
         /// <summary>
         /// creates variable with custom name
         /// </summary>
         /// <param name="name">nariable name</param>
         protected ClAbstractVariable(string name)
         {
-            id = varCounter++;
+            id = Interlocked.Increment(ref varCounter);
 
             Name = name;
-            Interlocked.Increment(ref _numCreated);
         }
 
 
@@ -61,8 +60,8 @@ namespace Cassowary
         /// </summary>
         protected ClAbstractVariable()
         {
-            id = varCounter++;
-            Name = "v" + Interlocked.Increment(ref _numCreated);
+            id = Interlocked.Increment(ref varCounter);
+            Name = $"v{id}";
         }
 
         /// <summary>
@@ -76,9 +75,8 @@ namespace Cassowary
         /// </param>
         protected ClAbstractVariable(long varnumber, string prefix)
         {
-            id = varCounter++;
+            id = Interlocked.Increment(ref varCounter);
             Name = prefix + varnumber;
-            Interlocked.Increment(ref _numCreated);
         }
 
         /// <summary>
@@ -110,7 +108,7 @@ namespace Cassowary
         public abstract bool IsRestricted { get; }
         
 
-        private static int _numCreated = 0;
+        //private static int _numCreated = 0;
 
     }
 }

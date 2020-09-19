@@ -19,6 +19,7 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+using System.Threading;
 namespace Cassowary
 {
     public class ClObjectiveVariable : ClAbstractVariable
@@ -26,7 +27,7 @@ namespace Cassowary
         static int nextId = 0;
         static public string GetId()
         {
-            return $"az{nextId++}";
+            return $"az{Interlocked.Increment(ref nextId)}";
         }
 
         public ClObjectiveVariable(string name)

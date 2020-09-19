@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Cassowary
 {
@@ -587,7 +588,7 @@ namespace Cassowary
         private void AddWithArtificialVariable(ClLinearExpression expr)
         /* throws ExClRequiredFailure, ExClInternalError */
         {
-            ClSlackVariable av = new ClSlackVariable(++_artificialCounter, "a");
+            ClSlackVariable av = new ClSlackVariable(Interlocked.Increment(ref _artificialCounter), "a");
             ClObjectiveVariable az = new ClObjectiveVariable("az");
             ClLinearExpression azRow = expr.Clone();
 
@@ -768,14 +769,12 @@ namespace Cassowary
 
             if (cn.IsInequality)
             {
-                ++_slackCounter;
-                ClSlackVariable slackVar = new ClSlackVariable(_slackCounter, "s");
+                ClSlackVariable slackVar = new ClSlackVariable(Interlocked.Increment(ref _slackCounter), "s");
                 expr.SetVariable(slackVar, -1);
                 ConstraintMap.Add(cn, slackVar);
                 if (!cn.Strength.IsRequired)
                 {
-                    ++_slackCounter;
-                    eminus = new ClSlackVariable(_slackCounter, "em");
+                    eminus = new ClSlackVariable(Interlocked.Increment(ref _slackCounter), "em");
                     expr.SetVariable(eminus, 1.0);
                     ClLinearExpression zRow = RowExpression(_objective);
                     ClSymbolicWeight sw = cn.Strength.SymbolicWeight.Times(cn.Weight);
@@ -789,16 +788,15 @@ namespace Cassowary
                 // cn is an equality
                 if (cn.Strength.IsRequired)
                 {
-                    ++_dummyCounter;
-                    ClDummyVariable dummyVar = new ClDummyVariable(_dummyCounter, "d");
+                    ClDummyVariable dummyVar = new ClDummyVariable(Interlocked.Increment(ref _dummyCounter), "d");
                     expr.SetVariable(dummyVar, 1.0);
                     ConstraintMap.Add(cn, dummyVar);
                 }
                 else
                 {
-                    ++_slackCounter;
-                    ClSlackVariable eplus = new ClSlackVariable(_slackCounter, "ep");
-                    eminus = new ClSlackVariable(_slackCounter, "em");
+                    var slackCounter = Interlocked.Increment(ref _slackCounter);
+                    ClSlackVariable eplus = new ClSlackVariable(slackCounter, "ep");
+                    eminus = new ClSlackVariable(slackCounter, "em");
 
                     expr.SetVariable(eplus, -1.0);
                     expr.SetVariable(eminus, 1.0);
@@ -1117,7 +1115,7 @@ namespace Cassowary
         private static int nextObjective = 0;
         private static int getObjectiveId()
         {
-            return nextObjective++;
+            return Interlocked.Increment(ref nextObjective);
         }
         /// <summary>
         /// Give error variables for a non-required constraints,

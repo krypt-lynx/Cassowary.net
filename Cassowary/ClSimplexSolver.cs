@@ -1208,16 +1208,7 @@ namespace Cassowary
                 }
                 Columns[kvp.Key] = column;
             }
-
-
-            var rows = new List<KeyValuePair<ClAbstractVariable, ClLinearExpression>>();
-
-            foreach (var kvp in Rows) // I have no situable way to implement CopyTo. I have no fucking indices in unsorted collection!
-            {
-                rows.Add(kvp);
-            }
-
-
+  
             foreach (var kvp in other.Rows)
             {
                 var row = kvp.Value;
@@ -1228,17 +1219,8 @@ namespace Cassowary
                         var value = row.Terms[term];
                         row.Terms.Remove(term);
                         row.Terms[_objective] = value;
-
                     }
                 }
-                rows.Add(kvp);
-            }
-
-            Rows.Clear();
-
-            foreach (var kvp in rows)
-            {
-                kvp.Key.sparceIndex = -1;
                 Rows.Add(kvp);
             }
 

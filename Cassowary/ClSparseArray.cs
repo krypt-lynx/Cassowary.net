@@ -19,7 +19,7 @@ namespace Cassowary
 
         int id = 0;
 
-        int capacity = 1024;
+        int capacity = 2048;
         int size;
         int head;
 
@@ -93,9 +93,10 @@ namespace Cassowary
             key.sparceIndex = head;
             variables[head] = key;
             rows[head] = value;
-            head++;
+            head = (head + 1) % capacity;
             size++;
-            if (size > (capacity >> 1))
+
+            if (size > (capacity >> 2))
             {
                 Resize();
             }
@@ -122,6 +123,7 @@ namespace Cassowary
             }
 
             variables[key.sparceIndex] = null;
+            rows[key.sparceIndex] = null;
             key.sparceIndex = -1;
             size--;
 

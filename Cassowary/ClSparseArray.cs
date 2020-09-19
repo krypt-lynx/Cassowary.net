@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Cassowary
+namespace Cassowary_moddiff
 {
     public abstract partial class ClAbstractVariable
     {

@@ -35,7 +35,7 @@ namespace Cassowary_moddiff
         protected ClTableau()
         {
             Columns = new Dictionary<ClAbstractVariable, HashSet<ClAbstractVariable>>();
-            Rows = new Dictionary<ClAbstractVariable, ClLinearExpression>();
+            Rows = new ClSparseRowArray();
             InfeasibleRows = new HashSet<ClAbstractVariable>();
             ExternalRows = new HashSet<ClVariable>();
             ExternalParametricVars = new HashSet<ClVariable>();
@@ -225,7 +225,7 @@ namespace Cassowary_moddiff
         /// <summary>
         /// _rows maps basic variables to the expressions for that row in the tableau.
         /// </summary>
-        protected Dictionary<ClAbstractVariable, ClLinearExpression> Rows { get; }
+        protected ClSparseRowArray Rows { get; }
 
         /// <summary>
         /// Return true if and only if the variable subject is in the columns keys 

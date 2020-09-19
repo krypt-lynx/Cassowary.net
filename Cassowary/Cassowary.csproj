@@ -88,6 +88,7 @@
     <Compile Include="ClSimplexSolver.cs" />
     <Compile Include="ClSimplexSolverExtensions.cs" />
     <Compile Include="ClSlackVariable.cs" />
+    <Compile Include="ClSparseArray.cs" />
     <Compile Include="ClStayConstraint.cs" />
     <Compile Include="ClStrength.cs" />
     <Compile Include="ClSymbolicWeight.cs" />

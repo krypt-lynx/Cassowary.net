@@ -29,14 +29,31 @@ namespace Cassowary
     /// </summary>
     public abstract partial class ClAbstractVariable
     {
+
+        static uint varCounter = 0;
+
+        uint id;
         /// <summary>
         /// creates variable with custom name
         /// </summary>
         /// <param name="name">nariable name</param>
         protected ClAbstractVariable(string name)
         {
+            id = varCounter++;
+
             Name = name;
             Interlocked.Increment(ref _numCreated);
+        }
+
+
+        public override int GetHashCode() // somehow this is faster then default CLR implementation
+        {
+            return (int)id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ((ClAbstractVariable)obj).id == id; // fill crash if type is wrong, but this is THE bottleneck of the lib
         }
 
         /// <summary>
@@ -44,6 +61,7 @@ namespace Cassowary
         /// </summary>
         protected ClAbstractVariable()
         {
+            id = varCounter++;
             Name = "v" + Interlocked.Increment(ref _numCreated);
         }
 
@@ -58,6 +76,7 @@ namespace Cassowary
         /// </param>
         protected ClAbstractVariable(long varnumber, string prefix)
         {
+            id = varCounter++;
             Name = prefix + varnumber;
             Interlocked.Increment(ref _numCreated);
         }

@@ -31,7 +31,7 @@ namespace Cassowary
     /// <summary>
     /// linear constraint base class
     /// </summary>
-    public abstract partial class ClConstraint
+    public abstract class ClConstraint
     {
         /// <summary>
         /// Creates constraint with strength

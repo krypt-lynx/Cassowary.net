@@ -24,9 +24,9 @@ namespace CassowaryTests
             var y = new ClVariable("y");
             var z = new ClVariable("z");
             solver.AddConstraints(
-                x > 1,
+                x >= 1.000001,
                 y ^ x + 1,
-                y < 3,
+                y <= 2.999999,
                 z ^ x + y * 3
             );
             Console.WriteLine("setup {0}ms", w.ElapsedMilliseconds);

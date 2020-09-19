@@ -182,16 +182,16 @@ namespace Cassowary
 
 
         #region comparision (return Constraints) 
-
+        /*
         /// <summary>
         /// Creates linear inequality constraint with default strenght
         /// </summary>
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator <(ClAbstractVariable e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator <(ClAbstractVariable e1, ClAbstractVariable e2)
         {
-            return new ClLinearInequality(e1, Operator.LessThan, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, Operator.LessThan, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear inequality constraint with default strenght
@@ -199,41 +199,20 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator >(ClAbstractVariable e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator >(ClAbstractVariable e1, ClAbstractVariable e2)
         {
-            return new ClLinearInequality(e1, Operator.GreaterThan, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, Operator.GreaterThan, e2, ClStrength.Default);
         }
-
+        */
         /// <summary>
         /// Creates linear inequality constraint with default strenght
         /// </summary>
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator <=(ClAbstractVariable e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator <=(ClAbstractVariable e1, ClAbstractVariable e2)
         {
-            return new ClLinearInequality(e1, Operator.LessThanOrEqualTo, e2, ClStrength.Default);
-        }
-        /// <summary>
-        /// Creates linear inequality constraint with default strenght
-        /// </summary>
-        /// <param name="e1"></param>
-        /// <param name="e2"></param>
-        /// <returns></returns>
-        public static ClLinearInequality operator >=(ClAbstractVariable e1, ClAbstractVariable e2)
-        {
-            return new ClLinearInequality(e1, Operator.GreaterThanOrEqualTo, e2, ClStrength.Default);
-        }
-
-        /// <summary>
-        /// Creates linear inequality constraint with default strenght
-        /// </summary>
-        /// <param name="e1"></param>
-        /// <param name="e2"></param>
-        /// <returns></returns>
-        public static ClLinearInequality operator <(ClAbstractVariable e1, double e2)
-        {
-            return new ClLinearInequality(e1, Operator.LessThan, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, Operator.LessThanOrEqualTo, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear inequality constraint with default strenght
@@ -241,7 +220,28 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator >(double e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator >=(ClAbstractVariable e1, ClAbstractVariable e2)
+        {
+            return new ClLinearConstraint(e1, Operator.GreaterThanOrEqualTo, e2, ClStrength.Default);
+        }
+        /*
+        /// <summary>
+        /// Creates linear inequality constraint with default strenght
+        /// </summary>
+        /// <param name="e1"></param>
+        /// <param name="e2"></param>
+        /// <returns></returns>
+        public static ClLinearConstraint operator <(ClAbstractVariable e1, double e2)
+        {
+            return new ClLinearConstraint(e1, Operator.LessThan, e2, ClStrength.Default);
+        }
+        /// <summary>
+        /// Creates linear inequality constraint with default strenght
+        /// </summary>
+        /// <param name="e1"></param>
+        /// <param name="e2"></param>
+        /// <returns></returns>
+        public static ClLinearConstraint operator >(double e1, ClAbstractVariable e2)
         {
             return e2 < e1;
         }
@@ -251,9 +251,9 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator >(ClAbstractVariable e1, double e2)
+        public static ClLinearConstraint operator >(ClAbstractVariable e1, double e2)
         {
-            return new ClLinearInequality(e1, Operator.GreaterThan, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, Operator.GreaterThan, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear inequality constraint with default strenght
@@ -261,20 +261,20 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator <(double e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator <(double e1, ClAbstractVariable e2)
         {
             return e2 > e1;
         }
-
+        */
         /// <summary>
         /// Creates linear inequality constraint with default strenght
         /// </summary>
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator <=(ClAbstractVariable e1, double e2)
+        public static ClLinearConstraint operator <=(ClAbstractVariable e1, double e2)
         {
-            return new ClLinearInequality(e1, Operator.LessThanOrEqualTo, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, Operator.LessThanOrEqualTo, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear inequality constraint with default strenght
@@ -282,7 +282,7 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator >=(double e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator >=(double e1, ClAbstractVariable e2)
         {
             return e2 <= e1;
         }
@@ -292,9 +292,9 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator >=(ClAbstractVariable e1, double e2)
+        public static ClLinearConstraint operator >=(ClAbstractVariable e1, double e2)
         {
-            return new ClLinearInequality(e1, Operator.GreaterThanOrEqualTo, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, Operator.GreaterThanOrEqualTo, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear inequality constraint with default strenght
@@ -302,20 +302,20 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator <=(double e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator <=(double e1, ClAbstractVariable e2)
         {
             return e2 >= e1;
         }
-
+        /*
         /// <summary>
         /// Creates linear inequality constraint with default strenght
         /// </summary>
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator <(ClAbstractVariable e1, int e2)
+        public static ClLinearConstraint operator <(ClAbstractVariable e1, int e2)
         {
-            return new ClLinearInequality(e1, Operator.LessThan, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, Operator.LessThan, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear inequality constraint with default strenght
@@ -323,7 +323,7 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator >(int e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator >(int e1, ClAbstractVariable e2)
         {
             return e2 < e1;
         }
@@ -333,9 +333,9 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator >(ClAbstractVariable e1, int e2)
+        public static ClLinearConstraint operator >(ClAbstractVariable e1, int e2)
         {
-            return new ClLinearInequality(e1, Operator.GreaterThan, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, Operator.GreaterThan, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear inequality constraint with default strenght
@@ -343,20 +343,20 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator <(int e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator <(int e1, ClAbstractVariable e2)
         {
             return e2 > e1;
         }
-
+        */
         /// <summary>
         /// Creates linear inequality constraint with default strenght
         /// </summary>
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator <=(ClAbstractVariable e1, int e2)
+        public static ClLinearConstraint operator <=(ClAbstractVariable e1, int e2)
         {
-            return new ClLinearInequality(e1, Operator.LessThanOrEqualTo, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, Operator.LessThanOrEqualTo, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear inequality constraint with default strenght
@@ -364,7 +364,7 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator >=(int e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator >=(int e1, ClAbstractVariable e2)
         {
             return e2 <= e1;
         }
@@ -374,9 +374,9 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator >=(ClAbstractVariable e1, int e2)
+        public static ClLinearConstraint operator >=(ClAbstractVariable e1, int e2)
         {
-            return new ClLinearInequality(e1, Operator.GreaterThanOrEqualTo, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, Operator.GreaterThanOrEqualTo, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear inequality constraint with default strenght
@@ -384,7 +384,7 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearInequality operator <=(int e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator <=(int e1, ClAbstractVariable e2)
         {
             return e2 >= e1;
         }
@@ -395,9 +395,9 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearEquation operator ^(ClAbstractVariable e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator ^(ClAbstractVariable e1, ClAbstractVariable e2)
         {
-            return new ClLinearEquation(e1, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear equation constraint with default strenght
@@ -405,9 +405,9 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearEquation operator ^(ClAbstractVariable e1, double e2)
+        public static ClLinearConstraint operator ^(ClAbstractVariable e1, double e2)
         {
-            return new ClLinearEquation(e1, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear equation constraint with default strenght
@@ -415,9 +415,9 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearEquation operator ^(ClAbstractVariable e1, int e2)
+        public static ClLinearConstraint operator ^(ClAbstractVariable e1, int e2)
         {
-            return new ClLinearEquation(e1, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear equation constraint with default strenght
@@ -425,9 +425,9 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearEquation operator ^(double e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator ^(double e1, ClAbstractVariable e2)
         {
-            return new ClLinearEquation(e1, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, e2, ClStrength.Default);
         }
         /// <summary>
         /// Creates linear equation constraint with default strenght
@@ -435,9 +435,9 @@ namespace Cassowary
         /// <param name="e1"></param>
         /// <param name="e2"></param>
         /// <returns></returns>
-        public static ClLinearEquation operator ^(int e1, ClAbstractVariable e2)
+        public static ClLinearConstraint operator ^(int e1, ClAbstractVariable e2)
         {
-            return new ClLinearEquation(e1, e2, ClStrength.Default);
+            return new ClLinearConstraint(e1, e2, ClStrength.Default);
         }
 
         #endregion

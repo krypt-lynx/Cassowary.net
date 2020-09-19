@@ -21,6 +21,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Cassowary
@@ -102,11 +103,15 @@ namespace Cassowary
             rowset.Add(rowvar);
         }
 
-        // Add v=expr to the tableau, update column cross indices
-        // v becomes a basic variable
-        // expr is now owned by ClTableau class, 
-        // and ClTableau is responsible for deleting it
-        // (also, expr better be allocated on the heap!).
+        /// <summary>
+        /// Add v=expr to the tableau, update column cross indices
+        /// v becomes a basic variable
+        /// expr is now owned by ClTableau class, 
+        /// and ClTableau is responsible for deleting it
+        /// (also, expr better be allocated on the heap!).
+        /// </summary>
+        /// <param name="var"></param>
+        /// <param name="expr"></param>
         protected void AddRow(ClAbstractVariable var, ClLinearExpression expr)
         {
             // for each variable in expr, add var to the set of rows which
@@ -225,11 +230,13 @@ namespace Cassowary
         /// <summary>
         /// Return true if and only if the variable subject is in the columns keys 
         /// </summary>
+        /*[MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected bool ColumnsHasKey(ClAbstractVariable subject)
         {
             return Columns.ContainsKey(subject);
-        }
+        }*/
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected ClLinearExpression RowExpression(ClAbstractVariable v)
         {
             // if (Trace) FnEnterPrint(string.Format("rowExpression: {0}", v));

@@ -360,9 +360,9 @@ namespace CassowaryTests
         public void ArrayAccess1()
         {
             var a = new ClVariable[] { new ClVariable("a"), new ClVariable("b") };
-            
-            _solver.AddConstraints(a[0] ^ 10);
 
+            _solver.AddConstraints(a[0] ^ 10);
+            //_solver.AddConstraints(new ClLinearEquation(a[0], 10));
 
             Assert.IsTrue(Cl.Approx(a[0], 10));
         }

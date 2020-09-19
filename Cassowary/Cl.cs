@@ -24,7 +24,7 @@ using System;
 namespace Cassowary
 {
     /// <summary>
-    /// The enumerations from ClLinearInequality,
+    /// The enumerations from ClLinearConstraint,
     /// and `global' functions that we want easy to access
     /// </summary>
     public class Cl
@@ -39,10 +39,11 @@ namespace Cassowary
 
         public enum Operator
         {
+            EqualTo = 0,
             GreaterThanOrEqualTo = 1,
             LessThanOrEqualTo = 2,
-            GreaterThan = 3,
-            LessThan = 4
+            //GreaterThan = 3,
+            //LessThan = 4
         }
 
 

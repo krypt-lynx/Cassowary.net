@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Cassowary
@@ -31,7 +32,7 @@ namespace Cassowary
     {
         public ClLinearExpression(ClAbstractVariable clv, double value = 1, double constant = 0)
         {
-            _constant = constant;
+            Constant = constant;
             Terms = new Dictionary<ClAbstractVariable, double>();
 
             if (clv != null)
@@ -53,7 +54,7 @@ namespace Cassowary
         /// </summary>
         protected ClLinearExpression(double constant, Dictionary<ClAbstractVariable, double> terms)
         {
-            _constant = constant;
+            Constant = constant;
             Terms = new Dictionary<ClAbstractVariable, double>();
 
             // need to unalias the ClDouble-s that we clone (do a deep clone)
@@ -65,7 +66,7 @@ namespace Cassowary
 
         public ClLinearExpression MultiplyMe(double x)
         {
-            _constant = _constant * x;
+            Constant = Constant * x;
 
             foreach (var key in Terms.Keys.ToArray())
                 Terms[key] = Terms[key] * x;
@@ -80,7 +81,7 @@ namespace Cassowary
                 throw new CassowaryNonlinearExpressionException();
             }
 
-            _constant = _constant / x;
+            Constant = Constant / x;
 
             foreach (var key in Terms.Keys.ToArray())
                 Terms[key] = Terms[key] / x;
@@ -90,7 +91,7 @@ namespace Cassowary
 
         public virtual ClLinearExpression Clone()
         {
-            return new ClLinearExpression(_constant, Terms);
+            return new ClLinearExpression(Constant, Terms);
         }
 
         public ClLinearExpression Times(double x)
@@ -102,12 +103,12 @@ namespace Cassowary
             /*throws ExCLNonlinearExpression*/
         {
             if (IsConstant)
-                return expr.Times(_constant);
+                return expr.Times(Constant);
 
             if (!expr.IsConstant)
                 throw new CassowaryNonlinearExpressionException();
 
-            return Times(expr._constant);
+            return Times(expr.Constant);
         }
 
         public ClLinearExpression Plus(ClLinearExpression expr)
@@ -146,18 +147,18 @@ namespace Cassowary
                 throw new CassowaryNonlinearExpressionException();
             }
 
-            return Divide(expr._constant);
+            return Divide(expr.Constant);
         }
 
         public ClLinearExpression DivFrom(ClLinearExpression expr)
             /*throws ExCLNonlinearExpression*/
         {
-            if (!IsConstant || Approx(_constant, 0.0))
+            if (!IsConstant || Approx(Constant, 0.0))
             {
                 throw new CassowaryNonlinearExpressionException();
             }
 
-            return expr.Divide(_constant);
+            return expr.Divide(Constant);
         }
 
         public ClLinearExpression SubtractFrom(ClLinearExpression expr)
@@ -232,6 +233,8 @@ namespace Cassowary
             return this;
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ClLinearExpression SetVariable(ClAbstractVariable v, double c)
         {
             // Assert(c != 0.0);
@@ -293,7 +296,7 @@ namespace Cassowary
                 throw new CassowaryInternalException("anyPivotableVariable called on a constant");
             }
 
-            return Terms.Keys.FirstOrDefault(a => a.IsPivotable);
+            return Terms.Keys.FirstOrDefault(a => a.IsPivotable); // todo: avoid search?
 
             // No pivotable variables, so just return null, and let the caller
             // error if needed
@@ -408,17 +411,13 @@ namespace Cassowary
                 return 0.0;
         }
 
-        public double Constant
-        {
-            get { return _constant; }
-            set { _constant = value; }
-        }
+        public double Constant;
 
         public Dictionary<ClAbstractVariable, double> Terms { get; }
 
         public void IncrementConstant(double c)
         {
-            _constant = _constant + c;
+            Constant = Constant + c;
         }
 
         public bool IsConstant
@@ -426,46 +425,12 @@ namespace Cassowary
             get { return Terms.Count == 0; }
         }
 
-       /* public override string ToString()
-        {
-            String s = "";
-
-            IDictionaryEnumerator e = Terms.GetEnumerator();
-
-            if (!Approx(_constant.Value, 0.0) || Terms.Count == 0)
-            {
-                s += _constant.ToString();
-            }
-            else
-            {
-                if (Terms.Count == 0)
-                {
-                    return s;
-                }
-                e.MoveNext(); // go to first element
-                ClAbstractVariable clv = (ClAbstractVariable) e.Key;
-                ClDouble coeff = Terms[clv];
-                s += string.Format("{0}*{1}", coeff, clv);
-            }
-            while (e.MoveNext())
-            {
-                ClAbstractVariable clv = (ClAbstractVariable) e.Key;
-                ClDouble coeff = Terms[clv];
-                s += string.Format(" + {0}*{1}", coeff, clv);
-            }
-
-            return s;
-        }*/
-
-
-        private double _constant;
-
         public override string ToString()
         {
             var sb = new StringBuilder();
-            if (_constant != 0)
+            if (Constant != 0)
             {
-                sb.Append(_constant);
+                sb.Append(Constant);
             }
 
             foreach (var kvp in Terms)

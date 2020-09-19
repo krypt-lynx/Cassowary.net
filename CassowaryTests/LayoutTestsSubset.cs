@@ -114,44 +114,44 @@ namespace CassowaryTests
 
         private void BuildRequiredConstraints(ClSimplexSolver solver)
         {
-     /**/   solver.AddConstraint(new ClLinearEquation(_bottomRightWidth + _bottomRightLeft, _bottomRightRight, ClStrength.Required));
-     /**/   solver.AddConstraint(new ClLinearInequality(_bottomRightLeft, Cl.Operator.GreaterThanOrEqualTo, 0, ClStrength.Required));
+     /**/   solver.AddConstraint(new ClLinearConstraint(_bottomRightWidth + _bottomRightLeft, _bottomRightRight, ClStrength.Required));
+     /**/   solver.AddConstraint(new ClLinearConstraint(_bottomRightLeft, Cl.Operator.GreaterThanOrEqualTo, 0, ClStrength.Required));
   
-            solver.AddConstraint(new ClLinearEquation(_updateWidth + _updateLeft, _updateRight, ClStrength.Required));
-            solver.AddConstraint(new ClLinearInequality(_updateLeft, Cl.Operator.GreaterThanOrEqualTo, 0, ClStrength.Required));
+            solver.AddConstraint(new ClLinearConstraint(_updateWidth + _updateLeft, _updateRight, ClStrength.Required));
+            solver.AddConstraint(new ClLinearConstraint(_updateLeft, Cl.Operator.GreaterThanOrEqualTo, 0, ClStrength.Required));
 
-            solver.AddConstraint(new ClLinearEquation(_newpostWidth + _newpostLeft, _newpostRight, ClStrength.Required));
+            solver.AddConstraint(new ClLinearConstraint(_newpostWidth + _newpostLeft, _newpostRight, ClStrength.Required));
     
-            solver.AddConstraint(new ClLinearEquation(_quitWidth + _quitLeft, _quitRight, ClStrength.Required));
-            solver.AddConstraint(new ClLinearInequality(_quitRight, Cl.Operator.LessThanOrEqualTo, _bottomRightWidth));
+            solver.AddConstraint(new ClLinearConstraint(_quitWidth + _quitLeft, _quitRight, ClStrength.Required));
+            solver.AddConstraint(new ClLinearConstraint(_quitRight, Cl.Operator.LessThanOrEqualTo, _bottomRightWidth));
 
-            solver.AddConstraint(new ClLinearEquation(_topRightWidth + _topRightLeft, _topRightRight, ClStrength.Required));
-            solver.AddConstraint(new ClLinearInequality(_topRightLeft, Cl.Operator.GreaterThanOrEqualTo, 0, ClStrength.Required));
+            solver.AddConstraint(new ClLinearConstraint(_topRightWidth + _topRightLeft, _topRightRight, ClStrength.Required));
+            solver.AddConstraint(new ClLinearConstraint(_topRightLeft, Cl.Operator.GreaterThanOrEqualTo, 0, ClStrength.Required));
          
-            solver.AddConstraint(new ClLinearEquation(_titleWidth + _titleLeft, _titleRight, ClStrength.Required));
-            solver.AddConstraint(new ClLinearInequality(_titleRight, Cl.Operator.GreaterThanOrEqualTo, 0, ClStrength.Required));
+            solver.AddConstraint(new ClLinearConstraint(_titleWidth + _titleLeft, _titleRight, ClStrength.Required));
+            solver.AddConstraint(new ClLinearConstraint(_titleRight, Cl.Operator.GreaterThanOrEqualTo, 0, ClStrength.Required));
 
-            solver.AddConstraint(new ClLinearEquation(_blogentryWidth + _blogentryLeft, _blogentryRight, ClStrength.Required));
-            solver.AddConstraint(new ClLinearInequality(_blogentryLeft, Cl.Operator.GreaterThanOrEqualTo, 0, ClStrength.Required));
-            solver.AddConstraint(new ClLinearInequality(_blogentryRight, Cl.Operator.LessThanOrEqualTo, _topRightWidth));
+            solver.AddConstraint(new ClLinearConstraint(_blogentryWidth + _blogentryLeft, _blogentryRight, ClStrength.Required));
+            solver.AddConstraint(new ClLinearConstraint(_blogentryLeft, Cl.Operator.GreaterThanOrEqualTo, 0, ClStrength.Required));
+            solver.AddConstraint(new ClLinearConstraint(_blogentryRight, Cl.Operator.LessThanOrEqualTo, _topRightWidth));
 
 
-            solver.AddConstraint(new ClLinearInequality(_topRightRight, Cl.Operator.LessThanOrEqualTo, _rightWidth));
+            solver.AddConstraint(new ClLinearConstraint(_topRightRight, Cl.Operator.LessThanOrEqualTo, _rightWidth));
 
-            solver.AddConstraint(new ClLinearInequality(_bottomRightRight, Cl.Operator.LessThanOrEqualTo, _rightWidth));
+            solver.AddConstraint(new ClLinearConstraint(_bottomRightRight, Cl.Operator.LessThanOrEqualTo, _rightWidth));
 
         }
 
         private void BuildStrongConstraints(ClSimplexSolver solver)
         {
-            solver.AddConstraint(new ClLinearInequality(_updateRight, Cl.Operator.LessThanOrEqualTo, _newpostLeft, ClStrength.Strong));
-            solver.AddConstraint(new ClLinearInequality(_newpostRight, Cl.Operator.LessThanOrEqualTo, _quitLeft, ClStrength.Strong));
-              solver.AddConstraint(new ClLinearEquation(_newpostWidth, _updateWidth, ClStrength.Strong));
-            solver.AddConstraint(new ClLinearEquation(_quitWidth, _updateWidth, ClStrength.Strong));
+            solver.AddConstraint(new ClLinearConstraint(_updateRight, Cl.Operator.LessThanOrEqualTo, _newpostLeft, ClStrength.Strong));
+            solver.AddConstraint(new ClLinearConstraint(_newpostRight, Cl.Operator.LessThanOrEqualTo, _quitLeft, ClStrength.Strong));
+              solver.AddConstraint(new ClLinearConstraint(_newpostWidth, _updateWidth, ClStrength.Strong));
+            solver.AddConstraint(new ClLinearConstraint(_quitWidth, _updateWidth, ClStrength.Strong));
 
-            solver.AddConstraint(new ClLinearEquation(_titleWidth, _blogentryWidth, ClStrength.Strong));
+            solver.AddConstraint(new ClLinearConstraint(_titleWidth, _blogentryWidth, ClStrength.Strong));
 
-            solver.AddConstraint(new ClLinearEquation(_titleLeft, _blogentryLeft, ClStrength.Strong));
+            solver.AddConstraint(new ClLinearConstraint(_titleLeft, _blogentryLeft, ClStrength.Strong));
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CassowaryTests
 {
-    /*
+    
     [TestClass]
     public class MergeTests
     {
@@ -60,7 +60,7 @@ namespace CassowaryTests
             s1.AddConstraint(new ClStayConstraint(Row_L, 0, ClStrength.Required));
             s1.AddConstraint(new ClStayConstraint(Row_R, 230, ClStrength.Required));
             s1.AddConstraint(new ClStayConstraint(Row_T, 50, ClStrength.Required));
-            s1.AddConstraint(ClStrength.Required, Row_T + Row_H ^ Row_B);
+            s1.AddConstraint(Row_T + Row_H ^ Row_B, ClStrength.Required);
 
             var Item_L = new ClVariable("Item_L");
             var Item_R = new ClVariable("Item_R");
@@ -90,7 +90,7 @@ namespace CassowaryTests
 
 
             s2.AddConstraint(Item_H ^ 50);
-            s2.AddConstraint(ClStrength.Required, Item_T + Item_H ^ Item_B);
+            s2.AddConstraint(Item_T + Item_H ^ Item_B, ClStrength.Required);
 
             s1.MergeWith(s2);
 
@@ -110,7 +110,7 @@ namespace CassowaryTests
             });
 
 
-            s1.AddConstraint(ClStrength.Strong, Row_H ^ 20);
+            s1.AddConstraint(Row_H ^ 20, ClStrength.Strong);
 
 
             s1.Solve();
@@ -215,8 +215,8 @@ namespace CassowaryTests
             s1.AddConstraint(new ClStayConstraint(CWindowRoot_0_T, 0));
 
             s1.Solve();
-            s2.AddConstraint(CButton_4_T + CButton_4_H ^ CButton_4_B);
-            s2.AddConstraint(CCheckBox_5_T + CCheckBox_5_H ^ CCheckBox_5_B);
+            s1.AddConstraint(CButton_4_T + CButton_4_H ^ CButton_4_B);
+            s1.AddConstraint(CCheckBox_5_T + CCheckBox_5_H ^ CCheckBox_5_B);
 
             Assert.IsTrue(CButton_4_H.Value == 60);
 
@@ -243,5 +243,5 @@ namespace CassowaryTests
         }
     }
 
-*/
+
 }

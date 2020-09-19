@@ -48,7 +48,7 @@ namespace Cassowary
         public ClSimplexSolver AddConstraint(ClConstraint cn)
         {
             List<ClAbstractVariable> eplusEminus = new List<ClAbstractVariable>(2);
-            Double prevEConstant = 0;
+            double prevEConstant = 0;
             ClLinearExpression expr = NewExpression(cn, /* output to: */
                 eplusEminus,
                 ref prevEConstant);
@@ -326,7 +326,7 @@ namespace Cassowary
                 throw new CassowaryConstraintNotFoundException();
 
             ConstraintMap.Remove(cn);
-            if (RowExpression(marker) == null)
+            if (!Rows.ContainsKey(marker))
             {
                 // not in the basis, so need to do some more work
                 var col = Columns[marker];
@@ -392,7 +392,7 @@ namespace Cassowary
                 }
             }
 
-            if (RowExpression(marker) != null)
+            if (Rows.ContainsKey(marker))
             {
                 RemoveRow(marker);
             }
@@ -470,7 +470,7 @@ namespace Cassowary
         public bool ContainsVariable(ClVariable v)
         /* throws ExClInternalError */
         {
-            return ColumnsHasKey(v) || (RowExpression(v) != null);
+            return Columns.ContainsKey(v) || Rows.ContainsKey(v);
         }
 
         public ClAbstractVariable GetVariable(string name)
@@ -624,7 +624,7 @@ namespace Cassowary
                 ClAbstractVariable entryVar = e.AnyPivotableVariable();
                 Pivot(entryVar, av);
             }
-            Assert(RowExpression(av) == null, "RowExpression(av) == null)");
+            Assert(!Rows.ContainsKey(av), "RowExpression(av) == null)");
             RemoveColumn(av);
             RemoveRow(az);
         }
@@ -649,7 +649,7 @@ namespace Cassowary
                 return false;
             }
             expr.NewSubject(subject);
-            if (ColumnsHasKey(subject))
+            if (Columns.ContainsKey(subject))
             {
                 SubstituteOut(subject, expr);
             }
@@ -691,7 +691,7 @@ namespace Cassowary
                 {
                     if (!v.IsRestricted)
                     {
-                        if (!ColumnsHasKey(v))
+                        if (!Columns.ContainsKey(v))
                             return v;
                     }
                 }
@@ -704,7 +704,7 @@ namespace Cassowary
                         {
                             HashSet<ClAbstractVariable> col;
                             if (!Columns.TryGetValue(v, out col) ||
-                                (col.Count == 1 && ColumnsHasKey(_objective)))
+                                (col.Count == 1 && Columns.ContainsKey(_objective)))
                             {
                                 subject = v;
                                 foundNewRestricted = true;
@@ -730,7 +730,7 @@ namespace Cassowary
 
                 if (!v.IsDummy)
                     return null; // nope, no luck
-                if (!ColumnsHasKey(v))
+                if (!Columns.ContainsKey(v))
                 {
                     subject = v;
                     coeff = c;
@@ -757,14 +757,13 @@ namespace Cassowary
             ClLinearExpression expr = new ClLinearExpression(cnExpr.Constant);
             ClSlackVariable eminus;
             var cnTerms = cnExpr.Terms;
-            foreach (ClAbstractVariable v in cnTerms.Keys)
+            foreach (var kvp in cnTerms)
             {
-                double c = cnTerms[v];
-                ClLinearExpression e = RowExpression(v);
+                ClLinearExpression e = RowExpression(kvp.Key);
                 if (e == null)
-                    expr.AddVariable(v, c);
+                    expr.AddVariable(kvp.Key, kvp.Value);
                 else
-                    expr.AddExpression(e, c);
+                    expr.AddExpression(e, kvp.Value);
             }
 
             if (cn.IsInequality)
@@ -1072,7 +1071,7 @@ namespace Cassowary
         {
             foreach (var v in ExternalParametricVars)
             {
-                if (RowExpression(v) != null)
+                if (Rows.ContainsKey(v))
                     Console.Error.WriteLine(string.Format("Error: variable {0} in _externalParametricVars is basic", v));
                 else
                     v.Value = 0.0;
@@ -1208,7 +1207,7 @@ namespace Cassowary
                 {
                     column.Remove(other._objective);
                     column.Add(_objective);
-            }
+                }
                 Columns[kvp.Key] = column;
             }
 
@@ -1231,7 +1230,7 @@ namespace Cassowary
 
             var objectiveRow = RowExpression(_objective);
             var othersObjectiveRow = RowExpression(other._objective);
-            
+
 
 
             foreach (var kvp in othersObjectiveRow.Terms)
@@ -1241,7 +1240,7 @@ namespace Cassowary
 
             Rows.Remove(other._objective);
 
-
+                      
             _cNeedsSolving = _cNeedsSolving || other._cNeedsSolving;
             if (AutoSolve)
             {

@@ -47,6 +47,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\Cassowary.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>portable</DebugType>
@@ -59,6 +60,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <NoWarn>CS1591</NoWarn>
     <DebugSymbols>true</DebugSymbols>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -74,16 +76,13 @@
     <Compile Include="Cl.cs" />
     <Compile Include="ClAbstractVariable.cs" />
     <Compile Include="ClConstraint.cs" />
-    <Compile Include="ClConstraintOperators.cs" />
     <Compile Include="ClDummyVariable.cs" />
     <Compile Include="ClEditConstraint.cs" />
     <Compile Include="ClEditInfo.cs" />
     <Compile Include="ClEditOrStayConstraint.cs" />
-    <Compile Include="ClLinearConstraint.cs" />
-    <Compile Include="ClLinearEquation.cs" />
     <Compile Include="ClLinearExpression.cs" />
     <Compile Include="ClLinearExpressionOperators.cs" />
-    <Compile Include="ClLinearInequality.cs" />
+    <Compile Include="ClLinearConstraint.cs" />
     <Compile Include="ClObjectiveVariable.cs" />
     <Compile Include="ClPoint.cs" />
     <Compile Include="ClSimplexSolver.cs" />

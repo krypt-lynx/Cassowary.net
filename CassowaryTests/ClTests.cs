@@ -106,7 +106,7 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
         public void Playground()
         {
             var x = new ClVariable("x");
-            _solver.AddConstraint(x < -1);
+            _solver.AddConstraint(x <= -1.00001);
 
             Assert.IsTrue(x.Value < -1);
         }
@@ -117,7 +117,7 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
             var x = new ClVariable("x", 167);
             var y = new ClVariable("y", 2);
 
-            var eq = new ClLinearEquation(x, new ClLinearExpression(y));
+            var eq = new ClLinearConstraint(x, Cl.Operator.EqualTo, new ClLinearExpression(y));
             _solver.AddConstraint(eq);
 
             Assert.AreEqual(x.Value, y.Value);
@@ -138,10 +138,10 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
         {
             var x = new ClVariable("x");
 
-            _solver.AddConstraint(new ClLinearEquation(x, 100, ClStrength.Weak));
+            _solver.AddConstraint(new ClLinearConstraint(x, 100, ClStrength.Weak));
 
-            var c10 = new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, 10.0);
-            var c20 = new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, 20.0);
+            var c10 = new ClLinearConstraint(x, Cl.Operator.LessThanOrEqualTo, 10.0);
+            var c20 = new ClLinearConstraint(x, Cl.Operator.LessThanOrEqualTo, 20.0);
 
             _solver.AddConstraint(c10).AddConstraint(c20);
             Assert.IsTrue(Cl.Approx(x, 10.0));
@@ -152,7 +152,7 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
             _solver.RemoveConstraint(c20);
             Assert.IsTrue(Cl.Approx(x, 100.0));
 
-            var c10Again = new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, 10.0);
+            var c10Again = new ClLinearConstraint(x, Cl.Operator.LessThanOrEqualTo, 10.0);
 
             _solver.AddConstraint(c10).AddConstraint(c10Again);
             Assert.IsTrue(Cl.Approx(x, 10.0));
@@ -171,11 +171,11 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
             var y = new ClVariable("y");
 
             _solver
-              .AddConstraint(new ClLinearEquation(x, 100.0, ClStrength.Weak))
-              .AddConstraint(new ClLinearEquation(y, 120.0, ClStrength.Strong));
+              .AddConstraint(new ClLinearConstraint(x, 100.0, ClStrength.Weak))
+              .AddConstraint(new ClLinearConstraint(y, 120.0, ClStrength.Strong));
 
-            var c10 = new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, 10.0, ClStrength.Required);
-            var c20 = new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, 20.0, ClStrength.Required);
+            var c10 = new ClLinearConstraint(x, Cl.Operator.LessThanOrEqualTo, 10.0, ClStrength.Required);
+            var c20 = new ClLinearConstraint(x, Cl.Operator.LessThanOrEqualTo, 20.0, ClStrength.Required);
 
             _solver
               .AddConstraint(c10)
@@ -187,7 +187,7 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
             Assert.IsTrue(Cl.Approx(x, 20.0));
             Assert.IsTrue(Cl.Approx(y, 120.0));
 
-            var cxy = new ClLinearEquation(2 * x, y);
+            var cxy = new ClLinearConstraint(2 * x, Cl.Operator.EqualTo, y);
             _solver.AddConstraint(cxy);
             Assert.IsTrue(Cl.Approx(x, 20.0));
             Assert.IsTrue(Cl.Approx(y, 40.0));
@@ -209,10 +209,10 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
 
 
             _solver
-              .AddConstraint(new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, y))
-              .AddConstraint(new ClLinearEquation(y, x + 3.0))
-              .AddConstraint(new ClLinearEquation(x, 10.0, ClStrength.Weak))
-              .AddConstraint(new ClLinearEquation(y, 10.0, ClStrength.Weak));
+              .AddConstraint(new ClLinearConstraint(x, Cl.Operator.LessThanOrEqualTo, y))
+              .AddConstraint(new ClLinearConstraint(y, Cl.Operator.EqualTo, x + 3.0))
+              .AddConstraint(new ClLinearConstraint(x, 10.0, ClStrength.Weak))
+              .AddConstraint(new ClLinearConstraint(y, 10.0, ClStrength.Weak));
 
             Assert.IsTrue(
                 (Cl.Approx(x, 10.0) && Cl.Approx(y, 13.0)) ||
@@ -228,8 +228,8 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
 
 
             _solver
-                .AddConstraint(new ClLinearEquation(x, 10.0, ClStrength.Required))
-                .AddConstraint(new ClLinearEquation(x, 5.0, ClStrength.Required));
+                .AddConstraint(new ClLinearConstraint(x, 10.0, ClStrength.Required))
+                .AddConstraint(new ClLinearConstraint(x, 5.0, ClStrength.Required));
         }
 
         [TestMethod]
@@ -240,8 +240,8 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
 
 
             _solver
-                .AddConstraint(new ClLinearInequality(x, Cl.Operator.GreaterThanOrEqualTo, 10.0, ClStrength.Required))
-                .AddConstraint(new ClLinearInequality(x, Cl.Operator.LessThanOrEqualTo, 5.0, ClStrength.Required));
+                .AddConstraint(new ClLinearConstraint(x, Cl.Operator.GreaterThanOrEqualTo, 10.0, ClStrength.Required))
+                .AddConstraint(new ClLinearConstraint(x, Cl.Operator.LessThanOrEqualTo, 5.0, ClStrength.Required));
         }
 
         [TestMethod]
@@ -317,12 +317,12 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
 
 
             _solver
-                .AddConstraint(new ClLinearInequality(w, Cl.Operator.GreaterThanOrEqualTo, 10.0), ClStrength.Required)
-                .AddConstraint(new ClLinearInequality(x, Cl.Operator.GreaterThanOrEqualTo, w), ClStrength.Required)
-                .AddConstraint(new ClLinearInequality(y, Cl.Operator.GreaterThanOrEqualTo, x), ClStrength.Required)
-                .AddConstraint(new ClLinearInequality(z, Cl.Operator.GreaterThanOrEqualTo, y), ClStrength.Required)
-                .AddConstraint(new ClLinearInequality(z, Cl.Operator.GreaterThanOrEqualTo, 8.0), ClStrength.Required)
-                .AddConstraint(new ClLinearInequality(z, Cl.Operator.LessThanOrEqualTo, 4.0), ClStrength.Required);
+                .AddConstraint(new ClLinearConstraint(w, Cl.Operator.GreaterThanOrEqualTo, 10.0), ClStrength.Required)
+                .AddConstraint(new ClLinearConstraint(x, Cl.Operator.GreaterThanOrEqualTo, w), ClStrength.Required)
+                .AddConstraint(new ClLinearConstraint(y, Cl.Operator.GreaterThanOrEqualTo, x), ClStrength.Required)
+                .AddConstraint(new ClLinearConstraint(z, Cl.Operator.GreaterThanOrEqualTo, y), ClStrength.Required)
+                .AddConstraint(new ClLinearConstraint(z, Cl.Operator.GreaterThanOrEqualTo, 8.0), ClStrength.Required)
+                .AddConstraint(new ClLinearConstraint(z, Cl.Operator.LessThanOrEqualTo, 4.0), ClStrength.Required);
         }
 
         [TestMethod]
@@ -330,7 +330,7 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
         public void DeleteNonAddedConstraintThrowsConstraintNotFoundException()
         {
 
-            _solver.RemoveConstraint(new ClLinearInequality(new ClVariable("a"), Cl.Operator.GreaterThanOrEqualTo, new ClVariable("b")));
+            _solver.RemoveConstraint(new ClLinearConstraint(new ClVariable("a"), Cl.Operator.GreaterThanOrEqualTo, new ClVariable("b")));
         }
 
         [TestMethod]
@@ -339,7 +339,7 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
             const int nCns = 10 * 500;
             const int nVars = 12 * 500;
             const int nResolves = 1;
-
+            //_solver.AutoSolve = false;
             var timer = new Stopwatch();
             const double ineqProb = 0.12;
             const int maxVars = 3;
@@ -373,11 +373,11 @@ strong:[2; 1]:1 {[a:0] + [b:0] + 10 = }) = 0)
                 }
                 if (UniformRandomDiscretized() < ineqProb)
                 {
-                    rgpcns[j] = new ClLinearInequality(expr);
+                    rgpcns[j] = new ClLinearConstraint(expr, Cl.Operator.GreaterThanOrEqualTo);
                 }
                 else
                 {
-                    rgpcns[j] = new ClLinearEquation(expr);
+                    rgpcns[j] = new ClLinearConstraint(expr);
                 }
             }
 

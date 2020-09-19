@@ -142,11 +142,11 @@ public class Parser
         else SynErr(15);
         Expression(out e2);
         if (eq)
-            Value = new ClLinearEquation(e1, e2);
+            Value = new ClLinearConstraint(e1, Cl.Operator.EqualTo, e2);
         else if (geq)
-            Value = new ClLinearInequality(e1, Cl.Operator.GreaterThanOrEqualTo, e2);
+            Value = new ClLinearConstraint(e1, Cl.Operator.GreaterThanOrEqualTo, e2);
         else if (leq)
-            Value = new ClLinearInequality(e1, Cl.Operator.LessThanOrEqualTo, e2);
+            Value = new ClLinearConstraint(e1, Cl.Operator.LessThanOrEqualTo, e2);
 
     }
 

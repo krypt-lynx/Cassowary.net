@@ -29,7 +29,6 @@ namespace CassowaryTests
             s2.AddConstraint(b ^ c);
 
             s1.MergeWith(s2);
-            // FixMe: Simplex contains 2 objectives now! (and somehow everything works)
 
             s1.AddConstraint(a ^ b);
 

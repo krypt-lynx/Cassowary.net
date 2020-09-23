@@ -10,10 +10,37 @@ namespace Cassowary
 {
     public abstract partial class ClAbstractVariable
     {
-        public int sparceIndex = -1;
+        internal int SparceRowIndex = -1;
+        internal int SparceColumnIndex = -1;
     }
 
-    public class ClSparseRowArray : IDictionary<ClAbstractVariable, ClLinearExpression>
+    public class ClSparseColumnArray : ClSparseArray<HashSet<ClAbstractVariable>>
+    {
+        protected override int GetItemSparseIndex(ClAbstractVariable var)
+        {
+            return var.SparceColumnIndex;
+        }
+
+        protected override void SetItemSparseIndex(ClAbstractVariable var, int index)
+        {
+            var.SparceColumnIndex = index;
+        }
+    }
+
+    public class ClSparseRowArray : ClSparseArray<ClLinearExpression>
+    {
+        protected override int GetItemSparseIndex(ClAbstractVariable var)
+        {
+            return var.SparceRowIndex;
+        }
+
+        protected override void SetItemSparseIndex(ClAbstractVariable var, int index)
+        {
+            var.SparceRowIndex = index;
+        }
+    }
+
+    public abstract class ClSparseArray<T> : IDictionary<ClAbstractVariable, T>
     {
         static int nextId = 0;
 
@@ -24,12 +51,12 @@ namespace Cassowary
         int head;
 
         ClAbstractVariable[] variables;
-        ClLinearExpression[] rows;
+        T[] rows;
 
-        public ClSparseRowArray()
+        public ClSparseArray()
         {
             variables = new ClAbstractVariable[capacity];
-            rows = new ClLinearExpression[capacity];
+            rows = new T[capacity];
             size = 0;
             head = 0;
         }
@@ -42,7 +69,11 @@ namespace Cassowary
             }
         }
 
-        public ICollection<ClLinearExpression> Values
+        protected abstract int GetItemSparseIndex(ClAbstractVariable var);
+
+        protected abstract void SetItemSparseIndex(ClAbstractVariable var, int index);
+
+        public ICollection<T> Values
         {
             get
             {
@@ -66,31 +97,31 @@ namespace Cassowary
             }
         }
 
-        public ClLinearExpression this[ClAbstractVariable key]
+        public T this[ClAbstractVariable key]
         {
             get
             {
-                return rows[key.sparceIndex];
+                return rows[GetItemSparseIndex(key)];
             }
             set
             {
-                rows[key.sparceIndex] = value;
+                rows[GetItemSparseIndex(key)] = value; // assuming variable belongs to this sparce array
             }
         }
 
         public bool ContainsKey(ClAbstractVariable key)
         {
-            return key.sparceIndex != -1;
+            return GetItemSparseIndex(key) != -1;
         }
 
-        public void Add(ClAbstractVariable key, ClLinearExpression value)
+        public void Add(ClAbstractVariable key, T value)
         {
             while (variables[head] != null)
             {
                 head = (head + 1) % capacity;
             }
 
-            key.sparceIndex = head;
+            SetItemSparseIndex(key, head);
             variables[head] = key;
             rows[head] = value;
             head = (head + 1) % capacity;
@@ -107,7 +138,7 @@ namespace Cassowary
             var oldVars = variables;
             var oldRows = rows;
             variables = new ClAbstractVariable[capacity * 2];
-            rows = new ClLinearExpression[capacity * 2];
+            rows = new T[capacity * 2];
 
             Array.Copy(oldVars, variables, capacity);
             Array.Copy(oldRows, rows, capacity);
@@ -117,34 +148,37 @@ namespace Cassowary
 
         public bool Remove(ClAbstractVariable key)
         {
-            if (variables[key.sparceIndex] == null)
+            var index = GetItemSparseIndex(key);
+            if (variables[index] == null)
             {
                 return false;
             }
 
-            variables[key.sparceIndex] = null;
-            rows[key.sparceIndex] = null;
-            key.sparceIndex = -1;
+             
+            variables[index] = null;
+            rows[index] = default(T);
+            SetItemSparseIndex(key, -1);
             size--;
 
             return true;
         }
 
-        public bool TryGetValue(ClAbstractVariable key, out ClLinearExpression value)
+        public bool TryGetValue(ClAbstractVariable key, out T value)
         {
-            if (key.sparceIndex == -1)
+            var index = GetItemSparseIndex(key);
+            if (index == -1)
             {
-                value = null;
+                value = default(T);
                 return false;
             }
             else
             {
-                value = rows[key.sparceIndex];
+                value = rows[index];
                 return true;
             }
         }
 
-        public void Add(KeyValuePair<ClAbstractVariable, ClLinearExpression> item)
+        public void Add(KeyValuePair<ClAbstractVariable, T> item)
         {
             Add(item.Key, item.Value);
         }
@@ -152,27 +186,27 @@ namespace Cassowary
         public void Clear()
         {
             variables = new ClAbstractVariable[capacity];
-            rows = new ClLinearExpression[capacity];
+            rows = new T[capacity];
             size = 0;
             head = 0;
         }
 
-        public bool Contains(KeyValuePair<ClAbstractVariable, ClLinearExpression> item)
+        public bool Contains(KeyValuePair<ClAbstractVariable, T> item)
         {
             throw new NotImplementedException();
         }
 
-        public void CopyTo(KeyValuePair<ClAbstractVariable, ClLinearExpression>[] array, int arrayIndex)
+        public void CopyTo(KeyValuePair<ClAbstractVariable, T>[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
-        public bool Remove(KeyValuePair<ClAbstractVariable, ClLinearExpression> item)
+        public bool Remove(KeyValuePair<ClAbstractVariable, T> item)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerator<KeyValuePair<ClAbstractVariable, ClLinearExpression>> GetEnumerator()
+        public IEnumerator<KeyValuePair<ClAbstractVariable, T>> GetEnumerator()
         {
             return new Enumerator(this);
         }
@@ -182,21 +216,21 @@ namespace Cassowary
             return new Enumerator(this);
         }
 
-        public struct Enumerator : IEnumerator<KeyValuePair<ClAbstractVariable, ClLinearExpression>>,
+        public struct Enumerator : IEnumerator<KeyValuePair<ClAbstractVariable, T>>,
        IDictionaryEnumerator
         {
-            private IDictionary<ClAbstractVariable, ClLinearExpression> sparseArray;
+            private IDictionary<ClAbstractVariable, T> sparseArray;
 
             private int index;
-            private KeyValuePair<ClAbstractVariable, ClLinearExpression> current;
+            private KeyValuePair<ClAbstractVariable, T> current;
             IEnumerator<ClAbstractVariable> keyEnumerator;
 
-            internal Enumerator(ClSparseRowArray sparseArray)
+            internal Enumerator(ClSparseArray<T> sparseArray)
             {
                 this.sparseArray = sparseArray;
                 index = -1;
                 keyEnumerator = sparseArray.Keys.GetEnumerator();
-                current = default(KeyValuePair<ClAbstractVariable, ClLinearExpression>);
+                current = default(KeyValuePair<ClAbstractVariable, T>);
             }
 
             public bool MoveNext()
@@ -204,13 +238,13 @@ namespace Cassowary
                 var hasNext = keyEnumerator.MoveNext();
                 if (hasNext)
                 {
-                    current = new KeyValuePair<ClAbstractVariable, ClLinearExpression>(
+                    current = new KeyValuePair<ClAbstractVariable, T>(
                         keyEnumerator.Current, sparseArray[keyEnumerator.Current]);
                 }
                 return hasNext;
             }
 
-            public KeyValuePair<ClAbstractVariable, ClLinearExpression> Current
+            public KeyValuePair<ClAbstractVariable, T> Current
             {
                 get { return current; }
             }

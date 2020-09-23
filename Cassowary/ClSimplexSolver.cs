@@ -1206,7 +1206,7 @@ namespace Cassowary
                     column.Remove(other._objective);
                     column.Add(_objective);
                 }
-                Columns[kvp.Key] = column;
+                Columns.Add(kvp);
             }
   
             foreach (var kvp in other.Rows)

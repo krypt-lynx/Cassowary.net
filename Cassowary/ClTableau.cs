@@ -34,7 +34,7 @@ namespace Cassowary
         /// </summary>
         protected ClTableau()
         {
-            Columns = new Dictionary<ClAbstractVariable, HashSet<ClAbstractVariable>>();
+            Columns = new ClSparseColumnArray();
             Rows = new ClSparseRowArray();
             InfeasibleRows = new HashSet<ClAbstractVariable>();
             ExternalRows = new HashSet<ClVariable>();
@@ -220,7 +220,7 @@ namespace Cassowary
         /// i.e., it's a mapping from variables in expressions (a column) to the 
         /// set of rows that contain them.
         /// </summary>
-        protected Dictionary<ClAbstractVariable, HashSet<ClAbstractVariable>> Columns { get; }
+        protected ClSparseColumnArray Columns { get; }
 
         /// <summary>
         /// _rows maps basic variables to the expressions for that row in the tableau.
